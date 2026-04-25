@@ -29,6 +29,6 @@ public class CategoriaProducto {
     private Byte idCategoria;
 
     @NotBlank(message = "El nombre de la categoría del producto es obligatorio")
-    @Column(name = "nombre_categoria", nullable = false, length = 50)
+    @Column(name = "nombre_categoria", nullable = false, length = 50, unique = true)
     private String nombreCategoria;
 }

@@ -32,7 +32,7 @@ public class UnidadMedida {
 
     @Size(max = 50, message = "El nombre de la unidad de medida no puede exceder los 50 caracteres")
     @NotBlank(message = "El nombre de la unidad de medida es obligatorio")
-    @Column(name = "nombre_unidad", nullable = false, length = 50)
+    @Column(name = "nombre_unidad", nullable = false, length = 50, unique = true)
     private String nombreUnidad;
 
     @Size(max = 10, message = "La abreviatura de la unidad de medida no puede exceder los 10 caracteres")
