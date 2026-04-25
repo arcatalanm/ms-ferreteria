@@ -43,7 +43,7 @@ public class Producto {
     private UnidadMedida unidadMedida;
 
     @Size(max = 50, message = "El código de barras del producto no puede exceder los 50 caracteres")
-    @Column(name = "codigo_barras_producto", nullable = false, length = 50, unique = true)
+    @Column(name = "codigo_barras_producto", nullable = true, length = 50, unique = true)
     private String codigoBarrasProducto;
 
     @Size(max = 100, message = "El nombre del producto no puede exceder los 100 caracteres")
