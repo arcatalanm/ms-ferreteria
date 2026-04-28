@@ -1,0 +1,22 @@
+import ferrefix.ms_usuarios.util.RutUtil;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ClienteService {
+
+    // ... inyección del repositorio ...
+
+    public Cliente guardarCliente(Cliente nuevoCliente) {
+        
+        // 1. Validar el RUT antes de tocar la base de datos
+        boolean esValido = RutUtil.isRutValido(nuevoCliente.getRunCliente(), nuevoCliente.getDvCliente());
+        
+        if (!esValido) {
+            // Lanzas un error si el Módulo 11 falla. Spring Boot atrapará esto y devolverá un Error 400.
+            throw new IllegalArgumentException("El RUN o Dígito Verificador ingresado es incorrecto.");
+        }
+
+        // 2. Si pasa la validación, guardas en la base de datos
+        return clienteRepository.save(nuevoCliente);
+    }
+}
