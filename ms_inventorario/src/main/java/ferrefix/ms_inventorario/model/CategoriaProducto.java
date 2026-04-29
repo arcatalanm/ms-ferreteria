@@ -26,7 +26,7 @@ public class CategoriaProducto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria")
-    private Byte idCategoria;
+    private Integer idCategoria;
 
     @NotBlank(message = "El nombre de la categoría del producto es obligatorio")
     @Column(name = "nombre_categoria", nullable = false, length = 50, unique = true)

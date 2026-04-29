@@ -28,7 +28,7 @@ public class UnidadMedida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_unidad", nullable = false)
-    private Byte idUnidad;
+    private Integer idUnidad;
 
     @Size(max = 50, message = "El nombre de la unidad de medida no puede exceder los 50 caracteres")
     @NotBlank(message = "El nombre de la unidad de medida es obligatorio")
