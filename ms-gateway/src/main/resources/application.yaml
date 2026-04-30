@@ -1,0 +1,26 @@
+server:
+  port: 8080 # Este es el puerto del Gateway. Postman y MS-Ventas le hablarán a este.
+
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      routes:
+        # Ruta hacia el Microservicio de Inventario
+        - id: inventario-ruta-ms
+          uri: http://localhost:8081 # Asumiendo que tu inventario corre en este puerto
+          predicates:
+            - Path=/api/inventario/**
+
+        # Ruta hacia el Microservicio de Usuarios (Clientes/Empleados)
+        - id: usuarios-ruta-ms
+          uri: http://localhost:8082 # Asumiendo que tus usuarios corren en este puerto
+          predicates:
+            - Path=/api/usuarios/**
+
+        # Ruta hacia el Microservicio de Ventas (Clientes/Empleados)
+        - id: ventas-ruta-ms
+          uri: http://localhost:8083 # Asumiendo que tus ventas corren en este puerto
+          predicates:
+            - Path=/api/ventas/**
