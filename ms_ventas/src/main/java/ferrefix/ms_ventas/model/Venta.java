@@ -21,8 +21,11 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "venta")
-@AllArgsConstructor @NoArgsConstructor
-@Getter @Setter @Builder
+@AllArgsConstructor 
+@NoArgsConstructor
+@Getter 
+@Setter 
+@Builder
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

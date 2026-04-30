@@ -1,5 +1,6 @@
 package ferrefix.ms_ventas.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,7 +22,7 @@ public class VentaResponseDTO {
 
     // Obtenemos dia-mes-año hora:minuto:segundo
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private String fechaVenta;
+    private LocalDateTime fechaVenta;
 
     private Integer totalVenta;
 

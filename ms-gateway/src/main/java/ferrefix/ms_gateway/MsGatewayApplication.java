@@ -1,19 +1,18 @@
-package ferrefix.ms_ventas;
+package ferrefix.ms_gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-public class MsVentasApplication {
+public class MsGatewayApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MsVentasApplication.class, args);
+		SpringApplication.run(MsGatewayApplication.class, args);
 	}
-	
+
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+
 }

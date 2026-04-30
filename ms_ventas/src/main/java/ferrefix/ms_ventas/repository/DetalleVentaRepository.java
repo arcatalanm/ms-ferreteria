@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import ferrefix.ms_ventas.model.DetalleVenta;
 
 @Repository
-public interface DetalleVentaRepository extends JpaRepository<DetalleVenta, Integer> {
+public interface DetalleVentaRepository extends JpaRepository<DetalleVenta, Long> {
     // Obtener Detalles de una venta por su ID
-    List<DetalleVenta> findVentaByIdVenta(Integer idVenta);
+    List<DetalleVenta> findByVenta_IdVenta(Long idVenta);
 }

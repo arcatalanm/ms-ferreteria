@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import ferrefix.ms_ventas.model.Venta;
 
 @Repository
-public interface VentaRepository extends JpaRepository<Venta, Integer> {
+public interface VentaRepository extends JpaRepository<Venta, Long> {
     // Método personalizado para buscar ventas por runCliente
-    List<Venta> findByRunClienteVentas(Integer runCliente);
+    List<Venta> findByRunCliente(Integer runCliente);
 
     // Método personalizado para buscar ventas por runEmpleado
-    List<Venta> findByRunEmpleadoVentas(Integer runEmpleado);
+    List<Venta> findByRunEmpleado(Integer runEmpleado);
 }
