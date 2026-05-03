@@ -1,5 +1,6 @@
 package ferrefix.ms_inventorario.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,15 +13,8 @@ import lombok.Setter;
 @Setter
 @Builder
 
-public class ProductoResponseDTO {
-    private Integer id;
-    private String codigoBarras;
-
-    private String nombre;
+public class CategoriaProductoRequestDTO {
     
-    private Integer stock;
-    private Integer precioVenta;
-
-    private Integer unidadMedida;
-    private String categoria;
+    @NotBlank(message = "El nombre de la categoría del producto es obligatorio")
+    private String nombreCategoria;
 }

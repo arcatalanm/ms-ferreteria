@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import ferrefix.ms_inventorario.model.CategoriaProducto;
 
-@Repository 
-public interface CategoriaProductoRepository extends JpaRepository<CategoriaProducto, Byte> {
-
+@Repository
+public interface CategoriaProductoRepository extends JpaRepository<CategoriaProducto, Integer> {
+    boolean existsByNombreCategoria(String nombreCategoria);
 }

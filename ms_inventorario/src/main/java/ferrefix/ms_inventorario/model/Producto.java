@@ -37,10 +37,10 @@ public class Producto {
     @JoinColumn(name = "id_categoria", nullable = false)
     private CategoriaProducto categoriaProducto;
 
-    @NotNull(message = "La unidad de medida del producto es obligatoria")
+    @NotNull(message = "La unidad de medida es obligatoria")
     @ManyToOne
-    @JoinColumn(name = "id_unidad", nullable = false)
-    private UnidadMedida unidadMedida;
+    @JoinColumn(name = "id_unidad_medida", nullable = false)
+    private UnidadMedida unidadMedida; //
 
     @Size(max = 50, message = "El código de barras del producto no puede exceder los 50 caracteres")
     @Column(name = "codigo_barras_producto", nullable = true, length = 50, unique = true)
