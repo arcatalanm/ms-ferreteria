@@ -1,15 +1,9 @@
-package ferrefix.ms_usuarios.model;
+package ferrefix.ms_usuarios.dto;
 
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -27,66 +21,48 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-@Entity
-@Table(name = "empleado")
-public class Empleado {
-    @Id
+public class EmpleadoRequestDTO {
+
     @NotNull(message = "El run del empleado no puede ser nulo")
     @Min(value = 1, message = "El run debe ser un número positivo")
     @Max(value = 99999999, message = "El run no puede exceder los 8 dígitos")
-    @Column(name = "run_empleado", nullable = false, unique = true)
     private Integer runEmpleado;
 
     @NotNull(message = "El dv del empleado no puede ser nulo")
-    @Column(name = "dv_empleado", length = 1, nullable = false)
     private Character dvEmpleado;
 
     @NotBlank(message = "El primer nombre es obligatorio")
-    @Column(name = "pnombre_empleado", length = 50, nullable = false)
     private String pnombreEmpleado;
 
-    @Column(name = "snombre_empleado", length = 50)
+    // No lleva @NotBlank porque un empleado podría no tener segundo nombre
     private String snombreEmpleado;
 
     @NotBlank(message = "El apellido paterno es obligatorio")
-    @Column(name = "appaterno_empleado", length = 50, nullable = false)
     private String appaternoEmpleado;
 
     @NotBlank(message = "El apellido materno es obligatorio")
-    @Column(name = "apmaterno_empleado", length = 50, nullable = false)
     private String apmaternoEmpleado;
 
     @Email(message = "Formato de correo corporativo inválido")
     @NotBlank(message = "El email es obligatorio")
-    @Column(name = "email_empleado", nullable = false, unique = true)
     private String emailEmpleado;
 
-    @NotBlank(message = "La contraseña no puede estar vacía")
-    @Column(name = "contrasena_empleado", nullable = false)
+    @NotBlank(message = "La contraseña inicial no puede estar vacía")
     private String contrasenaEmpleado;
-
-    // --- Atributos específicos de Empleado  ---
 
     @NotNull(message = "El sueldo base es obligatorio")
     @Min(value = 0, message = "El sueldo no puede ser negativo")
-    @Column(name = "sueldo_base_empleado", nullable = false)
-    private Integer sueldoBaseEmpleado; // Usamos Integer por ser CLP (Pesos Chilenos)
+    private Integer sueldoBaseEmpleado;
 
+    // Lo pedimos como String para facilitar el envío desde el frontend (Postman)
     @NotNull(message = "La fecha de contratación es obligatoria")
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    @Column(name = "fecha_contratacion_empleado", nullable = false)
-    private LocalDate fechaContratacionEmpleado;
+    @JsonFormat(pattern = "yyyy-MM-dd") // dd-MM-yyyy es más común en Chile, pero para APIs REST se suele usar el formato ISO (yyyy-MM-dd)
+    private LocalDate fechaContratacionEmpleado; 
 
-    @NotBlank(message = "El teléfono del empleado no puede estar vacío, es obligatorio para contacto y emergencias")
     @Size(min = 9, max = 9, message = "El teléfono del empleado debe tener exactamente 9 dígitos")
-    @Column(name = "telefono_empleado", length = 9)
+    @NotBlank(message = "El teléfono del empleado no puede estar vacío")
     private String telefonoEmpleado;
 
-    @Builder.Default // Para que por defecto el empleado entre como activo
-    @Column(name = "activo_empleado", nullable = false)
-    private Boolean activoEmpleado = true;
-
-    @ManyToOne
-    @JoinColumn(name = "id_cargo_fk", nullable = false)
-    private Cargo cargo;
+    @NotNull(message = "Debe asignar un cargo válido al empleado")
+    private Integer idCargo;
 }
