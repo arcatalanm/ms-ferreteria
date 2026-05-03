@@ -1,13 +1,12 @@
 package ferrefix.ms_ventas.service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import ferrefix.ms_ventas.client.InventarioClient;
+import ferrefix.ms_ventas.client.UsuariosClient;
 import ferrefix.ms_ventas.dto.DetalleVentaResponseDTO;
 import ferrefix.ms_ventas.dto.ProductoDTO;
 import ferrefix.ms_ventas.dto.VentaRequestDTO;
@@ -18,6 +17,7 @@ import ferrefix.ms_ventas.model.Venta;
 import ferrefix.ms_ventas.repository.DetalleVentaRepository;
 import ferrefix.ms_ventas.repository.TipoPagoRepository;
 import ferrefix.ms_ventas.repository.VentaRepository;
+import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -30,32 +30,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VentaService {
 
-    // Llamada de los Repositorios
-    private final RestTemplate restTemplate;
     private final VentaRepository ventaRepository;
     private final DetalleVentaRepository detalleVentaRepository;
     private final TipoPagoRepository tipoPagoRepository;
+    private final UsuariosClient usuariosClient;
+    private final InventarioClient inventarioClient;
 
-        @Value("${api.base-url}")
-        private String baseUrl;
-        @Value("${api.cliente.path}")
-        private String clientePath;
-        @Value("${api.producto.path}")
-        private String productoPath;    
-
-    @Transactional
     public VentaResponseDTO guardar(VentaRequestDTO request) {
-        
-        // Rescatamos con que va a pagar [Metodo de Pago]
         TipoPago tipoPago = tipoPagoRepository.findById(request.getIdTipoPago())
-                .orElseThrow(() -> new RuntimeException("Tipo de pago no existe"));
+                .orElseThrow(() -> new IllegalArgumentException("Tipo de pago no existe"));
 
-        // Validar cliente al estilo del profe
-        String urlCliente = baseUrl + String.format(clientePath, request.getRunCliente());
-        Boolean existeCliente = restTemplate.getForObject(urlCliente, Boolean.class);
-        
-        if (Boolean.FALSE.equals(existeCliente)) {
-            throw new RuntimeException("Cliente no existe");
+        try {
+            usuariosClient.obtenerClientePorRun(request.getRunCliente());
+        } catch (FeignException.NotFound ex) {
+            throw new IllegalArgumentException("Cliente no existe");
+        }
+
+        try {
+            usuariosClient.obtenerEmpleadoPorRun(request.getRunEmpleado());
+        } catch (FeignException.NotFound ex) {
+            throw new IllegalArgumentException("Empleado no existe");
         }
 
         // Crear la cabecera de la venta
@@ -69,17 +63,12 @@ public class VentaService {
         venta = ventaRepository.save(venta);
 
         int acumuladorTotal = 0;
-        List<DetalleVentaResponseDTO> listaDetallesResponse = new ArrayList<>();
-
-        // Validar productos y obtener sus precios
         for (var item : request.getDetalles()) {
-            String urlProducto = baseUrl + String.format(productoPath, item.getIdProducto());
-            
-            // Usamos ProductoDTO.class en vez de Boolean.class porque necesitamos su precio
-            ProductoDTO producto = restTemplate.getForObject(urlProducto, ProductoDTO.class);
-
-            if (producto == null) {
-                throw new RuntimeException("Producto no existe");
+            ProductoDTO producto;
+            try {
+                producto = inventarioClient.obtenerProductoPorId(item.getIdProducto());
+            } catch (FeignException.NotFound ex) {
+                throw new IllegalArgumentException("Producto no existe: " + item.getIdProducto());
             }
 
             int subtotal = producto.getPrecioVenta() * item.getCantidad();
@@ -92,31 +81,77 @@ public class VentaService {
                     .precioUnitario(producto.getPrecioVenta())
                     .build();
             detalleVentaRepository.save(detalle);
-
-            listaDetallesResponse.add(DetalleVentaResponseDTO.builder()
-                    .idProducto(item.getIdProducto())
-                    .nombreProducto(producto.getNombre())
-                    .cantidad(item.getCantidad())
-                    .precioUnitario(producto.getPrecioVenta())
-                    .subtotal(subtotal)
-                    .build());
         }
 
-        // Guardar el total calculado
         venta.setTotalVenta(acumuladorTotal);
         ventaRepository.save(venta);
 
+        return mapVentaToDTO(venta, "Venta registrada exitosamente");
+    }
+
+    public List<VentaResponseDTO> listarVentas() {
+        return ventaRepository.findAll().stream()
+                .map(venta -> mapVentaToDTO(venta, null))
+                .toList();
+    }
+
+    public VentaResponseDTO buscarVentaPorId(Long idVenta) {
+        Venta venta = ventaRepository.findById(idVenta)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró la venta con id: " + idVenta));
+        return mapVentaToDTO(venta, null);
+    }
+
+    public List<VentaResponseDTO> buscarVentasPorCliente(Integer runCliente) {
+        return ventaRepository.findByRunCliente(runCliente).stream()
+                .map(venta -> mapVentaToDTO(venta, null))
+                .toList();
+    }
+
+    public List<VentaResponseDTO> buscarVentasPorEmpleado(Integer runEmpleado) {
+        return ventaRepository.findByRunEmpleado(runEmpleado).stream()
+                .map(venta -> mapVentaToDTO(venta, null))
+                .toList();
+    }
+
+    public void eliminarVenta(Long idVenta) {
+        Venta venta = ventaRepository.findById(idVenta)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró la venta con id: " + idVenta));
+
+        detalleVentaRepository.deleteAll(detalleVentaRepository.findByVenta_IdVenta(idVenta));
+        ventaRepository.delete(venta);
+    }
+
+    private VentaResponseDTO mapVentaToDTO(Venta venta, String mensaje) {
+        List<DetalleVentaResponseDTO> detalles = detalleVentaRepository.findByVenta_IdVenta(venta.getIdVenta())
+                .stream()
+                .map(this::mapDetalleToDTO)
+                .toList();
+
         return VentaResponseDTO.builder()
                 .idVenta(venta.getIdVenta())
-                .fechaVenta(venta.getFechaVenta())
-                .totalVenta(acumuladorTotal)
-                .nombreTipoPago(tipoPago.getNombreTipoPago())
-                .detalles(listaDetallesResponse)
-                .mensaje("Venta registrada exitosamente")
+                .fechaVenta(LocalDateTime.now())
+                .totalVenta(venta.getTotalVenta())
+                .nombreTipoPago(venta.getTipoPago().getNombreTipoPago())
+                .detalles(detalles)
+                .mensaje(mensaje)
                 .build();
     }
 
-    public List<Venta> listar() {
-        return ventaRepository.findAll();
+    private DetalleVentaResponseDTO mapDetalleToDTO(DetalleVenta detalleVenta) {
+        String nombreProducto = null;
+        try {
+            ProductoDTO producto = inventarioClient.obtenerProductoPorId(detalleVenta.getIdProducto());
+            nombreProducto = producto != null ? producto.getNombre() : null;
+        } catch (FeignException.NotFound ex) {
+            nombreProducto = "Producto no disponible";
+        }
+
+        return DetalleVentaResponseDTO.builder()
+                .idProducto(detalleVenta.getIdProducto())
+                .nombreProducto(nombreProducto)
+                .cantidad(detalleVenta.getCantidad())
+                .precioUnitario(detalleVenta.getPrecioUnitario())
+                .subtotal(detalleVenta.getCantidad() * detalleVenta.getPrecioUnitario())
+                .build();
     }
 }

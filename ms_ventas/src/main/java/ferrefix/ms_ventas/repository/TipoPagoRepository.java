@@ -7,5 +7,5 @@ import ferrefix.ms_ventas.model.TipoPago;
 
 @Repository
 public interface TipoPagoRepository extends JpaRepository<TipoPago, Integer> {
-
+    boolean existsByNombreTipoPago(String nombreTipoPago);
 }
