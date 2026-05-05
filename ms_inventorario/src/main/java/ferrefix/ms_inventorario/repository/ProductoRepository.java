@@ -10,4 +10,5 @@ import ferrefix.ms_inventorario.model.Producto;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     Optional<Producto> findByCodigoBarrasProducto(String codigoBarrasProducto);
+    boolean existsByCodigoBarrasProducto(String codigoBarrasProducto);
 }
