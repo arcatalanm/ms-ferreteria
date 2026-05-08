@@ -1,9 +1,5 @@
 server:
-<<<<<<< HEAD
   port: 8080 
-=======
-  port: 8080 # Este es el puerto del Gateway. Postman y MS-Ventas le hablarán a este.
->>>>>>> branch_ms_gateway
 
 spring:
   application:
@@ -13,7 +9,6 @@ spring:
       routes:
         # Ruta hacia el Microservicio de Inventario
         - id: inventario-ruta-ms
-<<<<<<< HEAD
           uri: http://localhost:8081 
           predicates:
             - Path=/api/inventario/**
@@ -27,20 +22,9 @@ spring:
         # Ruta hacia el Microservicio de Ventas 
         - id: ventas-ruta-ms
           uri: http://localhost:8083 
-=======
-          uri: http://localhost:8081 # Asumiendo que tu inventario corre en este puerto
-          predicates:
-            - Path=/api/inventario/**
-
-        # Ruta hacia el Microservicio de Usuarios (Clientes/Empleados)
-        - id: usuarios-ruta-ms
-          uri: http://localhost:8082 # Asumiendo que tus usuarios corren en este puerto
-          predicates:
-            - Path=/api/usuarios/**
-
-        # Ruta hacia el Microservicio de Ventas (Clientes/Empleados)
-        - id: ventas-ruta-ms
-          uri: http://localhost:8083 # Asumiendo que tus ventas corren en este puerto
->>>>>>> branch_ms_gateway
           predicates:
             - Path=/api/ventas/**
+        - id: proveedores-ruta-ms
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/proveedores
