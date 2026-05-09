@@ -1,0 +1,63 @@
+04:05:46 INFO  Starting MsInventorarioApplication using Java 21.0.9 with PID 15696 (C:\Users\ariel\Desktop\ms-ferreteria\ms_inventario\target\classes started by ariel in C:\Users\ariel\Desktop\ms-ferreteria)
+04:05:46 INFO  No active profile set, falling back to 1 default profile: "default"
+04:05:47 INFO  Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+04:05:47 INFO  Finished Spring Data repository scanning in 244 ms. Found 3 JPA repository interfaces.
+04:05:48 INFO  Tomcat initialized with port 8081 (http)
+04:05:48 INFO  Starting service [Tomcat]
+04:05:48 INFO  Starting Servlet engine: [Apache Tomcat/11.0.21]
+04:05:48 INFO  Root WebApplicationContext: initialization completed in 2198 ms
+04:05:49 INFO  HHH008540: Processing PersistenceUnitInfo [name: default]
+04:05:49 INFO  HHH000001: Hibernate ORM core version 7.2.12.Final
+04:05:49 INFO  No LoadTimeWeaver setup: ignoring JPA class transformer
+04:05:49 INFO  HikariPool-1 - Starting...
+04:05:49 INFO  HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@98712fa
+04:05:49 INFO  HikariPool-1 - Start completed.
+04:05:50 WARN  HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly.The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+04:05:50 INFO  HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/ferrefixinv]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 5.5.5
+	Default catalog/schema: ferrefixinv/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+04:05:51 INFO  HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+04:05:51 INFO  Initialized JPA EntityManagerFactory for persistence unit 'default'
+04:05:51 INFO  Hibernate is in classpath; If applicable, HQL parser will be used.
+04:05:53 INFO  Reading from ferrefixinv.databasechangelog
+04:05:53 INFO  Database is up to date, no changesets to execute
+04:05:53 INFO  Reading from ferrefixinv.databasechangelog
+04:05:53 INFO  UPDATE SUMMARY
+04:05:53 INFO  Run:                          0
+04:05:53 INFO  Previously run:               6
+04:05:53 INFO  Filtered out:                 0
+04:05:53 INFO  -------------------------------
+04:05:53 INFO  Total change sets:            6
+04:05:53 INFO  Update summary generated
+04:05:53 INFO  Command execution complete
+04:05:53 WARN  spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+04:05:54 INFO  Tomcat started on port 8081 (http) with context path '/'
+04:05:54 INFO  Started MsInventorarioApplication in 8.343 seconds (process running for 9.091)
+04:06:22 INFO  Initializing Spring DispatcherServlet 'dispatcherServlet'
+04:06:22 INFO  Initializing Servlet 'dispatcherServlet'
+04:06:22 INFO  Completed initialization in 2 ms
+04:06:22 INFO  GET /api/productos - Solicitud para obtener listado completo de productos
+04:06:22 INFO  Listando todos los productos del inventario
+04:06:23 INFO  Listado de productos obtenido exitosamente. Total de registros: 6
+04:07:03 INFO  POST /api/productos - Solicitud para crear producto: 'Cepillo de Madera' con código de barras: 9501234567890
+04:07:03 INFO  Iniciando creación de producto: 'Cepillo de Madera' con código: 9501234567890
+04:07:03 INFO  Producto 'Cepillo de Madera' creado exitosamente con ID interno: 7
+04:07:03 INFO  Producto creado exitosamente. ID: 7, Nombre: 'Cepillo de Madera', Código de barras: 9501234567890
+04:08:47 INFO  GET /api/productos/1 - Solicitud para obtener producto por ID
+04:08:47 INFO  Buscando producto por ID: 1
+04:08:47 INFO  Producto obtenido exitosamente. ID: 1, Nombre: 'Martillo de Uña 16oz', Código de barras: 7501234567890
+04:08:59 INFO  GET /api/productos/8 - Solicitud para obtener producto por ID
+04:08:59 INFO  Buscando producto por ID: 8
+04:08:59 WARN  Búsqueda fallida: No existe producto con ID: 8
+04:09:17 INFO  GET /api/productos - Solicitud para obtener listado completo de productos
+04:09:17 INFO  Listando todos los productos del inventario
+04:09:17 INFO  Listado de productos obtenido exitosamente. Total de registros: 7
