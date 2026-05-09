@@ -23,16 +23,20 @@ import lombok.Setter;
 public class DetalleVenta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Por Incremento Auto
     private Long idDetalle;
 
+    // De inventarioClient
     @NotNull
     @Column(name = "id_producto_fk")
     private Long idProducto; // FK Lógica al MS-Inventario
 
+    // De inventarioClient
     @NotNull
     @Min(1)
     private Integer cantidad;
 
+    // De inventarioClient
     @NotNull
     @Column(name = "precio_unitario_historico")
     private Integer precioUnitario; // Guardamos el precio del momento
