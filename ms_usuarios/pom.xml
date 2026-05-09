@@ -30,7 +30,12 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
-	    <dependency>
+		<!-- Liquibase -->
+		<dependency>
+        	<groupId>org.liquibase</groupId>
+        	<artifactId>liquibase-core</artifactId>
+    	</dependency>
+		<dependency>
         	<groupId>org.liquibase</groupId>
         	<artifactId>liquibase-core</artifactId>
    		</dependency>
