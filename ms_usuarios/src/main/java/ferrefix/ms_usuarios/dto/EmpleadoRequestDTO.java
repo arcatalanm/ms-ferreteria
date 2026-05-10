@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +29,9 @@ public class EmpleadoRequestDTO {
     @Max(value = 99999999, message = "El run no puede exceder los 8 dígitos")
     private Integer runEmpleado;
 
-    @NotNull(message = "El dv del empleado no puede ser nulo")
-    private Character dvEmpleado;
+    @NotBlank(message = "El dv del empleado no puede ser nulo o vacío")
+    @Pattern(regexp = "^[0-9Kk]$", message = "El dígito verificador debe ser un número del 0-9 o la letra 'K'")
+    private String dvEmpleado;
 
     @NotBlank(message = "El primer nombre es obligatorio")
     private String pnombreEmpleado;
@@ -56,7 +58,7 @@ public class EmpleadoRequestDTO {
 
     // Lo pedimos como String para facilitar el envío desde el frontend (Postman)
     @NotNull(message = "La fecha de contratación es obligatoria")
-    @JsonFormat(pattern = "yyyy-MM-dd") // dd-MM-yyyy es más común en Chile, pero para APIs REST se suele usar el formato ISO (yyyy-MM-dd)
+    @JsonFormat(pattern = "dd-MM-yyyy") // dd-MM-yyyy es más común en Chile, pero para APIs REST se suele usar el formato ISO (yyyy-MM-dd)
     private LocalDate fechaContratacionEmpleado; 
 
     @Size(min = 9, max = 9, message = "El teléfono del empleado debe tener exactamente 9 dígitos")

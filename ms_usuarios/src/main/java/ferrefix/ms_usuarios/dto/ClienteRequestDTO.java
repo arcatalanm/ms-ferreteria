@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,8 +28,9 @@ public class ClienteRequestDTO {
     @NotNull(message = "El run del cliente no puede ser nulo")
     private Integer runCliente;
 
-    @NotNull(message = "El dv del cliente no puede ser nulo")
-    private Character dvCliente;
+    @NotBlank(message = "El dv del cliente no puede ser nulo o vacío")
+    @Pattern(regexp = "^[0-9Kk]$", message = "El dígito verificador debe ser un número del 0-9 o la letra 'K'")
+    private String dvCliente;
 
     @NotBlank(message = "El primer nombre del cliente no puede estar vacío")
     private String pnombreCliente;
@@ -52,10 +54,10 @@ public class ClienteRequestDTO {
     @NotBlank(message = "La contraseña del cliente no puede estar vacía")
     private String contrasenaCliente;
     
-    // El telefono es opcional, el usuario puede despues registrarlo, pero si se proporciona, debe tener exactamente 9 dígitos
     @Size(min = 9, max = 9, message = "El teléfono del cliente debe tener exactamente 9 dígitos")
     private String telefonoCliente;
 
-    // La fecha registro es automaticamente asignada en el servicio, por lo que no se incluye en el DTO de solicitud
-
+    // --- NUEVO CAMPO: El frontend debe enviarnos a qué dirección está asociado ---
+    @NotNull(message = "El ID de la dirección es obligatorio")
+    private Long idDireccion;
 }

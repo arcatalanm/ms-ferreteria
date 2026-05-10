@@ -7,7 +7,7 @@ CREATE TABLE cargo (
     nombre_cargo VARCHAR(100) NOT NULL UNIQUE
 );
 
--- Creación de tabla Cliente
+-- Creación de tabla Cliente (extra id_direccion_fk)
 CREATE TABLE cliente (
     run_cliente INT PRIMARY KEY,
     dv_cliente CHAR(1) NOT NULL,
@@ -19,19 +19,8 @@ CREATE TABLE cliente (
     email_cliente VARCHAR(255) NOT NULL UNIQUE,
     contrasena_cliente VARCHAR(255) NOT NULL,
     telefono_cliente VARCHAR(9),
-    fecha_registro_cliente DATE NOT NULL
-);
-
--- Creación de tabla Direccion
-CREATE TABLE direccion (
-    id_direccion BIGINT AUTO_INCREMENT PRIMARY KEY,
-    calle VARCHAR(100) NOT NULL,
-    numero INT NOT NULL,
-    departamento VARCHAR(20),
-    comuna VARCHAR(50) NOT NULL,
-    ciudad VARCHAR(50) NOT NULL,
-    run_cliente INT NOT NULL,
-    CONSTRAINT fk_direccion_cliente FOREIGN KEY (run_cliente) REFERENCES cliente(run_cliente)
+    fecha_registro_cliente DATE NOT NULL,
+    id_direccion_fk BIGINT NOT NULL
 );
 
 -- Creación de tabla Empleado
@@ -61,21 +50,13 @@ INSERT INTO cargo (nombre_cargo) VALUES
 ('Encargado de Logística'),
 ('Asesor de Atención al Cliente');
 
--- Insertar datos en tabla Cliente
-INSERT INTO cliente (run_cliente, dv_cliente, pnombre_cliente, snombre_cliente, appaterno_cliente, apmaterno_cliente, fecha_nacimiento_cliente, email_cliente, contrasena_cliente, telefono_cliente, fecha_registro_cliente) VALUES 
-(12345678, '5', 'Juan', 'Pablo', 'Perez', 'Soto', '1990-01-15', 'juan.perez@test.cl', 'pass123', '912345678', '2023-01-01'),
-(23456789, 'K', 'Maria', 'Jose', 'Gonzalez', 'Tapia', '1985-06-20', 'maria.g@test.cl', 'pass456', '923456789', '2023-02-15'),
-(34567890, '1', 'Carlos', NULL, 'Rojas', 'Silva', '1982-11-10', 'carlos.r@test.cl', 'pass789', '934567890', '2023-03-20'),
-(45678901, '2', 'Camila', 'Andrea', 'Morales', 'Diaz', '1995-04-05', 'camila.m@test.cl', 'passabc', '945678901', '2023-04-10'),
-(56789012, '3', 'Luis', 'Alberto', 'Castro', 'Ruiz', '1978-08-30', 'luis.c@test.cl', 'passdef', '956789012', '2023-05-05');
-
--- Insertar datos en tabla Direccion
-INSERT INTO direccion (calle, numero, departamento, comuna, ciudad, run_cliente) VALUES 
-('Av. Providencia', 1234, 'Depto 402', 'Providencia', 'Santiago', 12345678),
-('Los Leones', 567, NULL, 'Providencia', 'Santiago', 23456789),
-('Gran Avenida', 7890, 'Casa 3', 'San Miguel', 'Santiago', 34567890),
-('Vicuna Mackenna', 100, 'Depto 12', 'Santiago Centro', 'Santiago', 45678901),
-('Av. Pajaritos', 4500, NULL, 'Maipu', 'Santiago', 56789012);
+-- Insertar datos en tabla Cliente (Ahora insertamos también un ID de dirección lógico del 1 al 5)
+INSERT INTO cliente (run_cliente, dv_cliente, pnombre_cliente, snombre_cliente, appaterno_cliente, apmaterno_cliente, fecha_nacimiento_cliente, email_cliente, contrasena_cliente, telefono_cliente, fecha_registro_cliente, id_direccion_fk) VALUES 
+(12345678, '5', 'Juan', 'Pablo', 'Perez', 'Soto', '1990-01-15', 'juan.perez@test.cl', 'pass123', '912345678', '2023-01-01', 1),
+(23456789, 'K', 'Maria', 'Jose', 'Gonzalez', 'Tapia', '1985-06-20', 'maria.g@test.cl', 'pass456', '923456789', '2023-02-15', 2),
+(34567890, '1', 'Carlos', NULL, 'Rojas', 'Silva', '1982-11-10', 'carlos.r@test.cl', 'pass789', '934567890', '2023-03-20', 3),
+(45678901, '2', 'Camila', 'Andrea', 'Morales', 'Diaz', '1995-04-05', 'camila.m@test.cl', 'passabc', '945678901', '2023-04-10', 4),
+(56789012, '3', 'Luis', 'Alberto', 'Castro', 'Ruiz', '1978-08-30', 'luis.c@test.cl', 'passdef', '956789012', '2023-05-05', 5);
 
 -- Insertar datos en tabla Empleado
 INSERT INTO empleado (run_empleado, dv_empleado, pnombre_empleado, snombre_empleado, appaterno_empleado, apmaterno_empleado, email_empleado, contrasena_empleado, sueldo_base_empleado, fecha_contratacion_empleado, telefono_empleado, activo_empleado, id_cargo_fk) VALUES 
