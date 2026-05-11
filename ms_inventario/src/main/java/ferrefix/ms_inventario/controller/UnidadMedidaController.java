@@ -22,7 +22,7 @@ import ferrefix.ms_inventario.service.UnidadMedidaService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/unidades_medida")
+@RequestMapping("/api/inventario/unidades_medida")
 @RequiredArgsConstructor
 public class UnidadMedidaController {
 

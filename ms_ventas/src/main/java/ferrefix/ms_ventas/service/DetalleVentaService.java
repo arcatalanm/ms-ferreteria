@@ -82,14 +82,19 @@ public class DetalleVentaService {
      * Convierte una entidad DetalleVenta a DetalleVentaResponseDTO.
      */
     private DetalleVentaResponseDTO mapToDTO(DetalleVenta detalleVenta) {
-        String nombreProducto = null;
+        String nombreProducto = "Desconocido";
         try {
             ProductoDTO producto = inventarioClient.obtenerProductoPorId(detalleVenta.getIdProducto());
-            // Verficamos que sea distinto de null, de caso contrario queda como null
-            nombreProducto = producto != null ? producto.getNombre() : null;
+            if (producto != null) {
+                nombreProducto = producto.getNombre();
+            }
         } catch (FeignException.NotFound ex) {
-            logger.warn("Producto no encontrado para detalle. ID Producto: {}", detalleVenta.getIdProducto());
-            nombreProducto = "Producto no disponible";
+            logger.warn("Producto descontinuado. ID: {}", detalleVenta.getIdProducto());
+            nombreProducto = "Producto Descontinuado";
+        } catch (FeignException ex) {
+            // ¡ESTE ES EL CATCH QUE FALTA! Atrapa el Error 500 que te está mandando Inventario
+            logger.warn("El MS-Inventario arrojó un error al buscar el producto ID {}: {}", detalleVenta.getIdProducto(), ex.getMessage());
+            nombreProducto = "Producto No Encontrado (Error en Inventario)";
         }
 
         return ventaMapper.toDetalleResponseDTO(detalleVenta, nombreProducto);

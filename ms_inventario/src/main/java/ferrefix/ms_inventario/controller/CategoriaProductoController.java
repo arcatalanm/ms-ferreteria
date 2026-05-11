@@ -22,7 +22,7 @@ import ferrefix.ms_inventario.service.CategoriaProductoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/categorias")
+@RequestMapping("/api/inventario/categorias")
 @RequiredArgsConstructor
 public class CategoriaProductoController {
 
