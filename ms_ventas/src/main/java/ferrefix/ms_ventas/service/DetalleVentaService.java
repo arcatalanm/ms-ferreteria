@@ -11,6 +11,7 @@ import ferrefix.ms_ventas.dto.DetalleVentaResponseDTO;
 import ferrefix.ms_ventas.dto.ProductoDTO;
 import ferrefix.ms_ventas.exception.BadRequestException;
 import ferrefix.ms_ventas.exception.ResourceNotFoundException;
+import ferrefix.ms_ventas.mapper.VentaMapper;
 import ferrefix.ms_ventas.model.DetalleVenta;
 import ferrefix.ms_ventas.repository.DetalleVentaRepository;
 import feign.FeignException;
@@ -32,6 +33,8 @@ public class DetalleVentaService {
 
     // Inyeccion InventarioClient
     private final InventarioClient inventarioClient;
+
+    private final VentaMapper ventaMapper;
 
     /**
      * Busca todos los detalles de una venta específica.
@@ -89,12 +92,6 @@ public class DetalleVentaService {
             nombreProducto = "Producto no disponible";
         }
 
-        return DetalleVentaResponseDTO.builder()
-                .idProducto(detalleVenta.getIdProducto())
-                .nombreProducto(nombreProducto)
-                .cantidad(detalleVenta.getCantidad())
-                .precioUnitario(detalleVenta.getPrecioUnitario())
-                .subtotal(detalleVenta.getCantidad() * detalleVenta.getPrecioUnitario())
-                .build();
+        return ventaMapper.toDetalleResponseDTO(detalleVenta, nombreProducto);
     }
 }

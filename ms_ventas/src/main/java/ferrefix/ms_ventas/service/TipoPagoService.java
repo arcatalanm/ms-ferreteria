@@ -11,6 +11,7 @@ import ferrefix.ms_ventas.dto.TipoPagoRequestDTO;
 import ferrefix.ms_ventas.dto.TipoPagoResponseDTO;
 import ferrefix.ms_ventas.exception.BadRequestException;
 import ferrefix.ms_ventas.exception.ResourceNotFoundException;
+import ferrefix.ms_ventas.mapper.TipoPagoMapper;
 import ferrefix.ms_ventas.model.TipoPago;
 import ferrefix.ms_ventas.repository.TipoPagoRepository;
 import jakarta.transaction.Transactional;
@@ -28,19 +29,18 @@ public class TipoPagoService {
     private static final Logger logger = LoggerFactory.getLogger(TipoPagoService.class);
     
     private final TipoPagoRepository tipoPagoRepository;
+    private final TipoPagoMapper tipoPagoMapper;
     
     /**
      * Obtiene todos los tipos de pago.
      */
     public List<TipoPagoResponseDTO> obtenerTodos() {
         logger.info("Iniciando búsqueda de todos los tipos de pago");
-        
-        List<TipoPagoResponseDTO> tiposPago = tipoPagoRepository.findAll().stream()
-                .map(this::mapToResponseDTO)
+        List<TipoPagoResponseDTO> tipoPago = tipoPagoRepository.findAll().stream()
+                .map(tipoPagoMapper::toResponseDTO)
                 .collect(Collectors.toList());
-        
-        logger.info("Búsqueda de tipos de pago completada. Total encontrado: {}", tiposPago.size());
-        return tiposPago;
+        logger.info("Búsqueda de tipos de pago completada. Total encontrados: {}", tipoPago.size());
+        return tipoPago;
     }
     
     /**
@@ -60,7 +60,7 @@ public class TipoPagoService {
                     return new ResourceNotFoundException("Tipo de pago no encontrado con ID: " + id);
                 });
         
-        TipoPagoResponseDTO tipoPagoDTO = mapToResponseDTO(tipoPago);
+        TipoPagoResponseDTO tipoPagoDTO = tipoPagoMapper.toResponseDTO(tipoPago);
         logger.info("Tipo de pago obtenido exitosamente con ID: {}", id);
         
         return tipoPagoDTO;
@@ -84,13 +84,11 @@ public class TipoPagoService {
             throw new BadRequestException("Ya existe un tipo de pago con el nombre: " + tipoPagoDTO.getNombreTipoPago());
         }
         
-        TipoPago tipoPago = TipoPago.builder()
-                .nombreTipoPago(tipoPagoDTO.getNombreTipoPago())
-                .build();
+        TipoPago tipoPago = tipoPagoMapper.toEntity(tipoPagoDTO);
         
         TipoPago tipoPagoGuardado = tipoPagoRepository.save(tipoPago);
         
-        TipoPagoResponseDTO resultado = mapToResponseDTO(tipoPagoGuardado);
+        TipoPagoResponseDTO resultado = tipoPagoMapper.toResponseDTO(tipoPagoGuardado);
         logger.info("Tipo de pago creado exitosamente con ID: {}", resultado.getIdTipoPago());
         
         return resultado;
@@ -128,7 +126,7 @@ public class TipoPagoService {
         
         TipoPago tipoPagoActualizado = tipoPagoRepository.save(tipoPago);
         
-        TipoPagoResponseDTO resultado = mapToResponseDTO(tipoPagoActualizado);
+        TipoPagoResponseDTO resultado = tipoPagoMapper.toResponseDTO(tipoPagoActualizado);
         logger.info("Tipo de pago actualizado exitosamente con ID: {}", id);
         
         return resultado;
@@ -155,14 +153,5 @@ public class TipoPagoService {
         logger.info("Tipo de pago eliminado exitosamente con ID: {}", id);
     }
     
-    /**
-     * Convierte una entidad TipoPago a TipoPagoResponseDTO.
-     */
-    private TipoPagoResponseDTO mapToResponseDTO(TipoPago tipoPago) {
-        return TipoPagoResponseDTO.builder()
-                .idTipoPago(tipoPago.getIdTipoPago())
-                .nombreTipoPago(tipoPago.getNombreTipoPago())
-                .build();
-    }
 }
 

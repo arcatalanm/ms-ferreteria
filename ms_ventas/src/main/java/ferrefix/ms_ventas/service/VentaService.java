@@ -1,6 +1,5 @@
 package ferrefix.ms_ventas.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,7 @@ import ferrefix.ms_ventas.dto.VentaRequestDTO;
 import ferrefix.ms_ventas.dto.VentaResponseDTO;
 import ferrefix.ms_ventas.exception.BadRequestException;
 import ferrefix.ms_ventas.exception.ResourceNotFoundException;
+import ferrefix.ms_ventas.mapper.VentaMapper;
 import ferrefix.ms_ventas.model.DetalleVenta;
 import ferrefix.ms_ventas.model.TipoPago;
 import ferrefix.ms_ventas.model.Venta;
@@ -43,6 +43,7 @@ public class VentaService {
     private final TipoPagoRepository tipoPagoRepository;
     private final UsuariosClient usuariosClient;
     private final InventarioClient inventarioClient;
+    private final VentaMapper ventaMapper;
 
     /**
      * Guarda una nueva venta validando primero contra otros microservicios.
@@ -79,13 +80,7 @@ public class VentaService {
         }
 
         // 4. Crear la cabecera de la venta (Aún con total 0)
-        Venta venta = Venta.builder()
-                .fechaVenta(LocalDateTime.now())
-                .runCliente(request.getRunCliente())
-                .runEmpleado(request.getRunEmpleado())
-                .tipoPago(tipoPago)
-                .totalVenta(0)
-                .build();
+        Venta venta = ventaMapper.toVentaEntity(request, tipoPago);
         venta = ventaRepository.save(venta); // Se guarda para generar el ID que usarán los detalles
 
         // 5. Procesar los Detalles (Llamadas Externas a MS-Inventario)
@@ -106,12 +101,7 @@ public class VentaService {
             acumuladorTotal += subtotal;
 
             // Guardamos el detalle histórico para que, si el precio cambia mañana, esta boleta mantenga el precio antiguo
-            DetalleVenta detalle = DetalleVenta.builder()
-                    .venta(venta)
-                    .idProducto(item.getIdProducto())
-                    .cantidad(item.getCantidad())
-                    .precioUnitario(producto.getPrecioVenta()) // Precio capturado en este instante
-                    .build();
+            DetalleVenta detalle = ventaMapper.toDetalleEntity(item, venta, producto.getPrecioVenta());
             detalleVentaRepository.save(detalle);
         }
 
@@ -177,14 +167,7 @@ public class VentaService {
                 .map(this::mapDetalleToDTO)
                 .toList();
 
-        return VentaResponseDTO.builder()
-                .idVenta(venta.getIdVenta())
-                .fechaVenta(venta.getFechaVenta()) // Usamos la fecha que tiene la base de datos
-                .totalVenta(venta.getTotalVenta())
-                .nombreTipoPago(venta.getTipoPago().getNombreTipoPago())
-                .detalles(detalles)
-                .mensaje(mensaje)
-                .build();
+        return ventaMapper.toVentaResponseDTO(venta, detalles, mensaje);
     }
 
     /**
@@ -203,12 +186,6 @@ public class VentaService {
             nombreProducto = "Producto Descontinuado";
         }
 
-        return DetalleVentaResponseDTO.builder()
-                .idProducto(detalleVenta.getIdProducto())
-                .nombreProducto(nombreProducto)
-                .cantidad(detalleVenta.getCantidad())
-                .precioUnitario(detalleVenta.getPrecioUnitario())
-                .subtotal(detalleVenta.getCantidad() * detalleVenta.getPrecioUnitario())
-                .build();
+        return ventaMapper.toDetalleResponseDTO(detalleVenta, nombreProducto);
     }
 }
