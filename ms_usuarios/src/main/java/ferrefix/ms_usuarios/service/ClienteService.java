@@ -1,12 +1,14 @@
 package ferrefix.ms_usuarios.service;
 
-import java.time.LocalDate;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import ferrefix.ms_usuarios.dto.ClienteRequestDTO;
 import ferrefix.ms_usuarios.dto.ClienteResponseDTO;
+import ferrefix.ms_usuarios.exception.BadRequestException;
+import ferrefix.ms_usuarios.exception.ResourceNotFoundException;
+import ferrefix.ms_usuarios.mapper.ClienteMapper;
 import ferrefix.ms_usuarios.model.Cliente;
 import ferrefix.ms_usuarios.repository.ClienteRepository;
 import ferrefix.ms_usuarios.util.RutUtil;
@@ -14,124 +16,102 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
-
 @Transactional
-
 @RequiredArgsConstructor
 public class ClienteService {
-    private final ClienteRepository clienteRepository;
-    public RutUtil rutUtil;
+
+    private static final Logger logger = LoggerFactory.getLogger(ClienteService.class);
     
-    // Creacion de cliente con builder para un ClienteDTO
+    private final ClienteRepository clienteRepository;
+    private final ClienteMapper clienteMapper; // Inyectamos nuestro nuevo traductor
+
     public Cliente crearCliente(ClienteRequestDTO dto) {
-        // Verificar si el cliente ya existe por su runCliente antes de crear uno nuevo
+        logger.info("Iniciando creación de cliente con RUN: {}-{}", dto.getRunCliente(), dto.getDvCliente());
+
         if (clienteRepository.existsById(dto.getRunCliente())) {
-            throw new IllegalArgumentException("El cliente con run " + dto.getRunCliente() + " ya existe");
+            logger.warn("Conflicto al crear: El cliente con RUN {} ya existe", dto.getRunCliente());
+            throw new BadRequestException("El cliente con run " + dto.getRunCliente() + " ya existe");
         }
 
-        if (!rutUtil.isRutValido(dto.getRunCliente(), dto.getDvCliente())) {
-            throw new IllegalArgumentException("El run del cliente no es válido");
+        Character dvChar = dto.getDvCliente().toUpperCase().charAt(0);
+        if (!RutUtil.isRutValido(dto.getRunCliente(), dvChar)) {
+            logger.warn("Validación fallida: El RUN {}-{} es inválido", dto.getRunCliente(), dvChar);
+            throw new BadRequestException("El run del cliente no es válido");
         }
 
-        // El DTO de cliente tiene atributos similares al original Cliente.
-        Cliente cliente = Cliente.builder()
-                .runCliente(dto.getRunCliente())
-                .dvCliente(dto.getDvCliente())
-                .pnombreCliente(dto.getPnombreCliente())
-                .snombreCliente(dto.getSnombreCliente()) 
-                .appaternoCliente(dto.getAppaternoCliente())
-                .apmaternoCliente(dto.getApmaternoCliente())
-                .fechaNacimientoCliente(dto.getFechaNacimientoCliente())
-                .emailCliente(dto.getEmailCliente())
-                .contrasenaCliente(dto.getContrasenaCliente())
-                .telefonoCliente(dto.getTelefonoCliente())
-                // La fecha de registro se asigna automáticamente al momento de crear el cliente
-                .fechaRegistroCliente(LocalDate.now()) 
-                // Terminamos de construir el DTO con el builder y lo retornamos
-                .build();
-        return clienteRepository.save(cliente);
+        // DELEGACIÓN: El Mapper construye la entidad
+        Cliente cliente = clienteMapper.toEntity(dto, dvChar);
+                
+        Cliente clienteGuardado = clienteRepository.save(cliente);
+        logger.info("Cliente creado exitosamente con RUN: {}", clienteGuardado.getRunCliente());
+        return clienteGuardado;
     }
 
     public Cliente actualizarCliente(Integer runCliente, ClienteRequestDTO dto) {
-        Cliente clienteExistente = clienteRepository.findByRunCliente(runCliente);
-        if (clienteExistente == null) {
-            throw new IllegalArgumentException("No se encontró un cliente con run " + runCliente);
-        }
+        logger.info("Iniciando actualización de cliente con RUN: {}", runCliente);
+
+        Cliente clienteExistente = clienteRepository.findById(runCliente)
+                .orElseThrow(() -> {
+                    logger.warn("Fallo al actualizar: No se encontró un cliente con RUN {}", runCliente);
+                    return new ResourceNotFoundException("No se encontró un cliente con run " + runCliente);
+                });
+        
         if (!runCliente.equals(dto.getRunCliente())) {
-            throw new IllegalArgumentException("El run de la ruta debe coincidir con el run del cuerpo de la solicitud");
+            logger.warn("Conflicto de integridad: El RUN URL ({}) no coincide con Body ({})", runCliente, dto.getRunCliente());
+            throw new BadRequestException("El run de la ruta debe coincidir con el run del cuerpo de la solicitud");
         }
 
-        Cliente clientePorEmail = clienteRepository.findByEmailCliente(dto.getEmailCliente());
-        if (clientePorEmail != null && !clientePorEmail.getRunCliente().equals(runCliente)) {
-            throw new IllegalArgumentException("El email ya está registrado por otro cliente");
+        Character dvChar = dto.getDvCliente().toUpperCase().charAt(0);
+        if (!RutUtil.isRutValido(dto.getRunCliente(), dvChar)) {
+            logger.warn("Validación fallida al actualizar: El RUN {}-{} es inválido", dto.getRunCliente(), dvChar);
+            throw new BadRequestException("El run del cliente no es válido");
         }
 
-        clienteExistente.setPnombreCliente(dto.getPnombreCliente());
-        clienteExistente.setSnombreCliente(dto.getSnombreCliente());
-        clienteExistente.setAppaternoCliente(dto.getAppaternoCliente());
-        clienteExistente.setApmaternoCliente(dto.getApmaternoCliente());
-        clienteExistente.setFechaNacimientoCliente(dto.getFechaNacimientoCliente());
-        clienteExistente.setEmailCliente(dto.getEmailCliente());
-        clienteExistente.setContrasenaCliente(dto.getContrasenaCliente());
-        clienteExistente.setTelefonoCliente(dto.getTelefonoCliente());
+        validarEmailUnico(dto.getEmailCliente(), runCliente);
 
-        return clienteRepository.save(clienteExistente);
+        // DELEGACIÓN: El Mapper actualiza los campos
+        clienteMapper.updateEntity(clienteExistente, dto, dvChar);
+
+        Cliente clienteActualizado = clienteRepository.save(clienteExistente);
+        logger.info("Cliente con RUN {} actualizado exitosamente", runCliente);
+        return clienteActualizado;
     }
 
     public List<ClienteResponseDTO> buscarTodosClientes() {
+        logger.info("Iniciando búsqueda de todos los clientes");
         return clienteRepository.findAll().stream()
-                .map(this::clienteToDTO)
+                .map(clienteMapper::toResponseDTO) // Delegación limpia
                 .toList();
     }
 
-    private ClienteResponseDTO clienteToDTO(Cliente cliente) {
-        // Armar el runCompleto que contendrá el ClienteDTO
-        String runCompleto = cliente.getRunCliente() + "-" + cliente.getDvCliente();
-
-        String sNombre = (cliente.getSnombreCliente() != null && !cliente.getSnombreCliente().trim().isEmpty()) 
-                 ? cliente.getSnombreCliente() + " " 
-                 : "";
-
-        // Armar el nombreCompleto que contendrá el clienteDTO
-        String nombreCompleto = cliente.getPnombreCliente() + " " + sNombre + cliente.getAppaternoCliente() + " " + cliente.getApmaternoCliente();
-
-        return ClienteResponseDTO.builder()
-                .runClienteCompleto(runCompleto)
-                .nombreClienteCompleto(nombreCompleto.trim())
-                .emailCliente(cliente.getEmailCliente())
-                .telefonoCliente(cliente.getTelefonoCliente())
-                // Terminamos de construir el DTO con el builder y lo retornamos
-                .build();
-    
-
-    }
-
-    // Metodo que devueve un clienteDTO a partir de un runCliente, si no se encuentra el cliente se lanza una excepcion
     public ClienteResponseDTO buscarClientePorRun(Integer runCliente) {
-        Cliente cliente = clienteRepository.findByRunCliente(runCliente);
-        if (cliente == null) {
-            throw new IllegalArgumentException("No se encontró un cliente con run " + runCliente);
-        }
-        return clienteToDTO(cliente);
+        logger.info("Buscando cliente por RUN: {}", runCliente);
+        return clienteRepository.findById(runCliente)
+                .map(clienteMapper::toResponseDTO) // Delegación limpia
+                .orElseThrow(() -> {
+                    logger.warn("Búsqueda fallida: No se encontró cliente con RUN {}", runCliente);
+                    return new ResourceNotFoundException("No se encontró un cliente con run " + runCliente);
+                });
     }
 
-    // Metodo que devueve un clienteDTO a partir de un emailCliente, si no se encuentra el cliente se lanza una excepcion
-    public ClienteResponseDTO buscarClienteEmail(String emailCliente) {
-        Cliente cliente = clienteRepository.findByEmailCliente(emailCliente);
-        if (cliente == null) {
-            throw new IllegalArgumentException("No se encontró un cliente con email " + emailCliente);
-        }
-        return clienteToDTO(cliente);
-    }
-
-    // Metodo que elimina un cliente por su runCliente, si no se encuentra el cliente se lanza una excepcion
     public void eliminarClientePorRun(Integer runCliente) {
-        // Verificar si el cliente existe antes de intentar eliminarlo
+        logger.info("Iniciando eliminación de cliente con RUN: {}", runCliente);
         if (!clienteRepository.existsById(runCliente)) {
-            throw new IllegalArgumentException("No se encontró un cliente con run " + runCliente);
+            logger.warn("Fallo al eliminar: No se encontró cliente con RUN {}", runCliente);
+            throw new ResourceNotFoundException("No se encontró un cliente con run " + runCliente);
         }
         clienteRepository.deleteAllByRunCliente(runCliente);
+        logger.info("Cliente con RUN {} eliminado exitosamente", runCliente);
     }
 
-    
+    /**
+     * Refactorización adicional para separar lógica de validación de email
+     */
+    private void validarEmailUnico(String email, Integer runActual) {
+        Cliente clientePorEmail = clienteRepository.findByEmailCliente(email);
+        if (clientePorEmail != null && !clientePorEmail.getRunCliente().equals(runActual)) {
+            logger.warn("Conflicto: El email {} ya pertenece a otro cliente", email);
+            throw new BadRequestException("El email ya está registrado por otro cliente");
+        }
+    }
 }

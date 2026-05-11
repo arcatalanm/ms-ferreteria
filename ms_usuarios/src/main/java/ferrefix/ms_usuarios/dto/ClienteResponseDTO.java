@@ -6,18 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// ... (Tus imports) ...
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class ClienteResponseDTO {
-    // El run completo se muestra como un string concatenado con el dv, por ejemplo: "12345678-K"
     private String runClienteCompleto;
-    
-    // Tendra pnombre, snombre, appaterno y apmaterno concatenados para mostrar el nombre completo del cliente
     private String nombreClienteCompleto;
-
     private String emailCliente;
     private String telefonoCliente;
+    private Long idDireccion;
 }

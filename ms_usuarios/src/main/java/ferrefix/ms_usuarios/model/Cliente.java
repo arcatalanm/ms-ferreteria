@@ -43,7 +43,6 @@ public class Cliente {
     @Column(name = "pnombre_cliente", length = 50)
     private String pnombreCliente;
 
-    // El segundo nombre puede ser opcional, pero si se proporciona, no puede estar vacío
     @Column(name = "snombre_cliente", length = 50)
     private String snombreCliente;
 
@@ -77,4 +76,9 @@ public class Cliente {
     @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(name = "fecha_registro_cliente")
     private LocalDate fechaRegistroCliente;
+
+    // --- NUEVO CAMPO: FK Lógica al ms_direcciones ---
+    @NotNull(message = "El ID de la dirección no puede ser nulo")
+    @Column(name = "id_direccion_fk", nullable = false)
+    private Long idDireccion;
 }
