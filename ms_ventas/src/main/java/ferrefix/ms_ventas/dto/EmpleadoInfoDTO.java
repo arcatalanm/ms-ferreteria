@@ -15,5 +15,6 @@ import lombok.Setter;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EmpleadoInfoDTO {
+    // Esto es lo unico que se mostrara del cliente en la VENTA
     private Integer runEmpleado;
 }

@@ -38,10 +38,12 @@ public class Venta {
     @NotNull
     private Integer totalVenta;
 
+    // De UsuariosClient
     @NotNull
     @Column(name = "run_cliente_fk")
     private Integer runCliente;
 
+    // De UsuariosClient
     @NotNull
     @Column(name = "run_empleado_fk")
     private Integer runEmpleado;
