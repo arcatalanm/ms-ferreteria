@@ -3,16 +3,13 @@ package ferrefix.ms_usuarios.mapper;
 import org.springframework.stereotype.Component;
 import ferrefix.ms_usuarios.dto.ClienteRequestDTO;
 import ferrefix.ms_usuarios.dto.ClienteResponseDTO;
+import ferrefix.ms_usuarios.dto.DireccionDTO;
 import ferrefix.ms_usuarios.model.Cliente;
 import java.time.LocalDate;
 
 @Component
 public class ClienteMapper {
 
-    /**
-     * Convierte el DTO de entrada en una Entidad Cliente.
-     * Recibe el dv ya transformado a Character desde el Service.
-     */
     public Cliente toEntity(ClienteRequestDTO dto, Character dvChar) {
         return Cliente.builder()
                 .runCliente(dto.getRunCliente())
@@ -26,13 +23,10 @@ public class ClienteMapper {
                 .contrasenaCliente(dto.getContrasenaCliente())
                 .telefonoCliente(dto.getTelefonoCliente())
                 .fechaRegistroCliente(LocalDate.now())
-                .idDireccion(dto.getIdDireccion())
+                .idDireccion(dto.getIdDireccion()) // <-- CORREGIDO
                 .build();
     }
 
-    /**
-     * Actualiza una entidad existente con los datos del DTO.
-     */
     public void updateEntity(Cliente existing, ClienteRequestDTO dto, Character dvChar) {
         existing.setDvCliente(dvChar);
         existing.setPnombreCliente(dto.getPnombreCliente());
@@ -43,28 +37,33 @@ public class ClienteMapper {
         existing.setEmailCliente(dto.getEmailCliente());
         existing.setContrasenaCliente(dto.getContrasenaCliente());
         existing.setTelefonoCliente(dto.getTelefonoCliente());
-        existing.setIdDireccion(dto.getIdDireccion());
+        existing.setIdDireccion(dto.getIdDireccion()); // <-- CORREGIDO
     }
 
-    /**
-     * Convierte la Entidad Cliente en un DTO de respuesta enriquecido.
-     */
-    public ClienteResponseDTO toResponseDTO(Cliente entity) {
-        // Concatenación de RUT
+    public ClienteResponseDTO toResponseDTO(Cliente entity, DireccionDTO direccionDTO) {
         String runCompleto = entity.getRunCliente() + "-" + entity.getDvCliente();
 
-        // Concatenación de Nombre Completo
         String sNombre = (entity.getSnombreCliente() != null && !entity.getSnombreCliente().trim().isEmpty()) 
                  ? entity.getSnombreCliente() + " " : "";
         String nombreCompleto = entity.getPnombreCliente() + " " + sNombre + 
                                 entity.getAppaternoCliente() + " " + entity.getApmaternoCliente();
+        
+        // --- PROTECCIÓN CONTRA CAÍDAS DEL MS-DIRECCIONES ---
+        String dirCompleta = "Dirección no disponible"; 
+        
+        if (direccionDTO != null) {
+            dirCompleta = direccionDTO.getCalle() + " " + direccionDTO.getNumero();
+            if (direccionDTO.getDepartamento() != null && !direccionDTO.getDepartamento().isBlank()) {
+                dirCompleta += " Depto. " + direccionDTO.getDepartamento();
+            }
+        }
 
         return ClienteResponseDTO.builder()
                 .runClienteCompleto(runCompleto)
                 .nombreClienteCompleto(nombreCompleto.trim())
                 .emailCliente(entity.getEmailCliente())
                 .telefonoCliente(entity.getTelefonoCliente())
-                .idDireccion(entity.getIdDireccion())
+                .direccionCliente(dirCompleta) 
                 .build();
     }
 }

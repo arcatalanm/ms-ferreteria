@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ferrefix.ms_inventario.dto.ProductoRequestDTO;
 import ferrefix.ms_inventario.dto.ProductoResponseDTO;
+import ferrefix.ms_inventario.exception.ResourceNotFoundException;
 import ferrefix.ms_inventario.model.CategoriaProducto;
 import ferrefix.ms_inventario.model.Producto;
 import ferrefix.ms_inventario.model.UnidadMedida;
@@ -75,7 +76,8 @@ public class ProductoService {
         Producto producto = productoRepository.findById(idProducto)
                 .orElseThrow(() -> {
                     logger.warn("Búsqueda fallida: No existe producto con ID: {}", idProducto);
-                    return new IllegalArgumentException("No se encontró el producto con id: " + idProducto);
+                    // ✅ AHORA SÍ LANZA LA EXCEPCIÓN CORRECTA
+                    return new ResourceNotFoundException("No se encontró el producto con id: " + idProducto);
                 });
         return mapToDTO(producto);
     }

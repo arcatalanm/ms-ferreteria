@@ -89,12 +89,12 @@ public class DetalleVentaService {
                 nombreProducto = producto.getNombre();
             }
         } catch (FeignException.NotFound ex) {
-            logger.warn("Producto descontinuado. ID: {}", detalleVenta.getIdProducto());
+            logger.warn("Producto eliminado del inventario, pero registrado en histórico. ID: {}", detalleVenta.getIdProducto());
             nombreProducto = "Producto Descontinuado";
         } catch (FeignException ex) {
-            // ¡ESTE ES EL CATCH QUE FALTA! Atrapa el Error 500 que te está mandando Inventario
-            logger.warn("El MS-Inventario arrojó un error al buscar el producto ID {}: {}", detalleVenta.getIdProducto(), ex.getMessage());
-            nombreProducto = "Producto No Encontrado (Error en Inventario)";
+            // ✅ ESTE ES EL ESCUDO CONTRA EL ERROR 500
+            logger.error("Error de comunicación con MS-Inventario. Status: {}", ex.status());
+            nombreProducto = "Error de conexión (Inventario no disponible)";
         }
 
         return ventaMapper.toDetalleResponseDTO(detalleVenta, nombreProducto);

@@ -58,6 +58,6 @@ public class ClienteRequestDTO {
     private String telefonoCliente;
 
     // --- NUEVO CAMPO: El frontend debe enviarnos a qué dirección está asociado ---
-    @NotNull(message = "El ID de la dirección es obligatorio")
+    @NotNull(message = "la dirección es obligatoria")
     private Long idDireccion;
 }

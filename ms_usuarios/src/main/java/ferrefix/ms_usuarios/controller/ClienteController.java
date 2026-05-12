@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ferrefix.ms_usuarios.dto.ClienteRequestDTO;
 import ferrefix.ms_usuarios.dto.ClienteResponseDTO;
-import ferrefix.ms_usuarios.model.Cliente;
 import ferrefix.ms_usuarios.service.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +30,15 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Cliente> registrarCliente(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
+    public ResponseEntity<ClienteResponseDTO> registrarCliente(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         logger.info("POST /api/usuarios/clientes - Solicitud para registrar cliente RUN: {}", clienteRequestDTO.getRunCliente());
-        Cliente clienteCreado = clienteService.crearCliente(clienteRequestDTO);
+        
+        // Recibimos el DTO desde el Service
+        ClienteResponseDTO clienteCreado = clienteService.crearCliente(clienteRequestDTO);
+        
         logger.info("POST /api/usuarios/clientes - Cliente registrado exitosamente. Respondiendo 201 CREATED");
-        return ResponseEntity.created(URI.create("/api/usuarios/clientes/" + clienteCreado.getRunCliente()))
+        // Ajustamos la URI para que apunte a la ruta correcta (/run/12345678)
+        return ResponseEntity.created(URI.create("/api/usuarios/clientes/run/" + clienteRequestDTO.getRunCliente()))
                 .body(clienteCreado);
     }
 
@@ -48,10 +51,13 @@ public class ClienteController {
     }
 
     @PutMapping("/run/{runCliente}")
-    public ResponseEntity<Cliente> actualizarCliente(@PathVariable Integer runCliente,
+    public ResponseEntity<ClienteResponseDTO> actualizarCliente(@PathVariable Integer runCliente,
             @Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
         logger.info("PUT /api/usuarios/clientes/run/{} - Solicitud para actualizar cliente", runCliente);
-        Cliente clienteActualizado = clienteService.actualizarCliente(runCliente, clienteRequestDTO);
+        
+        // Ahora recibimos el DTO enriquecido directamente desde el Service
+        ClienteResponseDTO clienteActualizado = clienteService.actualizarCliente(runCliente, clienteRequestDTO);
+        
         logger.info("PUT /api/usuarios/clientes/run/{} - Cliente actualizado. Respondiendo 200 OK", runCliente);
         return ResponseEntity.ok(clienteActualizado);
     }

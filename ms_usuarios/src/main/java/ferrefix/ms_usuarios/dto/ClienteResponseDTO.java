@@ -18,5 +18,5 @@ public class ClienteResponseDTO {
     private String nombreClienteCompleto;
     private String emailCliente;
     private String telefonoCliente;
-    private Long idDireccion;
+    private String direccionCliente;
 }

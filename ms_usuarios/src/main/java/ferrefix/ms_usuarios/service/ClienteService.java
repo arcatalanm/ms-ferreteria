@@ -4,8 +4,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import feign.FeignException;
+import ferrefix.ms_usuarios.client.DireccionClient;
 import ferrefix.ms_usuarios.dto.ClienteRequestDTO;
 import ferrefix.ms_usuarios.dto.ClienteResponseDTO;
+import ferrefix.ms_usuarios.dto.DireccionDTO;
 import ferrefix.ms_usuarios.exception.BadRequestException;
 import ferrefix.ms_usuarios.exception.ResourceNotFoundException;
 import ferrefix.ms_usuarios.mapper.ClienteMapper;
@@ -23,9 +27,10 @@ public class ClienteService {
     private static final Logger logger = LoggerFactory.getLogger(ClienteService.class);
     
     private final ClienteRepository clienteRepository;
-    private final ClienteMapper clienteMapper; // Inyectamos nuestro nuevo traductor
+    private final ClienteMapper clienteMapper; 
+    private final DireccionClient direccionClient; 
 
-    public Cliente crearCliente(ClienteRequestDTO dto) {
+    public ClienteResponseDTO crearCliente(ClienteRequestDTO dto) {
         logger.info("Iniciando creación de cliente con RUN: {}-{}", dto.getRunCliente(), dto.getDvCliente());
 
         if (clienteRepository.existsById(dto.getRunCliente())) {
@@ -39,15 +44,19 @@ public class ClienteService {
             throw new BadRequestException("El run del cliente no es válido");
         }
 
+        validarEmailUnico(dto.getEmailCliente(), null);
+
         // DELEGACIÓN: El Mapper construye la entidad
         Cliente cliente = clienteMapper.toEntity(dto, dvChar);
                 
         Cliente clienteGuardado = clienteRepository.save(cliente);
         logger.info("Cliente creado exitosamente con RUN: {}", clienteGuardado.getRunCliente());
-        return clienteGuardado;
+        
+        // Retornamos el DTO enriquecido llamando a ms_direcciones
+        return mapToDTO(clienteGuardado);
     }
 
-    public Cliente actualizarCliente(Integer runCliente, ClienteRequestDTO dto) {
+    public ClienteResponseDTO actualizarCliente(Integer runCliente, ClienteRequestDTO dto) {
         logger.info("Iniciando actualización de cliente con RUN: {}", runCliente);
 
         Cliente clienteExistente = clienteRepository.findById(runCliente)
@@ -74,20 +83,22 @@ public class ClienteService {
 
         Cliente clienteActualizado = clienteRepository.save(clienteExistente);
         logger.info("Cliente con RUN {} actualizado exitosamente", runCliente);
-        return clienteActualizado;
+        
+        // Retornamos el DTO enriquecido llamando a ms_direcciones
+        return mapToDTO(clienteActualizado);
     }
 
     public List<ClienteResponseDTO> buscarTodosClientes() {
         logger.info("Iniciando búsqueda de todos los clientes");
         return clienteRepository.findAll().stream()
-                .map(clienteMapper::toResponseDTO) // Delegación limpia
+                .map(this::mapToDTO) // Usamos mapToDTO para que traiga las direcciones
                 .toList();
     }
 
     public ClienteResponseDTO buscarClientePorRun(Integer runCliente) {
         logger.info("Buscando cliente por RUN: {}", runCliente);
         return clienteRepository.findById(runCliente)
-                .map(clienteMapper::toResponseDTO) // Delegación limpia
+                .map(this::mapToDTO) // Usamos mapToDTO para que traiga la dirección
                 .orElseThrow(() -> {
                     logger.warn("Búsqueda fallida: No se encontró cliente con RUN {}", runCliente);
                     return new ResourceNotFoundException("No se encontró un cliente con run " + runCliente);
@@ -113,5 +124,28 @@ public class ClienteService {
             logger.warn("Conflicto: El email {} ya pertenece a otro cliente", email);
             throw new BadRequestException("El email ya está registrado por otro cliente");
         }
+    }
+
+    // Método privado para validar la dirección proveniente del ms_direcciones
+    private ClienteResponseDTO mapToDTO(Cliente cliente) {
+        DireccionDTO direccionAsignada = null;
+
+        try {
+            if (cliente.getIdDireccion() != null) {
+                direccionAsignada = direccionClient.obtenerDireccionPorId(cliente.getIdDireccion());
+            }
+        // Excepcion por si no encuentra la direccion por id
+        } catch (FeignException.NotFound ex) {
+            logger.warn("Direccion ID {} no fue encontrada para el cliente RUN {}", 
+                cliente.getIdDireccion(),
+                cliente.getRunCliente()
+            );
+        // Excepcion si no se pudo hacer la conexion (Error 500 o Gateway caido)
+        } catch (FeignException ex) {
+            logger.error("Error 500 o de conexión al ms_direcciones: {}", ex.getMessage());
+        }
+
+        // ¡IMPORTANTE! Pasamos la entidad Y la dirección encontrada
+        return clienteMapper.toResponseDTO(cliente, direccionAsignada);
     }
 }

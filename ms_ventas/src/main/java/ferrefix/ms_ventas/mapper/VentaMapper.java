@@ -54,7 +54,6 @@ public class VentaMapper {
                 .totalVenta(venta.getTotalVenta())
                 .nombreTipoPago(venta.getTipoPago().getNombreTipoPago())
                 .detalles(detallesDTO)
-                .mensaje(mensaje)
                 .build();
     }
 }
