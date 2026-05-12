@@ -13,7 +13,7 @@ public class ClienteService {
         
         if (!esValido) {
             // Lanzas un error si el Módulo 11 falla. Spring Boot atrapará esto y devolverá un Error 400.
-            throw new IllegalArgumentException("El RUN o Dígito Verificador ingresado es incorrecto.");
+            throw new IllegalArgumentException("El RUNN o Dígito Verificador ingresado es incorrecto.");
         }
 
         // 2. Si pasa la validación, guardas en la basea de datos
