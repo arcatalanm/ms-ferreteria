@@ -50,9 +50,9 @@ public class Proveedor {
     @Column(name = "giro_proveedor", length = 50, nullable = false)
     private String giroProveedor;
 
-    @NotBlank(message = "La dirección no puede estar vacío")
-    @Column(name = "direccion_proveedor", length = 100, nullable = false)
-    private String direccionProveedor;
+    @NotNull(message = "La direccion no puede estar vacia")
+    @Column(name = "direccion_proveedor", nullable = false)
+    private Long direccionProveedor;
 
     @NotBlank(message = "El telefono no puede estar vacío")
     @Column(name = "telefono_proveedor", length = 15)

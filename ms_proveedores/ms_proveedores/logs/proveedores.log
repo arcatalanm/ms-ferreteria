@@ -1,0 +1,360 @@
+2026-05-12 22:13:00 INFO  f.m.MsProveedoresApplicationTests - Starting MsProveedoresApplicationTests using Java 21.0.9 with PID 3420 (started by ariel in C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores)
+2026-05-12 22:13:00 INFO  f.m.MsProveedoresApplicationTests - No active profile set, falling back to 1 default profile: "default"
+2026-05-12 22:13:00 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-12 22:13:01 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 58 ms. Found 1 JPA repository interface.
+2026-05-12 22:13:01 INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=0342c8ec-ed19-35a5-9931-a24c605cc80c
+2026-05-12 22:13:01 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-05-12 22:13:01 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@89caf47
+2026-05-12 22:13:01 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-05-12 22:13:02 INFO  liquibase.changelog - Creating database history table with name: ferrefixprov.databasechangelog
+2026-05-12 22:13:02 INFO  liquibase.changelog - Reading from ferrefixprov.databasechangelog
+2026-05-12 22:13:02 WARN  liquibase.executor - Name 'PK_DATABASECHANGELOGLOCK' ignored for PRIMARY key.
+2026-05-12 22:13:02 INFO  liquibase.lockservice - Successfully acquired change log lock
+2026-05-12 22:13:02 INFO  liquibase.command - Using deploymentId: 8638382426
+2026-05-12 22:13:02 INFO  liquibase.changelog - Reading from ferrefixprov.databasechangelog
+2026-05-12 22:13:02 INFO  liquibase.ui - Running Changeset: db/changelog/db.changelog.sql::1::ferrefix
+2026-05-12 22:13:02 WARN  liquibase.executor - Name 'PK_PROVEEDOR' ignored for PRIMARY key.
+2026-05-12 22:13:02 INFO  liquibase.changelog - Custom SQL executed
+2026-05-12 22:13:02 INFO  liquibase.changelog - ChangeSet db/changelog/db.changelog.sql::1::ferrefix ran successfully in 68ms
+2026-05-12 22:13:02 INFO  liquibase.ui - Running Changeset: db/changelog/db.changelog.sql::2::ferrefix
+2026-05-12 22:13:02 INFO  liquibase.changelog - Custom SQL executed
+2026-05-12 22:13:02 INFO  liquibase.changelog - ChangeSet db/changelog/db.changelog.sql::2::ferrefix ran successfully in 15ms
+2026-05-12 22:13:02 INFO  liquibase.util - UPDATE SUMMARY
+2026-05-12 22:13:02 INFO  liquibase.util - Run:                          2
+2026-05-12 22:13:02 INFO  liquibase.util - Previously run:               0
+2026-05-12 22:13:02 INFO  liquibase.util - Filtered out:                 0
+2026-05-12 22:13:02 INFO  liquibase.util - -------------------------------
+2026-05-12 22:13:02 INFO  liquibase.util - Total change sets:            2
+2026-05-12 22:13:02 INFO  liquibase.util - Update summary generated
+2026-05-12 22:13:02 INFO  liquibase.command - Update command completed successfully.
+2026-05-12 22:13:02 INFO  liquibase.ui - Liquibase: Update has been successful. Rows affected: 7
+2026-05-12 22:13:02 INFO  liquibase.lockservice - Successfully released change log lock
+2026-05-12 22:13:02 INFO  liquibase.command - Command execution complete
+2026-05-12 22:13:02 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-12 22:13:02 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-05-12 22:13:02 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-12 22:13:03 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-12 22:13:03 WARN  org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-05-12 22:13:04 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-12 22:13:04 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-12 22:13:04 WARN  o.s.w.c.s.GenericWebApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'proveedorController' defined in file [C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes\ferrefix\ms_proveedores\controller\ProveedorController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'proveedorService' defined in file [C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes\ferrefix\ms_proveedores\service\ProveedorService.class]: Unsatisfied dependency expressed through constructor parameter 2: No qualifying bean of type 'ferrefix.ms_proveedores.client.DireccionClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2026-05-12 22:13:04 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-12 22:13:04 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-05-12 22:13:04 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-05-12 22:13:04 INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-05-12 22:13:04 ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 2 of constructor in ferrefix.ms_proveedores.service.ProveedorService required a bean of type 'ferrefix.ms_proveedores.client.DireccionClient' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'ferrefix.ms_proveedores.client.DireccionClient' in your configuration.
+
+2026-05-12 22:13:04 WARN  o.s.test.context.TestContextManager - Caught exception while allowing TestExecutionListener [org.springframework.test.context.web.ServletTestExecutionListener] to prepare test instance [ferrefix.ms_proveedores.MsProveedoresApplicationTests@26fc464f]
+java.lang.IllegalStateException: Failed to load ApplicationContext for [WebMergedContextConfiguration@15c8b75c testClass = ferrefix.ms_proveedores.MsProveedoresApplicationTests, locations = [], classes = [ferrefix.ms_proveedores.MsProveedoresApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceDescriptors = [], propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@1c9b0314, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@6e2aa843, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@7098b907, org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizer@68878f6d, org.springframework.boot.test.context.SpringBootTestAnnotation@10bd3a8b], resourceBasePath = "src/main/webapp", contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:180)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:130)
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:191)
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:130)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:260)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:163)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$10(ClassBasedTestDescriptor.java:378)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:383)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$11(ClassBasedTestDescriptor.java:378)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1708)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:310)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:735)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:377)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$6(ClassBasedTestDescriptor.java:290)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:289)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$4(ClassBasedTestDescriptor.java:279)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$5(ClassBasedTestDescriptor.java:278)
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:31)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:106)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:105)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:69)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$2(NodeTestTask.java:123)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:123)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:90)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'proveedorController' defined in file [C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes\ferrefix\ms_proveedores\controller\ProveedorController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'proveedorService' defined in file [C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes\ferrefix\ms_proveedores\service\ProveedorService.class]: Unsatisfied dependency expressed through constructor parameter 2: No qualifying bean of type 'ferrefix.ms_proveedores.client.DireccionClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1357)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1194)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:962)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:624)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.test.context.SpringBootContextLoader.lambda$loadContext$3(SpringBootContextLoader.java:137)
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:58)
+	at org.springframework.util.function.ThrowingSupplier.get(ThrowingSupplier.java:46)
+	at org.springframework.boot.SpringApplication.withHook(SpringApplication.java:1463)
+	at org.springframework.boot.test.context.SpringBootContextLoader$ContextLoaderHook.run(SpringBootContextLoader.java:553)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:137)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:108)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:225)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:152)
+	... 73 common frames omitted
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'proveedorService' defined in file [C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes\ferrefix\ms_proveedores\service\ProveedorService.class]: Unsatisfied dependency expressed through constructor parameter 2: No qualifying bean of type 'ferrefix.ms_proveedores.client.DireccionClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:795)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:237)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1357)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1194)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:562)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1443)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 97 common frames omitted
+Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'ferrefix.ms_proveedores.client.DireccionClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1880)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1406)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1353)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:904)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:782)
+	... 111 common frames omitted
+2026-05-12 22:15:02 INFO  f.m.MsProveedoresApplication - Starting MsProveedoresApplication using Java 21.0.9 with PID 9800 (C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes started by ariel in C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores)
+2026-05-12 22:15:02 INFO  f.m.MsProveedoresApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-12 22:15:03 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-12 22:15:03 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 46 ms. Found 1 JPA repository interface.
+2026-05-12 22:15:03 INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=70edb9aa-bd47-32ba-927c-d7f69d48d623
+2026-05-12 22:15:03 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8084 (http)
+2026-05-12 22:15:03 INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-12 22:15:03 INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.24]
+2026-05-12 22:15:03 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-05-12 22:15:03 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1210 ms
+2026-05-12 22:15:04 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-05-12 22:15:04 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4b325930
+2026-05-12 22:15:04 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-05-12 22:15:04 INFO  liquibase.changelog - Reading from ferrefixprov.databasechangelog
+2026-05-12 22:15:04 INFO  liquibase.ui - Database is up to date, no changesets to execute
+2026-05-12 22:15:04 INFO  liquibase.changelog - Reading from ferrefixprov.databasechangelog
+2026-05-12 22:15:04 INFO  liquibase.util - UPDATE SUMMARY
+2026-05-12 22:15:04 INFO  liquibase.util - Run:                          0
+2026-05-12 22:15:04 INFO  liquibase.util - Previously run:               2
+2026-05-12 22:15:04 INFO  liquibase.util - Filtered out:                 0
+2026-05-12 22:15:04 INFO  liquibase.util - -------------------------------
+2026-05-12 22:15:04 INFO  liquibase.util - Total change sets:            2
+2026-05-12 22:15:04 INFO  liquibase.util - Update summary generated
+2026-05-12 22:15:04 INFO  liquibase.lockservice - Successfully released change log lock
+2026-05-12 22:15:04 INFO  liquibase.command - Command execution complete
+2026-05-12 22:15:04 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-12 22:15:04 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-05-12 22:15:04 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-12 22:15:05 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-12 22:15:05 WARN  org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-05-12 22:15:06 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-12 22:15:06 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-12 22:15:06 WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'proveedorController' defined in file [C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes\ferrefix\ms_proveedores\controller\ProveedorController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'proveedorService' defined in file [C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes\ferrefix\ms_proveedores\service\ProveedorService.class]: Unsatisfied dependency expressed through constructor parameter 2: No qualifying bean of type 'ferrefix.ms_proveedores.client.DireccionClient' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+2026-05-12 22:15:06 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-12 22:15:06 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2026-05-12 22:15:06 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2026-05-12 22:15:06 INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-05-12 22:15:06 INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-05-12 22:15:06 ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 2 of constructor in ferrefix.ms_proveedores.service.ProveedorService required a bean of type 'ferrefix.ms_proveedores.client.DireccionClient' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'ferrefix.ms_proveedores.client.DireccionClient' in your configuration.
+
+2026-05-12 22:16:50 INFO  f.m.MsProveedoresApplication - Starting MsProveedoresApplication using Java 21.0.9 with PID 12724 (C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\target\classes started by ariel in C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores)
+2026-05-12 22:16:50 INFO  f.m.MsProveedoresApplication - No active profile set, falling back to 1 default profile: "default"
+2026-05-12 22:16:51 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-05-12 22:16:51 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 44 ms. Found 1 JPA repository interface.
+2026-05-12 22:16:51 INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=c2ca07c0-04e3-382f-acf9-e040afbc6316
+2026-05-12 22:16:51 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8084 (http)
+2026-05-12 22:16:51 INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-05-12 22:16:51 INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.24]
+2026-05-12 22:16:51 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-05-12 22:16:51 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1242 ms
+2026-05-12 22:16:51 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-05-12 22:16:52 INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@46c10083
+2026-05-12 22:16:52 INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-05-12 22:16:52 INFO  liquibase.changelog - Reading from ferrefixprov.databasechangelog
+2026-05-12 22:16:52 INFO  liquibase.ui - Database is up to date, no changesets to execute
+2026-05-12 22:16:52 INFO  liquibase.changelog - Reading from ferrefixprov.databasechangelog
+2026-05-12 22:16:52 INFO  liquibase.util - UPDATE SUMMARY
+2026-05-12 22:16:52 INFO  liquibase.util - Run:                          0
+2026-05-12 22:16:52 INFO  liquibase.util - Previously run:               2
+2026-05-12 22:16:52 INFO  liquibase.util - Filtered out:                 0
+2026-05-12 22:16:52 INFO  liquibase.util - -------------------------------
+2026-05-12 22:16:52 INFO  liquibase.util - Total change sets:            2
+2026-05-12 22:16:52 INFO  liquibase.util - Update summary generated
+2026-05-12 22:16:52 INFO  liquibase.lockservice - Successfully released change log lock
+2026-05-12 22:16:52 INFO  liquibase.command - Command execution complete
+2026-05-12 22:16:52 INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-05-12 22:16:52 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-05-12 22:16:52 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2026-05-12 22:16:53 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-05-12 22:16:53 WARN  org.hibernate.dialect.Dialect - HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly. The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+2026-05-12 22:16:53 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-05-12 22:16:53 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-05-12 22:16:54 WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-05-12 22:16:54 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8084 (http) with context path '/'
+2026-05-12 22:16:54 INFO  f.m.MsProveedoresApplication - Started MsProveedoresApplication in 4.684 seconds (process running for 5.046)
+2026-05-12 22:18:02 INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-05-12 22:18:02 INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-05-12 22:18:02 INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2026-05-12 22:18:02 INFO  f.m.controller.ProveedorController - GET /api/proveedores - Solicitud para listar proveedores
+2026-05-12 22:18:02 INFO  f.m.service.ProveedorService - Inicio de operación: listar proveedores
+2026-05-12 22:18:02 INFO  f.m.service.ProveedorService - Listado de proveedores devuelto con éxito. total=5
+2026-05-12 22:18:02 ERROR f.m.service.ProveedorService - Fallo de comunicación con ms_direcciones: Connection refused: getsockopt executing GET http://localhost:8080/api/direcciones/1
+2026-05-12 22:18:02 ERROR f.m.service.ProveedorService - Fallo de comunicación con ms_direcciones: Connection refused: getsockopt executing GET http://localhost:8080/api/direcciones/2
+2026-05-12 22:18:02 ERROR f.m.service.ProveedorService - Fallo de comunicación con ms_direcciones: Connection refused: getsockopt executing GET http://localhost:8080/api/direcciones/3
+2026-05-12 22:18:02 ERROR f.m.service.ProveedorService - Fallo de comunicación con ms_direcciones: Connection refused: getsockopt executing GET http://localhost:8080/api/direcciones/4
+2026-05-12 22:18:02 ERROR f.m.service.ProveedorService - Fallo de comunicación con ms_direcciones: Connection refused: getsockopt executing GET http://localhost:8080/api/direcciones/5
+2026-05-12 22:18:02 INFO  f.m.controller.ProveedorController - GET /api/proveedores - Listado devuelto con éxito. total=5
+2026-05-12 22:18:10 ERROR f.m.exception.GlobalExceptionHandler - Excepción no manejada: 
+org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; For input string: "!"
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.convertIfNecessary(AbstractNamedValueMethodArgumentResolver.java:302)
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.resolveArgument(AbstractNamedValueMethodArgumentResolver.java:137)
+	at org.springframework.web.method.support.HandlerMethodArgumentResolverComposite.resolveArgument(HandlerMethodArgumentResolverComposite.java:122)
+	at org.springframework.web.method.support.InvocableHandlerMethod.getMethodArgumentValues(InvocableHandlerMethod.java:224)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:178)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:926)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:831)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:389)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1741)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1190)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: java.lang.NumberFormatException: For input string: "!"
+	at java.base/java.lang.NumberFormatException.forInputString(NumberFormatException.java:67)
+	at java.base/java.lang.Integer.parseInt(Integer.java:648)
+	at java.base/java.lang.Integer.valueOf(Integer.java:989)
+	at org.springframework.util.NumberUtils.parseNumber(NumberUtils.java:203)
+	at org.springframework.beans.propertyeditors.CustomNumberEditor.setAsText(CustomNumberEditor.java:115)
+	at org.springframework.beans.TypeConverterDelegate.doConvertTextValue(TypeConverterDelegate.java:439)
+	at org.springframework.beans.TypeConverterDelegate.doConvertValue(TypeConverterDelegate.java:412)
+	at org.springframework.beans.TypeConverterDelegate.convertIfNecessary(TypeConverterDelegate.java:161)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:80)
+	at org.springframework.beans.TypeConverterSupport.convertIfNecessary(TypeConverterSupport.java:53)
+	at org.springframework.validation.DataBinder.convertIfNecessary(DataBinder.java:860)
+	at org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver.convertIfNecessary(AbstractNamedValueMethodArgumentResolver.java:294)
+	... 48 common frames omitted
+2026-05-12 22:18:14 INFO  f.m.controller.ProveedorController - GET /api/proveedores/1 - Solicitud para obtener proveedor
+2026-05-12 22:18:14 INFO  f.m.service.ProveedorService - Inicio de operación: buscar proveedor por id=1
+2026-05-12 22:18:14 INFO  f.m.service.ProveedorService - Proveedor encontrado con éxito. id=1
+2026-05-12 22:18:14 ERROR f.m.service.ProveedorService - Fallo de comunicación con ms_direcciones: Connection refused: getsockopt executing GET http://localhost:8080/api/direcciones/1
+2026-05-12 22:18:14 INFO  f.m.controller.ProveedorController - GET /api/proveedores/1 - Proveedor obtenido con éxito

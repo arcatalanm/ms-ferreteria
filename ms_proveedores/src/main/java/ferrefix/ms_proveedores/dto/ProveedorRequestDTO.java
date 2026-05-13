@@ -31,9 +31,8 @@ public class ProveedorRequestDTO {
     @Size(min = 2, max = 100, message = "El giro debe tener entre 2 y 100 caracteres")
     private String giroProveedor;
 
-    @NotBlank(message = "La dirección del proveedor es obligatoria")
-    @Size(min = 5, max = 200, message = "La dirección debe tener entre 5 y 200 caracteres")
-    private String direccionProveedor;
+    @NotNull(message = "La dirección del proveedor es obligatoria")
+    private Long direccionProveedor;
 
     @NotBlank(message = "El teléfono del proveedor es obligatorio")
     @Pattern(regexp = "\\+?\\d{8,15}") 

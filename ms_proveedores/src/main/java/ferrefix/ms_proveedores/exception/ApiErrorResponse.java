@@ -4,16 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Getter
-@Builder
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ApiErrorResponse {
-
-    private OffsetDateTime timestamp;
+    private LocalDateTime timestamp;
     private int status;
     private String error;
     private String message;
