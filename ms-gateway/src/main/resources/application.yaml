@@ -6,29 +6,35 @@ spring:
     name: ms-gateway
   cloud:
     gateway:
-      server:  # <--- ¡NUEVA ESTRUCTURA AQUÍ!
-        webmvc: # <--- ¡NUEVA ESTRUCTURA AQUÍ!
+      server:
+        webmvc:
           routes:
             # Ruta hacia el Microservicio de Inventario
             - id: inventario-ruta-ms
-              uri: http://localhost:8081 
+              uri: http://ms-inventario:8081 
               predicates:
                 - Path=/api/inventario, /api/inventario/**
 
             # Ruta hacia el Microservicio de Usuarios 
             - id: usuarios-ruta-ms
-              uri: http://localhost:8082 
+              uri: http://ms-usuarios:8082 
               predicates:
                 - Path=/api/usuarios, /api/usuarios/**
 
             # Ruta hacia el Microservicio de Ventas 
             - id: ventas-ruta-ms
-              uri: http://localhost:8083 
+              uri: http://ms-ventas:8083 
               predicates:
                 - Path=/api/ventas, /api/ventas/**
 
             # Ruta hacia el Microservicio de Proveedores
             - id: proveedores-ruta-ms
-              uri: http://localhost:8084
+              uri: http://ms-proveedores:8084
               predicates:
                 - Path=/api/proveedores, /api/proveedores/**
+
+            # Ruta hacia el Microservicio de Proveedores
+            - id: direcciones-ruta-ms
+              uri: http://ms-direcciones:8085
+              predicates:
+                - Path=/api/direcciones, /api/direcciones/**

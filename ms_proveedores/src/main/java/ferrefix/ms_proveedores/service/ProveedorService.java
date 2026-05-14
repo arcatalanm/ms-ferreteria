@@ -44,7 +44,7 @@ public class ProveedorService {
 
         logger.info("Proveedor creado con éxito. id={}", savedProveedor.getIdProveedor());
         
-        // ¡CAMBIO CLAVE! Usamos mapToDTO para incluir la dirección del otro microservicio
+        // Usamos mapToDTO para incluir la dirección del otro microservicio
         return mapToDTO(savedProveedor);
     }
 

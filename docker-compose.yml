@@ -1,0 +1,140 @@
+services:
+  # ==========================================
+  # EL GATEWAY
+  # ==========================================
+  ms-gateway:
+    build: ./ms-gateway
+    container_name: ferrefix-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - ms-usuarios
+      - ms-proveedores
+      - ms-inventario
+      - ms-direcciones
+      - ms-ventas
+
+  # ==========================================
+  # MICROSERVICIO: USUARIOS
+  # ==========================================
+  db-usuarios:
+    image: mysql:8.0
+    container_name: ferrefix-db-usuarios
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixusr
+    ports:
+      - "3310:3306"
+      
+  ms-usuarios:
+    build: ./ms_usuarios
+    container_name: ferrefix-ms-usuarios
+    depends_on:
+      - db-usuarios
+    ports: 
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-usuarios:3306/ferrefixusr
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+    restart: on-failure
+  
+  # ==========================================
+  # MICROSERVICIO: PROVEEDORES
+  # ==========================================
+  db-proveedores:
+    image: mysql:8.0
+    container_name: ferrefix-db-proveedores
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixprov
+    ports:
+      - "3311:3306"
+  
+  ms-proveedores:
+    build: ./ms_proveedores
+    container_name: ferrefix-ms-proveedores
+    depends_on:
+      - db-proveedores
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-proveedores:3306/ferrefixprov
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+    restart: on-failure
+
+  # ==========================================
+  # MICROSERVICIO: INVENTARIO
+  # ==========================================
+  db-inventario:
+    image: mysql:8.0
+    container_name: ferrefix-db-inventario
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixinv
+    ports:
+      - "3312:3306"
+  
+  ms-inventario:
+    build: ./ms_inventario
+    container_name: ferrefix-ms-inventario
+    depends_on:
+      - db-inventario
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-inventario:3306/ferrefixinv
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+    restart: on-failure
+
+  # ==========================================
+  # MICROSERVICIO: DIRECCIONES
+  # ==========================================
+  db-direcciones:
+    image: mysql:8.0
+    container_name: ferrefix-db-direcciones
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixadress
+    ports:
+      - "3313:3306"
+  
+  ms-direcciones:
+    build: ./ms_direcciones
+    container_name: ferrefix-ms-direcciones
+    depends_on:
+      - db-direcciones
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-direcciones:3306/ferrefixadress
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+    restart: on-failure
+
+  # ==========================================
+  # MICROSERVICIO: VENTAS
+  # ==========================================
+  db-ventas:
+    image: mysql:8.0
+    container_name: ferrefix-db-ventas
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixventas
+    ports:
+      - "3314:3306"
+  
+  ms-ventas:
+    build: ./ms_ventas
+    container_name: ferrefix-ms-ventas
+    depends_on:
+      - db-ventas
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-ventas:3306/ferrefixventas
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+    restart: on-failure
