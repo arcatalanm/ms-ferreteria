@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
+// Permitimos fingir clientes
 @EnableFeignClients
 public class MsVentasApplication {
 

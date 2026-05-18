@@ -33,11 +33,15 @@ El sistema cuenta con un script de automatización que compila el código Java y
 
 ## Comandos de uso
 * ./mvnw spring-boot:run (ejecuta la aplicación)
-* zip -r archivo.zip 'tag_directorio' (compresión del servicio)
-* ./mvnw clean package -DskipTests (crear ejecutables jar)
-* docker compose up –build -d (construccion con los Dockerfile para los micro servicios)
-* docker ps (verficar servicios activos de docker)
-* docker exec -it ferrefix-ms-ventas bash (conectarse al entorno aislado del micro servicio)
+* zip -r archivo.zip 'tag_directorio' (compresión del servicio a un .zip)
+* ./mvnw clean package -DskipTests (crear ejecutables jar y saltarse etapa de ejecucion de la DB)
 
 ## Video Paso a Paso
 * **https://www.youtube.com/watch?v=36Szd9ZM0WM**
+
+## Comandos Docker
+* docker compose up –build -d (construccion con los Dockerfile para los micro servicios)
+* docker compose down -v (Bajar el Orquestador y los volumenes)
+* docker exec -it 'nombre contenedor del ms' bash (conectarse al entorno aislado del micro servicio)
+* docker ps (verficar servicios activos de docker)
+

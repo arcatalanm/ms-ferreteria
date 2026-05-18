@@ -1,4 +1,6 @@
 services:
+  # En el docker-compose administraremos la apigateway con todos los micro servicios y bases de datos correspondientes
+
   # ==========================================
   # EL GATEWAY
   # ==========================================

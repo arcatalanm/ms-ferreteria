@@ -11,10 +11,19 @@ CREATE TABLE direccion (
 );
 
 --changeset ferrefix:2
--- Datos iniciales para pruebas y para calzar con los IDs que pusimos en ms_usuarios
 INSERT INTO direccion (calle, numero, departamento, comuna, ciudad) VALUES 
-('Av. Providencia', 1234, 'Depto 402', 'Providencia', 'Santiago'),
-('Los Leones', 567, NULL, 'Providencia', 'Santiago'),
-('Gran Avenida', 7890, 'Casa 3', 'San Miguel', 'Santiago'),
-('Vicuña Mackenna', 100, 'Depto 12', 'Santiago Centro', 'Santiago'),
-('Av. Pajaritos', 4500, NULL, 'Maipú', 'Santiago');
+('Av. Los Libertadores', 1204, 'Local Ferrefix', 'Rancagua', 'Rancagua'),
+('Gran Avenida', 5530, NULL, 'San Miguel', 'Santiago'),
+('Av. Los Pajaritos', 3100, 'Bodega 4B', 'Maipú', 'Santiago'),
+('Av. Concha y Toro', 1050, NULL, 'Puente Alto', 'Santiago'),
+('Av. Providencia', 2550, 'Oficina 102', 'Providencia', 'Santiago'),
+('Av. Apoquindo', 4500, 'Depto 33', 'Las Condes', 'Santiago'),
+('Av. Irarrázaval', 2100, NULL, 'Ñuñoa', 'Santiago'),
+('Av. Macul', 3300, 'Casa 4', 'Macul', 'Santiago'),
+('Av. La Florida', 7800, NULL, 'La Florida', 'Santiago'),
+('Av. Ossa', 1500, 'Depto 12C', 'La Reina', 'Santiago'),
+('Av. Independencia', 850, NULL, 'Independencia', 'Santiago'),
+('Av. Recoleta', 1100, 'Local 5', 'Recoleta', 'Santiago'),
+('Av. Américo Vespucio', 150, NULL, 'Cerrillos', 'Santiago'),
+('Av. Pedro de Valdivia', 3200, 'Casa 10', 'Ñuñoa', 'Santiago'),
+('Av. Las Condes', 8900, 'Oficina 401', 'Las Condes', 'Santiago');

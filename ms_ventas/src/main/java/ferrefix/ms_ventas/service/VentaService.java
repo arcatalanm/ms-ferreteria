@@ -23,21 +23,13 @@ import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Servicio de negocio para la gestión de Ventas.
- * Orquesta la comunicación entre repositorios locales y llamadas a otros microservicios.
- */
+/* Servicio de negocio para la gestión de Ventas. */
 @Service
 @Transactional // Garantiza que si la venta falla a la mitad, no se guarda nada en la BD (Rollback).
 @RequiredArgsConstructor 
 public class VentaService {
     
     private static final Logger logger = LoggerFactory.getLogger(VentaService.class);
-
-    // EXPLICACIÓN DE INYECCIÓN DE DEPENDENCIAS:
-    // @RequiredArgsConstructor de Lombok genera automáticamente un constructor que recibe
-    // todos estos campos 'final'. Spring Boot inyecta los repositorios y clientes Feign 
-    // al momento de arrancar. Es más seguro y limpio que usar @Autowired.
     private final VentaRepository ventaRepository;
     private final DetalleVentaRepository detalleVentaRepository;
     private final TipoPagoRepository tipoPagoRepository;
@@ -45,11 +37,8 @@ public class VentaService {
     private final InventarioClient inventarioClient;
     private final VentaMapper ventaMapper;
 
-    /**
-     * Guarda una nueva venta validando primero contra otros microservicios.
-     * @param request Datos de la venta enviados por el frontend.
-     * @return VentaResponseDTO con el resumen de la boleta.
-     */
+
+    // Metodo para guardar una venta
     public VentaResponseDTO guardar(VentaRequestDTO request) {
         logger.info("Iniciando creación de nueva venta para cliente RUN: {}", request.getRunCliente());
         
@@ -114,9 +103,7 @@ public class VentaService {
         return mapVentaToDTO(venta, "Venta registrada exitosamente");
     }
 
-    /**
-     * Lista todas las ventas registradas.
-     */
+    /* Lista todas las ventas registradas. */
     public List<VentaResponseDTO> listarVentas() {
         logger.info("Iniciando búsqueda de todas las ventas");
         List<VentaResponseDTO> ventas = ventaRepository.findAll().stream()
@@ -126,9 +113,7 @@ public class VentaService {
         return ventas;
     }
 
-    /**
-     * Busca una venta específica por su ID.
-     */
+    /* Busca una venta específica por su ID.*/
     public VentaResponseDTO buscarVentaPorId(Long idVenta) {
         logger.info("Iniciando búsqueda de venta con ID: {}", idVenta);
         Venta venta = ventaRepository.findById(idVenta)
@@ -140,8 +125,7 @@ public class VentaService {
         return mapVentaToDTO(venta, null);
     }
 
-    // ... (Mantén los métodos buscarVentasPorCliente y buscarVentasPorEmpleado que estaban perfectos)
-
+    /* Metodo que elimina una venta */
     public void eliminarVenta(Long idVenta) {
         logger.info("Iniciando eliminación de venta con ID: {}", idVenta);
         Venta venta = ventaRepository.findById(idVenta)
@@ -156,11 +140,6 @@ public class VentaService {
         logger.info("Venta y sus detalles eliminados exitosamente con ID: {}", idVenta);
     }
 
-    /**
-     * Convierte la entidad Venta en un DTO enriquecido para el Frontend.
-     * NOTA: Este método también llama a mapDetalleToDTO, el cual hace consultas a Inventario
-     * para rellenar los nombres de los productos en la boleta.
-     */
     private VentaResponseDTO mapVentaToDTO(Venta venta, String mensaje) {
         List<DetalleVentaResponseDTO> detalles = detalleVentaRepository.findByVenta_IdVenta(venta.getIdVenta())
                 .stream()
@@ -170,9 +149,7 @@ public class VentaService {
         return ventaMapper.toVentaResponseDTO(venta, detalles, mensaje);
     }
 
-    /**
-     * Convierte el detalle y enriquece con el nombre del producto desde el MS-Inventario.
-     */
+    /* Convierte el detalle y trae el nombre del producto desde el MS-Inventario. */
     private DetalleVentaResponseDTO mapDetalleToDTO(DetalleVenta detalleVenta) {
         String nombreProducto = "Desconocido";
         try {

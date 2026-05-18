@@ -25,10 +25,10 @@ import lombok.RequiredArgsConstructor;
 public class ClienteService {
 
     private static final Logger logger = LoggerFactory.getLogger(ClienteService.class);
-    
+
     private final ClienteRepository clienteRepository;
-    private final ClienteMapper clienteMapper; 
-    private final DireccionClient direccionClient; 
+    private final ClienteMapper clienteMapper;
+    private final DireccionClient direccionClient;
 
     public ClienteResponseDTO crearCliente(ClienteRequestDTO dto) {
         logger.info("Iniciando creación de cliente con RUN: {}-{}", dto.getRunCliente(), dto.getDvCliente());

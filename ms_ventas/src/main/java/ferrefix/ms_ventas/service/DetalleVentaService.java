@@ -18,10 +18,7 @@ import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Servicio de negocio para la entidad DetalleVenta.
- * Gestiona la lógica de validación, persistencia y transformación de datos.
- */
+/* Gestionamos la lógica de validación, persistencia y transformación de datos.*/
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,12 +30,10 @@ public class DetalleVentaService {
 
     // Inyeccion InventarioClient
     private final InventarioClient inventarioClient;
-
+    // Inyeccion De los Mapper para las ventas
     private final VentaMapper ventaMapper;
 
-    /**
-     * Busca todos los detalles de una venta específica.
-     */
+    /* Busca todos los detalles de una venta específica */
     public List<DetalleVentaResponseDTO> buscarDetallesPorVenta(Long idVenta) {
         logger.info("Iniciando búsqueda de detalles para venta ID: {}", idVenta);
         
@@ -55,9 +50,7 @@ public class DetalleVentaService {
         return detalles;
     }
 
-    /**
-     * Busca un detalle de venta por su ID.
-     */
+    /* Busca un detalle de venta por su ID. */
     public DetalleVentaResponseDTO buscarDetallePorId(Long idDetalle) {
         logger.info("Iniciando búsqueda de detalle venta con ID: {}", idDetalle);
         
@@ -78,9 +71,7 @@ public class DetalleVentaService {
         return resultado;
     }
 
-    /**
-     * Convierte una entidad DetalleVenta a DetalleVentaResponseDTO.
-     */
+    /* Convierte una entidad DetalleVenta a DetalleVentaResponseDTO. */
     private DetalleVentaResponseDTO mapToDTO(DetalleVenta detalleVenta) {
         String nombreProducto = "Desconocido";
         try {
@@ -92,7 +83,7 @@ public class DetalleVentaService {
             logger.warn("Producto eliminado del inventario, pero registrado en histórico. ID: {}", detalleVenta.getIdProducto());
             nombreProducto = "Producto Descontinuado";
         } catch (FeignException ex) {
-            // ✅ ESTE ES EL ESCUDO CONTRA EL ERROR 500
+            // Aqui validamos el error 500 si no se puede conectar
             logger.error("Error de comunicación con MS-Inventario. Status: {}", ex.status());
             nombreProducto = "Error de conexión (Inventario no disponible)";
         }

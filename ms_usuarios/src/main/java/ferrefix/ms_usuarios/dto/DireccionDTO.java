@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor 
+@NoArgsConstructor
 
 // Hacemos referencia a la direccion del ms_direcciones
 

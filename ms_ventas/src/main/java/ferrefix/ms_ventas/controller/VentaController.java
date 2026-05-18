@@ -12,13 +12,6 @@ import ferrefix.ms_ventas.service.VentaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Controlador REST para la gestión de ventas.
- * * ARQUITECTURA SENIOR: 
- * Este controlador NO tiene lógica de negocio ni bloques try-catch.
- * Delega los errores al GlobalExceptionHandler y la lógica al VentaService.
- * Su única responsabilidad es recibir JSON, pasarlo al Service y retornar ResponseEntity.
- */
 @RestController
 @RequestMapping("/api/ventas")
 @RequiredArgsConstructor
@@ -26,7 +19,7 @@ public class VentaController {
     
     private static final Logger logger = LoggerFactory.getLogger(VentaController.class);
 
-    // Inyección inmutable generada por @RequiredArgsConstructor
+    // Inyección por @RequiredArgsConstructor
     private final VentaService ventaService;
 
     @PostMapping
@@ -36,8 +29,6 @@ public class VentaController {
         VentaResponseDTO response = ventaService.guardar(request);
         
         logger.info("Venta procesada. Respondiendo 201 CREATED");
-        // URI.create es una buena práctica REST: devuelve en las cabeceras HTTP 
-        // la ruta exacta donde se puede consultar el recurso recién creado.
         return ResponseEntity.created(URI.create("/api/ventas/" + response.getIdVenta()))
                 .body(response);
     }
@@ -62,7 +53,7 @@ public class VentaController {
         ventaService.eliminarVenta(idVenta);
         
         logger.info("Eliminación exitosa. Respondiendo 204 NO CONTENT");
-        // 204 indica que la operación fue un éxito pero no hay un cuerpo JSON que devolver
+        // Operacion exitosa pero el cuerpo no tiene contenido
         return ResponseEntity.noContent().build();
     }
 }

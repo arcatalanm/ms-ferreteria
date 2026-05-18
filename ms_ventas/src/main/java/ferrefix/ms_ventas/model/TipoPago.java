@@ -21,7 +21,7 @@ public class TipoPago {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_pago")
-    private Integer idTipoPago; // Usamos Integer por compatibilidad y escalabilidad 
+    private Integer idTipoPago; // Usamos Integer por compatibilidad
 
     @NotBlank(message = "El nombre del tipo de pago no puede estar vacío")
     @Column(name = "nombre_tipo_pago", unique = true, length = 50)

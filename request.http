@@ -1,0 +1,371 @@
+### ==========================================
+### MICROSERVICIO: DIRECCIONES
+### ==========================================
+
+### Crea una nueva dirección en el sistema.
+### Retorna un 201 CREATED con el ID generado.
+# POST http://localhost:8080/api/direcciones
+# Content-Type: application/json
+# 
+# {
+#     "calle": "Av. Los Pajaritos",
+#     "numero": 1234,
+#     "comuna": "Maipú",
+#     "region": "Metropolitana",
+#     "codigoPostal": "9250000"
+# }
+
+### Obtiene el listado de TODAS las direcciones registradas.
+# GET http://localhost:8080/api/direcciones
+
+### Obtiene una dirección específica filtrando por su ID (Ej: 1).
+# GET http://localhost:8080/api/direcciones/1
+
+### Actualiza los datos de una dirección existente por su ID.
+# PUT http://localhost:8080/api/direcciones/1
+# Content-Type: application/json
+# 
+# {
+#     "calle": "Av. Los Pajaritos",
+#     "numero": 1234,
+#     "comuna": "Maipú",
+#     "region": "Metropolitana",
+#     "codigoPostal": "9250000"
+# }
+
+### Elimina una dirección de la base de datos por su ID.
+# DELETE http://localhost:8080/api/direcciones/1
+
+
+### ==========================================
+### MICROSERVICIO: INVENTARIO - CATEGORÍAS
+### ==========================================
+
+### Registra una nueva categoría de productos.
+# POST http://localhost:8080/api/inventario/categorias
+# Content-Type: application/json
+# 
+# {
+#     "nombreCategoria": "Herramientas Eléctricas"
+# }
+
+### Lista todas las categorías de productos disponibles.
+# GET http://localhost:8080/api/inventario/categorias
+
+### Busca una categoría específica por su ID.
+# GET http://localhost:8080/api/inventario/categorias/1
+
+### Modifica el nombre de una categoría existente.
+# PUT http://localhost:8080/api/inventario/categorias/1
+# Content-Type: application/json
+# 
+# {
+#     "nombreCategoria": "Herramientas Manuales"
+# }
+
+### Elimina una categoría por su ID.
+# DELETE http://localhost:8080/api/inventario/categorias/1
+
+
+### ==========================================
+### MICROSERVICIO: INVENTARIO - UNIDADES MEDIDA
+### ==========================================
+
+### Registra una nueva unidad de medida (Ej: Kilos, Litros, Unidades).
+# POST http://localhost:8080/api/inventario/unidades_medida
+# Content-Type: application/json
+# 
+# {
+#     "nombreUnidadMedida": "Unidad"
+# }
+
+### Lista todas las unidades de medida configuradas.
+# GET http://localhost:8080/api/inventario/unidades_medida
+
+### Busca una unidad de medida por su ID.
+# GET http://localhost:8080/api/inventario/unidades_medida/1
+
+### Actualiza el nombre de una unidad de medida.
+# PUT http://localhost:8080/api/inventario/unidades_medida/1
+# Content-Type: application/json
+# 
+# {
+#     "nombreUnidadMedida": "Litro"
+# }
+
+### Elimina una unidad de medida del sistema.
+# DELETE http://localhost:8080/api/inventario/unidades_medida/1
+
+
+### ==========================================
+### MICROSERVICIO: INVENTARIO - PRODUCTOS
+### ==========================================
+
+### Crea un nuevo producto asociándolo a una Categoría y Unidad de Medida (por sus IDs).
+# POST http://localhost:8080/api/inventario/productos
+# Content-Type: application/json
+# 
+# {
+#     "categoria": 1,
+#     "unidadMedida": 1,
+#     "codigoBarras": "783218382121",
+#     "nombre": "Taladro Bauker Percutor 12w",
+#     "stock": 15,
+#     "precioVenta": 120000
+# }
+
+### Lista todo el catálogo de productos de la ferretería.
+# GET http://localhost:8080/api/inventario/productos
+
+### Obtiene el detalle completo de un producto por su ID.
+# GET http://localhost:8080/api/inventario/productos/1
+
+### Actualiza los datos, precios o stock de un producto existente.
+# PUT http://localhost:8080/api/inventario/productos/1
+# Content-Type: application/json
+# 
+# {
+#     "categoria": 1,
+#     "unidadMedida": 1,
+#     "codigoBarras": "783218382121",
+#     "nombre": "Taladro Bauker Percutor 12w",
+#     "stock": 10,
+#     "precioVenta": 115000
+# }
+
+### Da de baja / elimina un producto del inventario.
+# DELETE http://localhost:8080/api/inventario/productos/1
+
+
+### ==========================================
+### MICROSERVICIO: PROVEEDORES
+### ==========================================
+
+### Registra un nuevo proveedor asociándolo a una Dirección (idDireccion).
+# POST http://localhost:8080/api/proveedores
+# Content-Type: application/json
+# 
+# {
+#     "rutProveedor": 76123456,
+#     "dvProveedor": "K",
+#     "nombreProveedor": "Importadora Ferretera SpA",
+#     "giroProveedor": "Venta al por mayor",
+#     "direccionProveedor": 1,
+#     "telefonoProveedor": "+56912345678",
+#     "correoProveedor": "contacto@proveedor.cl"
+# }
+
+### Obtiene la lista de todos los proveedores registrados.
+# GET http://localhost:8080/api/proveedores
+
+### Busca un proveedor específico por su ID.
+# GET http://localhost:8080/api/proveedores/1
+
+### Actualiza la información de contacto o giro de un proveedor.
+# PUT http://localhost:8080/api/proveedores/1
+# Content-Type: application/json
+# 
+# {
+#     "rutProveedor": 76123456,
+#     "dvProveedor": "K",
+#     "nombreProveedor": "Importadora Ferretera SpA",
+#     "giroProveedor": "Venta al por mayor",
+#     "direccionProveedor": 1,
+#     "telefonoProveedor": "+56912345678",
+#     "correoProveedor": "ventas@proveedor.cl"
+# }
+
+### Elimina un proveedor del sistema.
+# DELETE http://localhost:8080/api/proveedores/1
+
+
+### ==========================================
+### MICROSERVICIO: USUARIOS - CARGOS
+### ==========================================
+
+### Crea un nuevo rol/cargo para los empleados (Ej: Vendedor, Cajero).
+# POST http://localhost:8080/api/usuarios/cargos
+# Content-Type: application/json
+# 
+# {
+#     "nombreCargo": "Vendedor"
+# }
+
+### Lista todos los cargos configurados.
+# GET http://localhost:8080/api/usuarios/cargos
+
+### Obtiene un cargo por su ID.
+# GET http://localhost:8080/api/usuarios/cargos/1
+
+### Modifica el nombre de un cargo.
+# PUT http://localhost:8080/api/usuarios/cargos/1
+# Content-Type: application/json
+# 
+# {
+#     "nombreCargo": "Vendedor Senior"
+# }
+
+### Elimina un cargo (Ojo: no debe estar asignado a empleados).
+# DELETE http://localhost:8080/api/usuarios/cargos/1
+
+
+### ==========================================
+### MICROSERVICIO: USUARIOS - CLIENTES
+### ==========================================
+
+### Registra un nuevo cliente asociándole un idDireccion.
+# POST http://localhost:8080/api/usuarios/clientes
+# Content-Type: application/json
+# 
+# {
+#     "runCliente": 12345678,
+#     "dvCliente": "9",
+#     "nombreCliente": "Juan",
+#     "appaternoCliente": "Pérez",
+#     "apmaternoCliente": "González",
+#     "emailCliente": "juan.perez@email.com",
+#     "telefonoCliente": "+56998765432",
+#     "idDireccion": 1
+# }
+
+### Obtiene el registro completo de clientes.
+# GET http://localhost:8080/api/usuarios/clientes
+
+### Busca a un cliente por su RUN (sin dígito verificador).
+# GET http://localhost:8080/api/usuarios/clientes/run/12345678
+
+### Actualiza los datos personales o de contacto de un cliente por su RUN.
+# PUT http://localhost:8080/api/usuarios/clientes/run/12345678
+# Content-Type: application/json
+# 
+# {
+#     "runCliente": 12345678,
+#     "dvCliente": "9",
+#     "nombreCliente": "Juan",
+#     "appaternoCliente": "Pérez",
+#     "apmaternoCliente": "González",
+#     "emailCliente": "juan.perez@nuevoemail.com",
+#     "telefonoCliente": "+56998765432",
+#     "idDireccion": 1
+# }
+
+### Elimina a un cliente del registro por su RUN.
+# DELETE http://localhost:8080/api/usuarios/clientes/run/12345678
+
+
+### ==========================================
+### MICROSERVICIO: USUARIOS - EMPLEADOS
+### ==========================================
+
+### Registra un nuevo empleado asignándole un Cargo y una Dirección.
+# POST http://localhost:8080/api/usuarios/empleados
+# Content-Type: application/json
+# 
+# {
+#     "runEmpleado": 9876543,
+#     "dvEmpleado": "2",
+#     "nombreEmpleado": "María",
+#     "appaternoEmpleado": "López",
+#     "apmaternoEmpleado": "Soto",
+#     "emailEmpleado": "m.lopez@ferreteria.cl",
+#     "password": "PasswordSegura123!",
+#     "idCargo": 1,
+#     "idDireccion": 2
+# }
+
+### Obtiene la planilla completa de empleados.
+# GET http://localhost:8080/api/usuarios/empleados
+
+### Busca a un empleado específico usando su RUN.
+# GET http://localhost:8080/api/usuarios/empleados/run/9876543
+
+### Actualiza la información o el cargo de un empleado mediante su RUN.
+# PUT http://localhost:8080/api/usuarios/empleados/run/9876543
+# Content-Type: application/json
+# 
+# {
+#     "runEmpleado": 9876543,
+#     "dvEmpleado": "2",
+#     "nombreEmpleado": "María",
+#     "appaternoEmpleado": "López",
+#     "apmaternoEmpleado": "Soto",
+#     "emailEmpleado": "m.lopez@ferreteria.cl",
+#     "password": "NuevaPassword123!",
+#     "idCargo": 2,
+#     "idDireccion": 2
+# }
+
+### Elimina (o desactiva) a un empleado por su RUN.
+# DELETE http://localhost:8080/api/usuarios/empleados/run/9876543
+
+
+### ==========================================
+### MICROSERVICIO: VENTAS - TIPOS DE PAGO
+### ==========================================
+
+### Registra un medio de pago admitido en la ferretería (Débito, Crédito, Efectivo).
+# POST http://localhost:8080/api/ventas/tipos-pago
+# Content-Type: application/json
+# 
+# {
+#     "nombreTipoPago": "Tarjeta de Crédito"
+# }
+
+### Muestra todos los tipos de pago disponibles.
+# GET http://localhost:8080/api/ventas/tipos-pago
+
+### Busca un tipo de pago por su ID.
+# GET http://localhost:8080/api/ventas/tipos-pago/1
+
+### Modifica el nombre de un tipo de pago existente.
+# PUT http://localhost:8080/api/ventas/tipos-pago/1
+# Content-Type: application/json
+# 
+# {
+#     "nombreTipoPago": "Débito"
+# }
+
+### Elimina un tipo de pago.
+# DELETE http://localhost:8080/api/ventas/tipos-pago/1
+
+
+### ==========================================
+### MICROSERVICIO: VENTAS (CABECERA)
+### ==========================================
+
+### Genera una nueva transacción de venta. Requiere validación cruzada con Usuarios e Inventario.
+# POST http://localhost:8080/api/ventas
+# Content-Type: application/json
+# 
+# {
+#     "runCliente": 12345678,
+#     "runEmpleado": 9876543,
+#     "idTipoPago": 1,
+#     "detalles": [
+#         {
+#             "idProducto": 1,
+#             "cantidad": 2,
+#             "precioUnitario": 120000
+#         }
+#     ]
+# }
+
+### Obtiene el registro general de todas las ventas realizadas.
+# GET http://localhost:8080/api/ventas
+
+### Busca la cabecera de una venta específica por su ID.
+# GET http://localhost:8080/api/ventas/1
+
+### Anula o elimina una venta registrada.
+# DELETE http://localhost:8080/api/ventas/1
+
+
+### ==========================================
+### MICROSERVICIO: VENTAS - DETALLES
+### ==========================================
+
+### Obtiene todos los artículos comprados (detalle) pertenecientes a una venta específica.
+# GET http://localhost:8080/api/ventas/detalles/venta/1
+
+### Busca una línea de detalle específica por su ID individual.
+# GET http://localhost:8080/api/ventas/detalles/1

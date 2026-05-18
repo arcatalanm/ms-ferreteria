@@ -6,5 +6,5 @@ import ferrefix.ms_direcciones.model.Direccion;
 
 @Repository
 public interface DireccionRepository extends JpaRepository<Direccion, Long> {
-    // Como es un maestro independiente, JpaRepository nos da todo lo necesario
+    // JpaRepository ya de por si nos da todo lo necesario
 }

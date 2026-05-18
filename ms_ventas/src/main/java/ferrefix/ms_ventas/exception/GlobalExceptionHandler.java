@@ -14,18 +14,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Manejador global de excepciones para toda la aplicación.
- * Captura las excepciones personalizadas y las genéricas, retornando ApiErrorResponse.
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
     
-    /**
-     * Maneja BadRequestException (400 Bad Request)
-     */
+    /* Maneja BadRequestException (400 Bad Request) */
+
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ApiErrorResponse> handleBadRequestException(
             BadRequestException ex, WebRequest request) {
@@ -42,10 +37,9 @@ public class GlobalExceptionHandler {
         
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-    
-    /**
-     * Maneja ResourceNotFoundException (404 Not Found)
-     */
+
+    /* Maneja ResourceNotFoundException (404 Not Found) */
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleResourceNotFoundException(
             ResourceNotFoundException ex, WebRequest request) {
@@ -63,9 +57,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
     
-    /**
-     * Maneja errores de validación (MethodArgumentNotValidException)
-     */
+    /* Maneja errores de validación (MethodArgumentNotValidException) */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -91,9 +83,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
     
-    /**
-     * Maneja excepciones genéricas no previstas
-     */
+    /* Maneja excepciones genéricas no previstas */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGenericException(
             Exception ex, WebRequest request) {

@@ -14,18 +14,15 @@ CREATE TABLE proveedor (
     CONSTRAINT UK_RUT_PROVEEDOR UNIQUE (rut_proveedor)
 );
 
---changeset ferrefix:2
-INSERT INTO proveedor (rut_proveedor, dv_proveedor, nombre_proveedor, giro_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor) 
-VALUES (12345678, '9', 'Ferretería Central', 'Venta de materiales', 1, '+56911111111', 'contacto@central.com');
-
-INSERT INTO proveedor (rut_proveedor, dv_proveedor, nombre_proveedor, giro_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor) 
-VALUES (87654321, 'K', 'Distribuidora Norte', 'Herramientas industriales', 2, '+56922222222', 'ventas@norte.cl');
-
-INSERT INTO proveedor (rut_proveedor, dv_proveedor, nombre_proveedor, giro_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor) 
-VALUES (11222333, '4', 'Maderas del Sur', 'Explotación forestal', 3, '+56933333333', 'info@maderasur.com');
-
-INSERT INTO proveedor (rut_proveedor, dv_proveedor, nombre_proveedor, giro_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor) 
-VALUES (44555666, '0', 'Pinturas Color', 'Químicos y revestimientos', 4, '+56944444444', 'admin@pcolor.cl');
-
-INSERT INTO proveedor (rut_proveedor, dv_proveedor, nombre_proveedor, giro_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor) 
-VALUES (99888777, '1', 'Metales S.A.', 'Fundición y forja', 5, '+56955555555', 'logistica@metales.com');
+--changeset ferrefix:3
+INSERT INTO proveedor (rut_proveedor, dv_proveedor, nombre_proveedor, giro_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor) VALUES 
+(76123456, '9', 'Comercializadora Makita Chile', 'Herramientas Eléctricas', 1, '+56221112222', 'ventas@makita.cl'),
+(96765432, 'K', 'Cementos Bío Bío S.A.', 'Materiales de Construcción', 2, '+56223334444', 'contacto@cbb.cl'),
+(77222333, '4', 'Pinturas Tricolor S.A.', 'Pinturas y Revestimientos', 3, '+56225556666', 'pedidos@tricolor.cl'),
+(88555666, '0', 'Hoffens S.A.', 'Fijaciones y Plásticos', 4, '+56227778888', 'ventas@hoffens.cl'),
+(99888777, '1', 'Nibsa S.A.', 'Grifería y Válvulas', 5, '+56229990000', 'comercial@nibsa.cl'),
+(76555444, '3', 'Sodimac Mayorista', 'Ferretería General', 6, '+56221234567', 'empresas@sodimac.cl'),
+(90111222, '5', 'CMPC Maderas S.A.', 'Maderas y Tableros', 7, '+56229876543', 'ventas@cmpc.cl'),
+(81222333, '7', 'Cerámicas Cordillera', 'Revestimientos', 8, '+56223456789', 'ventas@cordillera.cl'),
+(78444555, '2', 'Volcán S.A.', 'Yeso y Soluciones Constructivas', 9, '+56227654321', 'info@volcan.cl'),
+(92333444, '8', 'Bosch Chile', 'Herramientas y Accesorios', 10, '+56225432198', 'ventas.herramientas@bosch.cl');

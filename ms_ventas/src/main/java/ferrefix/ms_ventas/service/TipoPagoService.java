@@ -17,23 +17,18 @@ import ferrefix.ms_ventas.repository.TipoPagoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Servicio de negocio para la entidad TipoPago.
- * Gestiona la lógica de validación, persistencia y transformación de datos.
- */
+/* Gestiona la lógica de validación, persistencia y transformación de datos.*/
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class TipoPagoService {
-    
+    // Inyeccion de mappers, repositorio y loggers para la consola
     private static final Logger logger = LoggerFactory.getLogger(TipoPagoService.class);
-    
     private final TipoPagoRepository tipoPagoRepository;
     private final TipoPagoMapper tipoPagoMapper;
     
-    /**
-     * Obtiene todos los tipos de pago.
-     */
+    /* Obtiene todos los tipos de pago. */
+
     public List<TipoPagoResponseDTO> obtenerTodos() {
         logger.info("Iniciando búsqueda de todos los tipos de pago");
         List<TipoPagoResponseDTO> tipoPago = tipoPagoRepository.findAll().stream()
@@ -43,9 +38,8 @@ public class TipoPagoService {
         return tipoPago;
     }
     
-    /**
-     * Obtiene un tipo de pago por su ID.
-     */
+    /* Obtiene un tipo de pago por su ID */
+
     public TipoPagoResponseDTO obtenerPorId(Integer id) {
         logger.info("Iniciando búsqueda de tipo de pago con ID: {}", id);
         
@@ -66,9 +60,7 @@ public class TipoPagoService {
         return tipoPagoDTO;
     }
     
-    /**
-     * Crea un nuevo tipo de pago.
-     */
+    /* Crea un nuevo tipo de pago. */
     public TipoPagoResponseDTO crear(TipoPagoRequestDTO tipoPagoDTO) {
         logger.info("Iniciando creación de nuevo tipo de pago: {}", tipoPagoDTO.getNombreTipoPago());
         
@@ -84,6 +76,7 @@ public class TipoPagoService {
             throw new BadRequestException("Ya existe un tipo de pago con el nombre: " + tipoPagoDTO.getNombreTipoPago());
         }
         
+        // Hacemos el mapeo y guardamos en la bd
         TipoPago tipoPago = tipoPagoMapper.toEntity(tipoPagoDTO);
         
         TipoPago tipoPagoGuardado = tipoPagoRepository.save(tipoPago);
@@ -94,9 +87,7 @@ public class TipoPagoService {
         return resultado;
     }
     
-    /**
-     * Actualiza un tipo de pago existente.
-     */
+    /* Actualiza un tipo de pago existente.*/
     public TipoPagoResponseDTO actualizar(Integer id, TipoPagoRequestDTO tipoPagoDTO) {
         logger.info("Iniciando actualización de tipo de pago con ID: {}", id);
         
@@ -132,9 +123,7 @@ public class TipoPagoService {
         return resultado;
     }
     
-    /**
-     * Elimina un tipo de pago.
-     */
+    /* Elimina un tipo de pago.*/
     public void eliminar(Integer id) {
         logger.info("Iniciando eliminación de tipo de pago con ID: {}", id);
         

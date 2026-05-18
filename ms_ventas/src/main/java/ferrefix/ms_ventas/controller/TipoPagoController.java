@@ -21,22 +21,14 @@ import ferrefix.ms_ventas.service.TipoPagoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Controlador REST para la gestión de tipos de pago.
- * Maneja todas las solicitudes HTTP relacionadas con TipoPago.
- */
 @RestController
 @RequestMapping("/api/ventas/tipos-pago")
 @RequiredArgsConstructor
 public class TipoPagoController {
     
     private static final Logger logger = LoggerFactory.getLogger(TipoPagoController.class);
-
     private final TipoPagoService tipoPagoService;
 
-    /**
-     * POST - Crea un nuevo tipo de pago
-     */
     @PostMapping
     public ResponseEntity<TipoPagoResponseDTO> crear(@Valid @RequestBody TipoPagoRequestDTO dto) {
         logger.info("POST /api/ventas/tipos-pago - Solicitud para crear nuevo tipo de pago: {}", dto.getNombreTipoPago());
@@ -48,9 +40,6 @@ public class TipoPagoController {
                 .body(tipoPagoCreado);
     }
 
-    /**
-     * GET - Obtiene todos los tipos de pago
-     */
     @GetMapping
     public ResponseEntity<List<TipoPagoResponseDTO>> obtenerTodos() {
         logger.info("GET /api/ventas/tipos-pago - Solicitud para obtener todos los tipos de pago");
@@ -61,9 +50,6 @@ public class TipoPagoController {
         return ResponseEntity.ok(tiposPago);
     }
 
-    /**
-     * GET - Obtiene un tipo de pago por su ID
-     */
     @GetMapping("/{idTipoPago}")
     public ResponseEntity<TipoPagoResponseDTO> obtenerPorId(@PathVariable Integer idTipoPago) {
         logger.info("GET /api/ventas/tipos-pago/{} - Solicitud para obtener tipo de pago", idTipoPago);
@@ -74,9 +60,6 @@ public class TipoPagoController {
         return ResponseEntity.ok(tipoPago);
     }
 
-    /**
-     * PUT - Actualiza un tipo de pago existente
-     */
     @PutMapping("/{idTipoPago}")
     public ResponseEntity<TipoPagoResponseDTO> actualizar(@PathVariable Integer idTipoPago, @Valid @RequestBody TipoPagoRequestDTO dto) {
         logger.info("PUT /api/ventas/tipos-pago/{} - Solicitud para actualizar tipo de pago", idTipoPago);
@@ -87,9 +70,6 @@ public class TipoPagoController {
         return ResponseEntity.ok(tipoPagoActualizado);
     }
 
-    /**
-     * DELETE - Elimina un tipo de pago
-     */
     @DeleteMapping("/{idTipoPago}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer idTipoPago) {
         logger.info("DELETE /api/ventas/tipos-pago/{} - Solicitud para eliminar tipo de pago", idTipoPago);

@@ -8,10 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Clase que representa la estructura de respuesta de error de la API.
- * NO es un DTO de negocio, es la estructura estándar para manejar errores.
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
