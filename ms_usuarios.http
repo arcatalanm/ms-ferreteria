@@ -1,0 +1,403 @@
+### ============================================================
+###  FERREFIX — ms_usuarios
+###  Puerto directo : 8082
+###  Vía Gateway    : 8080  →  /api/usuarios/**
+###  Controladores  : CargoController
+###                   ClienteController
+###                   EmpleadoController
+###
+###  Notas clave del modelo:
+###    - Clientes y Empleados se identifican por RUN con DV
+###      formato: "XXXXXXXX-D"  (ej: "12345678-9")
+###    - Las rutas GET/PUT/DELETE de clientes y empleados
+###      usan /run/{runCliente} o /run/{runEmpleado}
+###    - fechaNacimientoCliente y fechaContratacionEmpleado
+###      usan formato @JsonFormat "dd-MM-yyyy"
+###    - idDireccion (cliente) e idCargo (empleado) son FKs
+###      a ms_direcciones y cargo respectivamente
+### ============================================================
+
+@baseUrl = http://localhost:8080
+# Para pruebas directas al microservicio, usa:
+# @baseUrl = http://localhost:8082
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 1 — CARGOS
+#  Ruta base: /api/usuarios/cargos
+#
+#  Seed: 1=Jefe de Local | 2=Vendedor Mesón | 3=Cajero
+#        4=Operario de Bodega | 5=Servicio Técnico
+# ══════════════════════════════════════════════════════════════
+
+### ─────────────────────────────────────────────────────────────
+### [CRG-1] GET — Listar todos los cargos
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/cargos
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CRG-2] GET — Obtener cargo por ID
+###               ID 1 = 'Jefe de Local' (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/cargos/1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CRG-3] POST — Crear nuevo cargo
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/cargos
+Content-Type: application/json
+
+{
+  "nombreCargo": "Supervisor de Sucursal"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CRG-4] PUT — Actualizar cargo existente (ID 5 del seed)
+###               ID 5 = 'Servicio Técnico'
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/usuarios/cargos/5
+Content-Type: application/json
+
+{
+  "nombreCargo": "Técnico en Herramientas Eléctricas"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CRG-5] DELETE — Eliminar cargo
+###                  ⚠ Solo IDs sin empleados asignados
+###                  El cargo recién creado (ID > 5) es seguro
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/usuarios/cargos/6
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CRG-E1] ERROR 400 — nombreCargo vacío
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/cargos
+Content-Type: application/json
+
+{
+  "nombreCargo": ""
+}
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 2 — CLIENTES
+#  Ruta base: /api/usuarios/clientes
+#
+#  RUNs del seed (algunos):
+#    11111111-1 → Juan Pérez Soto
+#    12222222-2 → María González Tapia
+#    66666666-6 → Consumidor Final (cliente genérico)
+#  idDireccion: IDs 1-15 existen en seed ms_direcciones
+# ══════════════════════════════════════════════════════════════
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-1] GET — Listar todos los clientes
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/clientes
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-2] GET — Obtener cliente por RUN
+###               RUN del seed: 11111111-1 → Juan Pérez Soto
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/clientes/run/11111111-1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-3] GET — Obtener cliente genérico (Consumidor Final)
+###               RUN: 66666666-6 (reservado para ventas sin cliente)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/clientes/run/66666666-6
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-4] POST — Registrar nuevo cliente
+###                idDireccion 7 = 'Av. Irarrázaval 2100, Ñuñoa'
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/clientes
+Content-Type: application/json
+
+{
+  "runCliente": "26111222-3",
+  "pnombreCliente": "Ignacio",
+  "snombreCliente": "Andrés",
+  "appaternoCliente": "Fuentes",
+  "apmaternoCliente": "Contreras",
+  "fechaNacimientoCliente": "15-06-1995",
+  "emailCliente": "ifuentes@mail.cl",
+  "contrasenaCliente": "Ferrefix2024!",
+  "telefonoCliente": "912345678",
+  "idDireccion": 7
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-5] POST — Registrar cliente SIN segundo nombre ni teléfono
+###                (ambos son opcionales según el DTO)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/clientes
+Content-Type: application/json
+
+{
+  "runCliente": "27222333-4",
+  "pnombreCliente": "Carla",
+  "appaternoCliente": "Espinoza",
+  "apmaternoCliente": "Llanos",
+  "fechaNacimientoCliente": "22-09-2001",
+  "emailCliente": "cespinoza@mail.cl",
+  "contrasenaCliente": "Pass1234!",
+  "idDireccion": 8
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-6] PUT — Actualizar cliente existente por RUN
+###               RUN: 12222222-2 → María González Tapia
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/usuarios/clientes/run/12222222-2
+Content-Type: application/json
+
+{
+  "runCliente": "12222222-2",
+  "pnombreCliente": "María",
+  "snombreCliente": "Josefina",
+  "appaternoCliente": "González",
+  "apmaternoCliente": "Tapia",
+  "fechaNacimientoCliente": "20-08-1985",
+  "emailCliente": "maria.gonzalez@mail.cl",
+  "contrasenaCliente": "NuevoPass2024!",
+  "telefonoCliente": "922222299",
+  "idDireccion": 2
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-7] DELETE — Eliminar cliente por RUN
+###                  Usar un RUN recién creado para no romper FKs
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/usuarios/clientes/run/27222333-4
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-E1] ERROR 400 — RUN con formato inválido (sin DV)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/clientes/run/12345678
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-E2] ERROR 400 — email inválido
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/clientes
+Content-Type: application/json
+
+{
+  "runCliente": "28333444-5",
+  "pnombreCliente": "Test",
+  "appaternoCliente": "Error",
+  "apmaternoCliente": "Email",
+  "fechaNacimientoCliente": "01-01-2000",
+  "emailCliente": "no-es-un-email",
+  "contrasenaCliente": "Pass1234!",
+  "idDireccion": 1
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CLI-E3] ERROR 400 — teléfono con longitud incorrecta
+###                       @Size(min=9, max=9)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/clientes
+Content-Type: application/json
+
+{
+  "runCliente": "29444555-6",
+  "pnombreCliente": "Test",
+  "appaternoCliente": "Error",
+  "apmaternoCliente": "Telefono",
+  "fechaNacimientoCliente": "01-01-2000",
+  "emailCliente": "test.tel@mail.cl",
+  "contrasenaCliente": "Pass1234!",
+  "telefonoCliente": "12345",
+  "idDireccion": 1
+}
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 3 — EMPLEADOS
+#  Ruta base: /api/usuarios/empleados
+#
+#  RUNs del seed:
+#    13444555-6 → Felipe Garrido Vidal (Cargo 1: Jefe Local)
+#    18555666-7 → Andrea Molina Bravo  (Cargo 2: Vendedor)
+#    16666777-8 → Sebastián Paredes    (Cargo 3: Cajero)
+#    19777888-9 → Daniela Castro       (Cargo 4: Bodega)
+#    14888999-0 → Hugo Reyes Silva     (Cargo 5: Técnico)
+#  idCargo: 1-5 existen en seed
+# ══════════════════════════════════════════════════════════════
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-1] GET — Listar todos los empleados
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/empleados
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-2] GET — Obtener empleado por RUN
+###               RUN del seed: 13444555-6 → Felipe Garrido
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/usuarios/empleados/run/13444555-6
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-3] POST — Registrar nuevo empleado
+###                idCargo 2 = 'Vendedor Mesón'
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/empleados
+Content-Type: application/json
+
+{
+  "rutEmpleado": "30111222-3",
+  "pnombreEmpleado": "Tomás",
+  "snombreEmpleado": "Esteban",
+  "appaternoEmpleado": "Vergara",
+  "apmaternoEmpleado": "Campos",
+  "emailEmpleado": "tvergara@ferrefix.cl",
+  "contrasenaEmpleado": "Emp2024Secure!",
+  "sueldoBaseEmpleado": 580000,
+  "fechaContratacionEmpleado": "01-03-2024",
+  "telefonoEmpleado": "945678901",
+  "idCargo": 2
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-4] POST — Registrar empleado SIN segundo nombre
+###                (snombreEmpleado es opcional en el DTO)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/empleados
+Content-Type: application/json
+
+{
+  "rutEmpleado": "31222333-4",
+  "pnombreEmpleado": "Francisca",
+  "appaternoEmpleado": "Muñoz",
+  "apmaternoEmpleado": "Valenzuela",
+  "emailEmpleado": "fmunoz@ferrefix.cl",
+  "contrasenaEmpleado": "EmpPass999!",
+  "sueldoBaseEmpleado": 520000,
+  "fechaContratacionEmpleado": "15-04-2024",
+  "telefonoEmpleado": "956789012",
+  "idCargo": 3
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-5] PUT — Actualizar empleado existente por RUN
+###               RUN del seed: 18555666-7 → Andrea Molina Bravo
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/usuarios/empleados/run/18555666-7
+Content-Type: application/json
+
+{
+  "rutEmpleado": "18555666-7",
+  "pnombreEmpleado": "Andrea",
+  "snombreEmpleado": "Carolina",
+  "appaternoEmpleado": "Molina",
+  "apmaternoEmpleado": "Bravo",
+  "emailEmpleado": "amolina@ferrefix.cl",
+  "contrasenaEmpleado": "UpdatedPass2024!",
+  "sueldoBaseEmpleado": 610000,
+  "fechaContratacionEmpleado": "15-06-2022",
+  "telefonoEmpleado": "977889911",
+  "idCargo": 2
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-6] DELETE — Dar de baja lógica a empleado por RUN
+###                  Usar un RUN recién creado para no romper FKs
+###                  activo_empleado pasa a FALSE
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/usuarios/empleados/run/31222333-4
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-E1] ERROR 400 — sueldo negativo (@Min(0))
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/empleados
+Content-Type: application/json
+
+{
+  "rutEmpleado": "32333444-5",
+  "pnombreEmpleado": "Test",
+  "appaternoEmpleado": "Error",
+  "apmaternoEmpleado": "Sueldo",
+  "emailEmpleado": "terror@ferrefix.cl",
+  "contrasenaEmpleado": "Pass1234!",
+  "sueldoBaseEmpleado": -1000,
+  "fechaContratacionEmpleado": "01-01-2024",
+  "telefonoEmpleado": "900000001",
+  "idCargo": 1
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [EMP-E2] ERROR 400 — teléfono con longitud incorrecta (≠9 dígitos)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/usuarios/empleados
+Content-Type: application/json
+
+{
+  "rutEmpleado": "33444555-6",
+  "pnombreEmpleado": "Test",
+  "appaternoEmpleado": "Error",
+  "apmaternoEmpleado": "Telefono",
+  "emailEmpleado": "ttelefono@ferrefix.cl",
+  "contrasenaEmpleado": "Pass1234!",
+  "sueldoBaseEmpleado": 500000,
+  "fechaContratacionEmpleado": "01-01-2024",
+  "telefonoEmpleado": "1234",
+  "idCargo": 1
+}

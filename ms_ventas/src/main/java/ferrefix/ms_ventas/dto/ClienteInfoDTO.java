@@ -15,6 +15,6 @@ import lombok.Setter;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ClienteInfoDTO {
-    // El run es lo unico que mostrara del cliente en la VENTA
-    private Integer runCliente;
+    // El run completo es lo unico que necesitamos del cliente en la VENTA
+    private String runClienteCompleto;
 }

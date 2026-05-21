@@ -1,80 +1,105 @@
 package ferrefix.ms_usuarios.controller;
 
+
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ferrefix.ms_usuarios.dto.ClienteRequestDTO;
 import ferrefix.ms_usuarios.dto.ClienteResponseDTO;
+import ferrefix.ms_usuarios.exception.ApiSuccessResponse;
+import ferrefix.ms_usuarios.exception.BadRequestException;
 import ferrefix.ms_usuarios.service.ClienteService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import ferrefix.ms_usuarios.util.RutUtil;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/usuarios/clientes")
+@RequiredArgsConstructor
 public class ClienteController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClienteController.class);
     private final ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<ClienteResponseDTO> registrarCliente(@Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
-        logger.info("POST /api/usuarios/clientes - Solicitud para registrar cliente RUN: {}", clienteRequestDTO.getRunCliente());
-        
-        // Recibimos el DTO desde el Service
-        ClienteResponseDTO clienteCreado = clienteService.crearCliente(clienteRequestDTO);
-        
-        logger.info("POST /api/usuarios/clientes - Cliente registrado exitosamente. Respondiendo 201 CREATED");
-        // Ajustamos la URI para que apunte a la ruta correcta (/run/12345678)
-        return ResponseEntity.created(URI.create("/api/usuarios/clientes/run/" + clienteRequestDTO.getRunCliente()))
-                .body(clienteCreado);
+    public ResponseEntity<ClienteResponseDTO> registrarCliente(
+            @Valid @RequestBody ClienteRequestDTO dto) {
+
+        logger.info("POST /api/usuarios/clientes - RUT: {}", dto.getRunCliente());
+        ClienteResponseDTO creado = clienteService.crearCliente(dto);
+        logger.info("POST /api/usuarios/clientes - Cliente creado. Respondiendo 201 CREATED");
+        return ResponseEntity
+                .created(URI.create("/api/usuarios/clientes/run/" + creado.getRunClienteCompleto()))
+                .body(creado);
     }
 
     @GetMapping
     public ResponseEntity<List<ClienteResponseDTO>> listarClientes() {
-        logger.info("GET /api/usuarios/clientes - Solicitud para listar todos los clientes");
-        List<ClienteResponseDTO> clientes = clienteService.buscarTodosClientes();
-        logger.info("GET /api/usuarios/clientes - Listado enviado con éxito. Respondiendo 200 OK");
-        return ResponseEntity.ok(clientes);
-    }
-
-    @PutMapping("/run/{runCliente}")
-    public ResponseEntity<ClienteResponseDTO> actualizarCliente(@PathVariable Integer runCliente,
-            @Valid @RequestBody ClienteRequestDTO clienteRequestDTO) {
-        logger.info("PUT /api/usuarios/clientes/run/{} - Solicitud para actualizar cliente", runCliente);
-        
-        // Ahora recibimos el DTO enriquecido directamente desde el Service
-        ClienteResponseDTO clienteActualizado = clienteService.actualizarCliente(runCliente, clienteRequestDTO);
-        
-        logger.info("PUT /api/usuarios/clientes/run/{} - Cliente actualizado. Respondiendo 200 OK", runCliente);
-        return ResponseEntity.ok(clienteActualizado);
+        logger.info("GET /api/usuarios/clientes - Listando todos los clientes");
+        List<ClienteResponseDTO> lista = clienteService.buscarTodosClientes();
+        logger.info("GET /api/usuarios/clientes - {} registros. Respondiendo 200 OK", lista.size());
+        return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/run/{runCliente}")
-    public ResponseEntity<ClienteResponseDTO> obtenerClientePorRun (@PathVariable Integer runCliente) {
-        logger.info("GET /api/usuarios/clientes/run/{} - Solicitud para obtener cliente", runCliente);
-        ClienteResponseDTO clienteDTO = clienteService.buscarClientePorRun(runCliente);
-        logger.info("GET /api/usuarios/clientes/run/{} - Cliente obtenido. Respondiendo 200 OK", runCliente);
-        return ResponseEntity.ok(clienteDTO);
+    public ResponseEntity<ClienteResponseDTO> obtenerPorRun(@PathVariable String runCliente) {
+        if (!RutUtil.esValido(runCliente)) {
+            logger.warn("RUN inválido en ruta cliente: {}", runCliente);
+            throw new BadRequestException("El RUN de la ruta debe incluir DV y ser válido.");
+        }
+        Integer run = RutUtil.extraerRun(runCliente);
+        logger.info("GET /api/usuarios/clientes/run/{} - Buscando cliente", runCliente);
+        ClienteResponseDTO dto = clienteService.buscarClientePorRun(run);
+        logger.info("GET /api/usuarios/clientes/run/{} - Encontrado. Respondiendo 200 OK", runCliente);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PutMapping("/run/{runCliente}")
+    public ResponseEntity<ClienteResponseDTO> actualizarCliente(
+            @PathVariable String runCliente,
+            @Valid @RequestBody ClienteRequestDTO dto) {
+        if (!RutUtil.esValido(runCliente)) {
+            logger.warn("RUN inválido en ruta cliente: {}", runCliente);
+            throw new BadRequestException("El RUN de la ruta debe incluir DV y ser válido.");
+        }
+        Integer run = RutUtil.extraerRun(runCliente);
+
+        logger.info("PUT /api/usuarios/clientes/run/{} - Actualizando cliente", runCliente);
+        ClienteResponseDTO actualizado = clienteService.actualizarCliente(run, dto);
+        logger.info("PUT /api/usuarios/clientes/run/{} - Actualizado. Respondiendo 200 OK", runCliente);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/run/{runCliente}")
-    public ResponseEntity<Void> eliminarClientePorRun(@PathVariable Integer runCliente) {
-        logger.info("DELETE /api/usuarios/clientes/run/{} - Solicitud para eliminar cliente", runCliente);
-        clienteService.eliminarClientePorRun(runCliente);
-        logger.info("DELETE /api/usuarios/clientes/run/{} - Cliente eliminado. Respondiendo 204 NO CONTENT", runCliente);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ApiSuccessResponse> eliminarCliente(
+            @PathVariable String runCliente,
+            HttpServletRequest request) {
+
+        if (!RutUtil.esValido(runCliente)) {
+            logger.warn("RUN inválido en ruta cliente: {}", runCliente);
+            throw new BadRequestException("El RUN de la ruta debe incluir DV y ser válido.");
+        }
+        Integer run = RutUtil.extraerRun(runCliente);
+
+        logger.info("DELETE /api/usuarios/clientes/run/{} - Solicitud de eliminación", runCliente);
+        clienteService.eliminarClientePorRun(run);
+
+        ApiSuccessResponse respuesta = ApiSuccessResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.OK.value())
+                .message("El cliente con RUN " + runCliente + " fue eliminado correctamente.")
+                .path(request.getRequestURI())
+                .build();
+
+        logger.info("DELETE /api/usuarios/clientes/run/{} - Eliminado. Respondiendo 200 OK", runCliente);
+        return ResponseEntity.ok(respuesta);
     }
 }

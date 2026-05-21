@@ -1,4 +1,4 @@
-package ferrefix.ms_usuarios.util;
+package ferrefix.ms_proveedores.util;
 
 /**
  * Utilitario estático para manejo de RUTs chilenos.

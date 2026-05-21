@@ -1,0 +1,269 @@
+### ============================================================
+###  FERREFIX — ms_inventario
+###  Puerto directo : 8081
+###  Vía Gateway    : 8080  →  /api/inventario/**
+###  Controladores  : CategoriaProductoController
+###                   UnidadMedidaController
+###                   ProductoController
+### ============================================================
+
+@baseUrl = http://localhost:8080
+# Para pruebas directas al microservicio, usa:
+# @baseUrl = http://localhost:8081
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 1 — CATEGORÍAS DE PRODUCTO
+#  Ruta base: /api/inventario/categorias
+# ══════════════════════════════════════════════════════════════
+
+### ─────────────────────────────────────────────────────────────
+### [CAT-1] GET — Listar todas las categorías
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/inventario/categorias
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CAT-2] GET — Obtener categoría por ID
+###              ID 1 = 'Herramientas Eléctricas' (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/inventario/categorias/1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CAT-3] POST — Crear nueva categoría
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/inventario/categorias
+Content-Type: application/json
+
+{
+  "nombreCategoria": "Equipos de Protección Personal"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CAT-4] PUT — Actualizar categoría existente (ID 15 del seed)
+###              ID 15 = 'Iluminación'
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/inventario/categorias/15
+Content-Type: application/json
+
+{
+  "nombreCategoria": "Iluminación LED y Eléctrica"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CAT-5] DELETE — Eliminar categoría
+###                  ⚠ Solo IDs sin productos asociados
+###                  Usar la categoría recién creada (ID > 15)
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/inventario/categorias/16
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [CAT-E1] ERROR 400 — nombreCategoria en blanco
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/inventario/categorias
+Content-Type: application/json
+
+{
+  "nombreCategoria": ""
+}
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 2 — UNIDADES DE MEDIDA
+#  Ruta base: /api/inventario/unidades_medida
+# ══════════════════════════════════════════════════════════════
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [UM-1] GET — Listar todas las unidades de medida
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/inventario/unidades_medida
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [UM-2] GET — Obtener unidad de medida por ID
+###              ID 1 = 'Unidad' (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/inventario/unidades_medida/1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [UM-3] POST — Crear nueva unidad de medida
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/inventario/unidades_medida
+Content-Type: application/json
+
+{
+  "nombreUnidadMedida": "Rollo (50m)"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [UM-4] PUT — Actualizar unidad de medida (ID 10 del seed)
+###              ID 10 = 'Pack (6u)'
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/inventario/unidades_medida/10
+Content-Type: application/json
+
+{
+  "nombreUnidadMedida": "Pack (6 Unidades)"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [UM-5] DELETE — Eliminar unidad de medida
+###                  ⚠ Solo IDs sin productos asociados
+###                  Usar la unidad recién creada (ID > 10)
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/inventario/unidades_medida/11
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [UM-E1] ERROR 400 — nombreUnidadMedida vacío
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/inventario/unidades_medida
+Content-Type: application/json
+
+{
+  "nombreUnidadMedida": ""
+}
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 3 — PRODUCTOS
+#  Ruta base: /api/inventario/productos
+#
+#  Claves del seed (Liquibase):
+#    categoria  1 = Herramientas Eléctricas | 2 = H. Manuales
+#    categoria  3 = Obra Gruesa             | 4 = Gasfitería
+#    unidadMedida 1 = Unidad | 4 = Saco (25kg) | 5 = Litro
+# ══════════════════════════════════════════════════════════════
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-1] GET — Listar todos los productos
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/inventario/productos
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-2] GET — Obtener producto por ID
+###               ID 1 = 'Taladro Percutor Makita 710W' (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/inventario/productos/1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-3] POST — Crear nuevo producto
+###               categoria 2 = Herramientas Manuales
+###               unidadMedida 1 = Unidad
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/inventario/productos
+Content-Type: application/json
+
+{
+  "categoria": 2,
+  "unidadMedida": 1,
+  "codigoBarras": "780123450099",
+  "nombre": "Nivel de Burbuja Stanley 60cm",
+  "stock": 30,
+  "precioVenta": 8900
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-4] PUT — Actualizar producto existente (ID 3 del seed)
+###               ID 3 = 'Martillo Carpintero Stanley 16oz'
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/inventario/productos/3
+Content-Type: application/json
+
+{
+  "categoria": 2,
+  "unidadMedida": 1,
+  "codigoBarras": "780123450003",
+  "nombre": "Martillo Carpintero Stanley 20oz Pro",
+  "stock": 50,
+  "precioVenta": 14500
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-5] PATCH — Descontar stock de un producto
+###                  ID 4 = 'Huincha de Medir 5m' (stock: 100)
+###                  cantidad=5  →  stock queda en 95
+### ─────────────────────────────────────────────────────────────
+PATCH {{baseUrl}}/api/inventario/productos/4/descontar-stock?cantidad=5
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-6] DELETE — Eliminar producto
+###                  ⚠ Usar ID sin FK en detalle_venta
+###                  El producto recién creado (ID > 30) es seguro
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/inventario/productos/31
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-E1] ERROR 400 — stock negativo (violación @Min(0))
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/inventario/productos
+Content-Type: application/json
+
+{
+  "categoria": 1,
+  "unidadMedida": 1,
+  "codigoBarras": "780000000001",
+  "nombre": "Producto Inválido",
+  "stock": -10,
+  "precioVenta": 5000
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRD-E2] ERROR 400 — codigoBarras excede 50 chars
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/inventario/productos
+Content-Type: application/json
+
+{
+  "categoria": 1,
+  "unidadMedida": 1,
+  "codigoBarras": "ESTE_CODIGO_ES_DEMASIADO_LARGO_SUPERA_LOS_50_CARACTERES_MAXIMOS",
+  "nombre": "Producto Código Largo",
+  "stock": 10,
+  "precioVenta": 1000
+}

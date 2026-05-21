@@ -5,11 +5,9 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,15 +21,8 @@ import lombok.Setter;
 @Setter
 @Builder
 public class EmpleadoRequestDTO {
-
-    @NotNull(message = "El run del empleado no puede ser nulo")
-    @Min(value = 1, message = "El run debe ser un número positivo")
-    @Max(value = 99999999, message = "El run no puede exceder los 8 dígitos")
-    private Integer runEmpleado;
-
-    @NotBlank(message = "El dv del empleado no puede ser nulo o vacío")
-    @Pattern(regexp = "^[0-9Kk]$", message = "El dígito verificador debe ser un número del 0-9 o la letra 'K'")
-    private String dvEmpleado;
+    @NotBlank(message = "El RUT del cliente es obligatorio (ej: 12345678-9)")
+    private String rutEmpleado;
 
     @NotBlank(message = "El primer nombre es obligatorio")
     private String pnombreEmpleado;

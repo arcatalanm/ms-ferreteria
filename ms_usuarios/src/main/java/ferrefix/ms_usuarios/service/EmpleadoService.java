@@ -4,6 +4,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import ferrefix.ms_usuarios.dto.EmpleadoRequestDTO;
 import ferrefix.ms_usuarios.dto.EmpleadoResponseDTO;
 import ferrefix.ms_usuarios.exception.BadRequestException;
@@ -28,37 +29,35 @@ public class EmpleadoService {
     private final CargoRepository cargoRepository;
     private final EmpleadoMapper empleadoMapper; // Inyectamos el Mapper
 
-    public Empleado crearEmpleado(EmpleadoRequestDTO dto) {
-        logger.info("Iniciando creación de empleado RUN: {}", dto.getRunEmpleado());
+    public EmpleadoResponseDTO crearEmpleado(EmpleadoRequestDTO dto) {
+        logger.info("Iniciando creación de empleado RUT: {}", dto.getRutEmpleado());
 
-        if (empleadoRepository.existsByRunEmpleado(dto.getRunEmpleado())) {
-            logger.warn("Conflicto al crear: El empleado RUN {} ya existe", dto.getRunEmpleado());
-            throw new BadRequestException("El empleado con run " + dto.getRunEmpleado() + " ya existe");
+        if (!RutUtil.esValido(dto.getRutEmpleado())) {
+            logger.warn("RUT inválido recibido: {}", dto.getRutEmpleado());
+            throw new BadRequestException("El RUT ingresado no es válido: " + dto.getRutEmpleado());
         }
 
-        Character dvTransformado = dto.getDvEmpleado().toUpperCase().charAt(0);
-        if (!RutUtil.isRutValido(dto.getRunEmpleado(), dvTransformado)) {
-            logger.warn("Validación fallida: El RUN {}-{} del empleado es inválido", dto.getRunEmpleado(), dvTransformado);
-            throw new BadRequestException("El run del empleado no es válido");
+        Integer run = RutUtil.extraerRun(dto.getRutEmpleado());
+        Character dv  = RutUtil.extraerDv(dto.getRutEmpleado());
+
+        if (empleadoRepository.existsById(run)) {
+            logger.warn("Conflicto: el empleado RUN {} ya existe", run);
+            throw new BadRequestException("El empleado con RUN " + run + " ya existe.");
         }
 
-        if (empleadoRepository.existsByEmailEmpleado(dto.getEmailEmpleado())) {
-            logger.warn("Conflicto al crear: El email {} ya está registrado", dto.getEmailEmpleado());
-            throw new BadRequestException("El email del empleado ya está registrado: " + dto.getEmailEmpleado());
-        }
+        validarEmailUnico(dto.getEmailEmpleado(), null);
 
         Cargo cargo = cargoRepository.findById(dto.getIdCargo())
                 .orElseThrow(() -> {
-                    logger.warn("Fallo al crear empleado: No existe el cargo ID {}", dto.getIdCargo());
+                    logger.warn("Fallo al crear empleado: Cargo ID {} no encontrado", dto.getIdCargo());
                     return new ResourceNotFoundException("No se encontró el cargo con id " + dto.getIdCargo());
                 });
 
-        // DELEGACIÓN: El Mapper arma el empleado pasándole el cargo ya validado
-        Empleado empleado = empleadoMapper.toEntity(dto, dvTransformado, cargo);
+        Empleado empleado = empleadoMapper.toEntity(dto, run, dv, cargo); // ← cargo incluido
+        Empleado guardado = empleadoRepository.save(empleado);
 
-        Empleado empleadoGuardado = empleadoRepository.save(empleado);
-        logger.info("Empleado RUN {} creado exitosamente", empleadoGuardado.getRunEmpleado());
-        return empleadoGuardado;
+        logger.info("Empleado RUN {} creado exitosamente", guardado.getRunEmpleado());
+        return empleadoMapper.toResponseDTO(guardado);
     }
 
     public List<EmpleadoResponseDTO> buscarTodosEmpleados() {
@@ -80,7 +79,7 @@ public class EmpleadoService {
                 });
     }
 
-    public Empleado actualizarEmpleado(Integer runEmpleado, EmpleadoRequestDTO dto) {
+    public EmpleadoResponseDTO actualizarEmpleado(Integer runEmpleado, EmpleadoRequestDTO dto) {
         logger.info("Iniciando actualización de empleado RUN: {}", runEmpleado);
 
         Empleado empleadoExistente = empleadoRepository.findById(runEmpleado)
@@ -88,23 +87,21 @@ public class EmpleadoService {
                     logger.warn("Fallo al actualizar: Empleado RUN {} no encontrado", runEmpleado);
                     return new ResourceNotFoundException("No se encontró el empleado con run " + runEmpleado);
                 });
-        
-        if (!runEmpleado.equals(dto.getRunEmpleado())) {
-            logger.warn("Conflicto de integridad: RUN URL ({}) no coincide con Body ({})", runEmpleado, dto.getRunEmpleado());
-            throw new BadRequestException("El run de la ruta debe coincidir con el run del cuerpo de la solicitud");
+
+        if (!RutUtil.esValido(dto.getRutEmpleado())) {
+            logger.warn("RUT inválido al actualizar: {}", dto.getRutEmpleado());
+            throw new BadRequestException("El RUT ingresado no es válido: " + dto.getRutEmpleado());
         }
 
-        Character dvTransformado = dto.getDvEmpleado().toUpperCase().charAt(0);
-        if (!RutUtil.isRutValido(dto.getRunEmpleado(), dvTransformado)) {
-            logger.warn("Validación fallida al actualizar: El RUN {}-{} es inválido", dto.getRunEmpleado(), dvTransformado);
-            throw new BadRequestException("El run del empleado no es válido");
+        Integer run = RutUtil.extraerRun(dto.getRutEmpleado());
+        Character dv  = RutUtil.extraerDv(dto.getRutEmpleado());
+
+        if (!runEmpleado.equals(run)) {
+            logger.warn("Conflicto de integridad: RUN URL ({}) no coincide con body ({})", runEmpleado, run);
+            throw new BadRequestException("El RUT del cuerpo debe corresponder al mismo empleado de la URL.");
         }
 
-        Empleado empleadoPorEmail = empleadoRepository.findByEmailEmpleado(dto.getEmailEmpleado());
-        if (empleadoPorEmail != null && !empleadoPorEmail.getRunEmpleado().equals(runEmpleado)) {
-            logger.warn("Conflicto al actualizar: Email {} ya ocupado", dto.getEmailEmpleado());
-            throw new BadRequestException("El email ya está registrado por otro empleado");
-        }
+        validarEmailUnico(dto.getEmailEmpleado(), runEmpleado);
 
         Cargo cargo = cargoRepository.findById(dto.getIdCargo())
                 .orElseThrow(() -> {
@@ -112,12 +109,11 @@ public class EmpleadoService {
                     return new ResourceNotFoundException("No se encontró el cargo con id " + dto.getIdCargo());
                 });
 
-        // DELEGACIÓN: El Mapper actualiza la entidad
-        empleadoMapper.updateEntity(empleadoExistente, dto, dvTransformado, cargo);
+        empleadoMapper.updateEntity(empleadoExistente, dto, run, dv, cargo); // ← firma nueva
+        Empleado actualizado = empleadoRepository.save(empleadoExistente);
 
-        Empleado empleadoActualizado = empleadoRepository.save(empleadoExistente);
         logger.info("Empleado RUN {} actualizado exitosamente", runEmpleado);
-        return empleadoActualizado;
+        return empleadoMapper.toResponseDTO(actualizado);
     }
 
     public void eliminarEmpleado(Integer runEmpleado) {
@@ -132,4 +128,12 @@ public class EmpleadoService {
         empleadoRepository.save(empleadoExistente);
         logger.info("Empleado RUN {} desactivado exitosamente", runEmpleado);
     }
+
+    private void validarEmailUnico(String email, Integer runActual) {
+    Empleado empleadoPorEmail = empleadoRepository.findByEmailEmpleado(email);
+    if (empleadoPorEmail != null && !empleadoPorEmail.getRunEmpleado().equals(runActual)) {
+        logger.warn("Conflicto: El email {} ya pertenece a otro empleado", email);
+        throw new BadRequestException("El email ya está registrado por otro empleado.");
+    }
+}
 }

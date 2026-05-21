@@ -45,3 +45,45 @@ El sistema cuenta con un script de automatización que compila el código Java y
 * docker exec -it 'nombre contenedor del ms' bash (conectarse al entorno aislado del micro servicio)
 * docker ps (verficar servicios activos de docker)
 
+## Diagrama de Arquitectura de Microservicios
+```mermaid
+graph TD
+    Cliente["Cliente externo"]:::gray
+
+    GW["ms-gateway\n:8080 · único punto de entrada"]:::purple
+
+    MS1["ms_inventario\nProductos · :8081"]:::teal
+    MS2["ms_usuarios\nClientes · Empleados · :8082"]:::teal
+    MS3["ms_ventas\nVentas · DetalleVenta · :8083"]:::teal
+    MS4["ms_proveedores\nProveedores · :8084"]:::teal
+    MS5["ms_direcciones\nUbicaciones · :8085"]:::teal
+
+    DB1[("db_inventario")]:::amber
+    DB2[("db_usuarios")]:::amber
+    DB3[("db_ventas")]:::amber
+    DB4[("db_proveedores")]:::amber
+    DB5[("db_direcciones")]:::amber
+
+    Cliente --> GW
+
+    GW -->|/api/inventario/**| MS1
+    GW -->|/api/usuarios/**| MS2
+    GW -->|/api/ventas/**| MS3
+    GW -->|/api/proveedores/**| MS4
+    GW -->|/api/direcciones/**| MS5
+
+    MS3 -.->|Feign: valida RUN| MS2
+    MS3 -.->|Feign: valida producto/precio| MS1
+
+    MS1 --- DB1
+    MS2 --- DB2
+    MS3 --- DB3
+    MS4 --- DB4
+    MS5 --- DB5
+
+    classDef gray    fill:#D3D1C7,stroke:#5F5E5A,color:#2C2C2A
+    classDef purple  fill:#CECBF6,stroke:#534AB7,color:#26215C
+    classDef teal    fill:#9FE1CB,stroke:#0F6E56,color:#04342C
+    classDef amber   fill:#FAC775,stroke:#854F0B,color:#412402
+    classDef future  fill:#F1EFE8,stroke:#B4B2A9,color:#888780,stroke-dasharray:6 4
+

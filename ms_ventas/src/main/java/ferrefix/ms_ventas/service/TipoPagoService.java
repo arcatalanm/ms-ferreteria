@@ -1,7 +1,6 @@
 package ferrefix.ms_ventas.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,130 +16,79 @@ import ferrefix.ms_ventas.repository.TipoPagoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-/* Gestiona la lógica de validación, persistencia y transformación de datos.*/
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class TipoPagoService {
-    // Inyeccion de mappers, repositorio y loggers para la consola
+
     private static final Logger logger = LoggerFactory.getLogger(TipoPagoService.class);
     private final TipoPagoRepository tipoPagoRepository;
     private final TipoPagoMapper tipoPagoMapper;
-    
-    /* Obtiene todos los tipos de pago. */
 
     public List<TipoPagoResponseDTO> obtenerTodos() {
-        logger.info("Iniciando búsqueda de todos los tipos de pago");
-        List<TipoPagoResponseDTO> tipoPago = tipoPagoRepository.findAll().stream()
+        logger.info("Listando todos los tipos de pago");
+        List<TipoPagoResponseDTO> lista = tipoPagoRepository.findAll().stream()
                 .map(tipoPagoMapper::toResponseDTO)
-                .collect(Collectors.toList());
-        logger.info("Búsqueda de tipos de pago completada. Total encontrados: {}", tipoPago.size());
-        return tipoPago;
+                .toList();
+        logger.info("Listado completado. Total: {}", lista.size());
+        return lista;
     }
-    
-    /* Obtiene un tipo de pago por su ID */
 
     public TipoPagoResponseDTO obtenerPorId(Integer id) {
-        logger.info("Iniciando búsqueda de tipo de pago con ID: {}", id);
-        
-        if (id == null || id <= 0) {
-            logger.warn("ID inválido para tipo de pago: {}", id);
-            throw new BadRequestException("El ID del tipo de pago debe ser mayor a 0");
-        }
-        
+        logger.info("Buscando tipo de pago ID: {}", id);
         TipoPago tipoPago = tipoPagoRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.warn("Tipo de pago no encontrado con ID: {}", id);
+                    logger.warn("404 - Tipo de pago ID {} no encontrado", id);
                     return new ResourceNotFoundException("Tipo de pago no encontrado con ID: " + id);
                 });
-        
-        TipoPagoResponseDTO tipoPagoDTO = tipoPagoMapper.toResponseDTO(tipoPago);
-        logger.info("Tipo de pago obtenido exitosamente con ID: {}", id);
-        
-        return tipoPagoDTO;
+        logger.info("Tipo de pago ID {} encontrado: '{}'", id, tipoPago.getNombreTipoPago());
+        return tipoPagoMapper.toResponseDTO(tipoPago);
     }
-    
-    /* Crea un nuevo tipo de pago. */
-    public TipoPagoResponseDTO crear(TipoPagoRequestDTO tipoPagoDTO) {
-        logger.info("Iniciando creación de nuevo tipo de pago: {}", tipoPagoDTO.getNombreTipoPago());
-        
-        // Validar que el nombre no sea nulo o vacío
-        if (tipoPagoDTO.getNombreTipoPago() == null || tipoPagoDTO.getNombreTipoPago().trim().isEmpty()) {
-            logger.warn("Intento de crear tipo de pago con nombre vacío");
-            throw new BadRequestException("El nombre del tipo de pago no puede estar vacío");
-        }
-        
-        // Validar que no exista un tipo de pago con el mismo nombre
-        if (tipoPagoRepository.existsByNombreTipoPago(tipoPagoDTO.getNombreTipoPago())) {
-            logger.warn("Intento de crear tipo de pago con nombre duplicado: {}", tipoPagoDTO.getNombreTipoPago());
-            throw new BadRequestException("Ya existe un tipo de pago con el nombre: " + tipoPagoDTO.getNombreTipoPago());
-        }
-        
-        // Hacemos el mapeo y guardamos en la bd
-        TipoPago tipoPago = tipoPagoMapper.toEntity(tipoPagoDTO);
-        
-        TipoPago tipoPagoGuardado = tipoPagoRepository.save(tipoPago);
-        
-        TipoPagoResponseDTO resultado = tipoPagoMapper.toResponseDTO(tipoPagoGuardado);
-        logger.info("Tipo de pago creado exitosamente con ID: {}", resultado.getIdTipoPago());
-        
-        return resultado;
-    }
-    
-    /* Actualiza un tipo de pago existente.*/
-    public TipoPagoResponseDTO actualizar(Integer id, TipoPagoRequestDTO tipoPagoDTO) {
-        logger.info("Iniciando actualización de tipo de pago con ID: {}", id);
-        
-        if (id == null || id <= 0) {
-            logger.warn("ID inválido para actualizar tipo de pago: {}", id);
-            throw new BadRequestException("El ID del tipo de pago debe ser mayor a 0");
-        }
-        
-        TipoPago tipoPago = tipoPagoRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.warn("Tipo de pago no encontrado para actualizar con ID: {}", id);
-                    return new ResourceNotFoundException("Tipo de pago no encontrado con ID: " + id);
-                });
-        
-        // Validar que el nombre no sea nulo o vacío
-        if (tipoPagoDTO.getNombreTipoPago() != null && !tipoPagoDTO.getNombreTipoPago().trim().isEmpty()) {
-            // Validar que no exista otro tipo de pago con el mismo nombre
-            tipoPagoRepository.findByNombreTipoPago(tipoPagoDTO.getNombreTipoPago()).ifPresent(existente -> {
-                if (!existente.getIdTipoPago().equals(id)) {
-                    logger.warn("Intento de actualizar tipo de pago con nombre duplicado: {}", tipoPagoDTO.getNombreTipoPago());
-                    throw new BadRequestException("Ya existe otro tipo de pago con el nombre: " + tipoPagoDTO.getNombreTipoPago());
-                }
-            });
-            
-            tipoPago.setNombreTipoPago(tipoPagoDTO.getNombreTipoPago());
-        }
-        
-        TipoPago tipoPagoActualizado = tipoPagoRepository.save(tipoPago);
-        
-        TipoPagoResponseDTO resultado = tipoPagoMapper.toResponseDTO(tipoPagoActualizado);
-        logger.info("Tipo de pago actualizado exitosamente con ID: {}", id);
-        
-        return resultado;
-    }
-    
-    /* Elimina un tipo de pago.*/
-    public void eliminar(Integer id) {
-        logger.info("Iniciando eliminación de tipo de pago con ID: {}", id);
-        
-        if (id == null || id <= 0) {
-            logger.warn("ID inválido para eliminar tipo de pago: {}", id);
-            throw new BadRequestException("El ID del tipo de pago debe ser mayor a 0");
-        }
-        
-        TipoPago tipoPago = tipoPagoRepository.findById(id)
-                .orElseThrow(() -> {
-                    logger.warn("Tipo de pago no encontrado para eliminar con ID: {}", id);
-                    return new ResourceNotFoundException("Tipo de pago no encontrado con ID: " + id);
-                });
-        
-        tipoPagoRepository.delete(tipoPago);
-        logger.info("Tipo de pago eliminado exitosamente con ID: {}", id);
-    }
-    
-}
 
+    public TipoPagoResponseDTO crear(TipoPagoRequestDTO dto) {
+        logger.info("Iniciando creación de tipo de pago: '{}'", dto.getNombreTipoPago());
+
+        // @Valid + @NotBlank en el DTO ya garantiza que el nombre no llegue vacío
+        if (tipoPagoRepository.existsByNombreTipoPago(dto.getNombreTipoPago())) {
+            logger.warn("Conflicto: el tipo de pago '{}' ya existe", dto.getNombreTipoPago());
+            throw new BadRequestException("Ya existe un tipo de pago con el nombre: " + dto.getNombreTipoPago());
+        }
+
+        TipoPago guardado = tipoPagoRepository.save(tipoPagoMapper.toEntity(dto));
+        logger.info("Tipo de pago '{}' creado exitosamente con ID: {}", guardado.getNombreTipoPago(), guardado.getIdTipoPago());
+        return tipoPagoMapper.toResponseDTO(guardado);
+    }
+
+    public TipoPagoResponseDTO actualizar(Integer id, TipoPagoRequestDTO dto) {
+        logger.info("Iniciando actualización de tipo de pago ID: {}", id);
+
+        TipoPago existente = tipoPagoRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.warn("404 - Tipo de pago ID {} no encontrado para actualizar", id);
+                    return new ResourceNotFoundException("Tipo de pago no encontrado con ID: " + id);
+                });
+
+        tipoPagoRepository.findByNombreTipoPago(dto.getNombreTipoPago())
+                .filter(otro -> !otro.getIdTipoPago().equals(id))
+                .ifPresent(otro -> {
+                    logger.warn("Conflicto: el nombre '{}' ya pertenece a otro tipo de pago", dto.getNombreTipoPago());
+                    throw new BadRequestException("Ya existe otro tipo de pago con el nombre: " + dto.getNombreTipoPago());
+                });
+
+        existente.setNombreTipoPago(dto.getNombreTipoPago());
+        TipoPago actualizado = tipoPagoRepository.save(existente);
+        logger.info("Tipo de pago ID {} actualizado a '{}'", id, actualizado.getNombreTipoPago());
+        return tipoPagoMapper.toResponseDTO(actualizado);
+    }
+
+    public void eliminar(Integer id) {
+        logger.info("Iniciando eliminación de tipo de pago ID: {}", id);
+        TipoPago existente = tipoPagoRepository.findById(id)
+                .orElseThrow(() -> {
+                    logger.warn("404 - Tipo de pago ID {} no encontrado para eliminar", id);
+                    return new ResourceNotFoundException("Tipo de pago no encontrado con ID: " + id);
+                });
+        tipoPagoRepository.delete(existente);
+        logger.info("Tipo de pago ID {} eliminado exitosamente", id);
+    }
+}

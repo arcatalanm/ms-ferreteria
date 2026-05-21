@@ -3,6 +3,7 @@ package ferrefix.ms_ventas.dto;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,11 +18,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class VentaRequestDTO {
-    @NotNull(message = "El runCliente es obligatorio")
-    private Integer runCliente;
+    @NotBlank(message = "El runCliente es obligatorio y debe incluir DV")
+    private String runCliente;
 
-    @NotNull(message = "El runEmpleado es obligatorio")
-    private Integer runEmpleado;
+    @NotBlank(message = "El runEmpleado es obligatorio y debe incluir DV")
+    private String runEmpleado;
 
     @NotNull(message = "El idTipoPago es obligatorio")
     private Integer idTipoPago;

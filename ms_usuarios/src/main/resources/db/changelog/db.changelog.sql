@@ -6,6 +6,7 @@ CREATE TABLE cargo (
     nombre_cargo VARCHAR(100) NOT NULL UNIQUE
 );
 
+--changeset ferrefix:2
 CREATE TABLE cliente (
     run_cliente INT PRIMARY KEY,
     dv_cliente CHAR(1) NOT NULL,
@@ -21,6 +22,7 @@ CREATE TABLE cliente (
     id_direccion_fk BIGINT NOT NULL
 );
 
+--changeset ferrefix:3
 CREATE TABLE empleado (
     run_empleado INT PRIMARY KEY,
     dv_empleado CHAR(1) NOT NULL,
@@ -38,7 +40,7 @@ CREATE TABLE empleado (
     CONSTRAINT fk_empleado_cargo FOREIGN KEY (id_cargo_fk) REFERENCES cargo(id_cargo)
 );
 
---changeset ferrefix:2
+--changeset ferrefix:4
 INSERT INTO cargo (nombre_cargo) VALUES
 ('Jefe de Local'), ('Vendedor Mesón'), ('Cajero'), ('Operario de Bodega'), ('Servicio Técnico');
 
@@ -62,7 +64,7 @@ INSERT INTO cliente (run_cliente, dv_cliente, pnombre_cliente, snombre_cliente, 
 -- REGLA DE NEGOCIO: EL USUARIO COMUN POR DEFECTO OCUPARA LA DIRECCION DE LA FERRETERIA (POR DEFAUTL)
 (66666666, '6', 'Consumidor', 'Final', 'Mesón', 'Ferretería', '2000-01-01', 'consumidor.final@mail.cl', 'no_auth_pass', '900000000', '2023-01-01', 1);
 
-INSERT INTO empleado (run_empleado, dv_empleado, pnombre_empleado, snombre_empleado, appaterno_empleado, apmaterno_empleado, email_empleado, contrasena_empleado, sueldo_base_empleado, fecha_contratacion_empleado, telephone_empleado, activo_empleado, id_cargo_fk) VALUES 
+INSERT INTO empleado (run_empleado, dv_empleado, pnombre_empleado, snombre_empleado, appaterno_empleado, apmaterno_empleado, email_empleado, contrasena_empleado, sueldo_base_empleado, fecha_contratacion_empleado, telefono_empleado, activo_empleado, id_cargo_fk) VALUES 
 (13444555, '6', 'Felipe', 'Ignacio', 'Garrido', 'Vidal', 'fgarrido@ferrefix.cl', 'emp1', 950000, '2021-03-01', '966778899', TRUE, 1),
 (18555666, '7', 'Andrea', 'Carolina', 'Molina', 'Bravo', 'amolina@ferrefix.cl', 'emp2', 550000, '2022-06-15', '977889900', TRUE, 2),
 (16666777, '8', 'Sebastián', NULL, 'Paredes', 'Navarro', 'sparedes@ferrefix.cl', 'emp3', 500000, '2023-01-10', '988990011', TRUE, 3),

@@ -1,8 +1,11 @@
 package ferrefix.ms_proveedores.controller;
 
+
 import ferrefix.ms_proveedores.dto.ProveedorRequestDTO;
 import ferrefix.ms_proveedores.dto.ProveedorResponseDTO;
+import ferrefix.ms_proveedores.exception.ApiSuccessResponse;
 import ferrefix.ms_proveedores.service.ProveedorService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -11,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -19,47 +24,64 @@ import java.util.List;
 public class ProveedorController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProveedorController.class);
-
     private final ProveedorService proveedorService;
 
     @PostMapping
-    public ResponseEntity<ProveedorResponseDTO> crearProveedor(@Valid @RequestBody ProveedorRequestDTO requestDTO) {
-        logger.info("POST /api/proveedores - Solicitud para crear proveedor");
-        ProveedorResponseDTO responseDTO = proveedorService.guardar(requestDTO);
-        logger.info("POST /api/proveedores - Proveedor creado con éxito. id={}", responseDTO.getIdProveedor());
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+    public ResponseEntity<ProveedorResponseDTO> crearProveedor(
+            @Valid @RequestBody ProveedorRequestDTO dto) {
+
+        logger.info("POST /api/proveedores - RUT: {}", dto.getRutProveedor());
+        ProveedorResponseDTO creado = proveedorService.guardar(dto);
+        logger.info("POST /api/proveedores - Proveedor creado. ID: {}. Respondiendo 201 CREATED",
+                creado.getIdProveedor());
+        return ResponseEntity
+                .created(URI.create("/api/proveedores/" + creado.getIdProveedor()))
+                .body(creado);
     }
 
     @GetMapping
     public ResponseEntity<List<ProveedorResponseDTO>> listarProveedores() {
-        logger.info("GET /api/proveedores - Solicitud para listar proveedores");
-        List<ProveedorResponseDTO> proveedores = proveedorService.listarTodos();
-        logger.info("GET /api/proveedores - Listado devuelto con éxito. total={}", proveedores.size());
-        return ResponseEntity.ok(proveedores);
+        logger.info("GET /api/proveedores - Listando todos los proveedores");
+        List<ProveedorResponseDTO> lista = proveedorService.listarTodos();
+        logger.info("GET /api/proveedores - {} registros. Respondiendo 200 OK", lista.size());
+        return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProveedorResponseDTO> obtenerProveedor(@PathVariable Integer id) {
-        logger.info("GET /api/proveedores/{} - Solicitud para obtener proveedor", id);
-        ProveedorResponseDTO responseDTO = proveedorService.buscarPorId(id);
-        logger.info("GET /api/proveedores/{} - Proveedor obtenido con éxito", id);
-        return ResponseEntity.ok(responseDTO);
+        logger.info("GET /api/proveedores/{} - Buscando proveedor", id);
+        ProveedorResponseDTO response = proveedorService.buscarPorId(id);
+        logger.info("GET /api/proveedores/{} - Encontrado. Respondiendo 200 OK", id);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProveedorResponseDTO> actualizarProveedor(@PathVariable Integer id,
-                                                                     @Valid @RequestBody ProveedorRequestDTO requestDTO) {
-        logger.info("PUT /api/proveedores/{} - Solicitud para actualizar proveedor", id);
-        ProveedorResponseDTO responseDTO = proveedorService.actualizar(id, requestDTO);
-        logger.info("PUT /api/proveedores/{} - Proveedor actualizado con éxito", id);
-        return ResponseEntity.ok(responseDTO);
+    public ResponseEntity<ProveedorResponseDTO> actualizarProveedor(
+            @PathVariable Integer id,
+            @Valid @RequestBody ProveedorRequestDTO dto) {
+
+        logger.info("PUT /api/proveedores/{} - Actualizando proveedor", id);
+        ProveedorResponseDTO actualizado = proveedorService.actualizar(id, dto);
+        logger.info("PUT /api/proveedores/{} - Actualizado. Respondiendo 200 OK", id);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProveedor(@PathVariable Integer id) {
-        logger.info("DELETE /api/proveedores/{} - Solicitud para eliminar proveedor", id);
+    public ResponseEntity<ApiSuccessResponse> eliminarProveedor(
+            @PathVariable Integer id,
+            HttpServletRequest request) {
+
+        logger.info("DELETE /api/proveedores/{} - Solicitud de eliminación", id);
         proveedorService.eliminar(id);
-        logger.info("DELETE /api/proveedores/{} - Proveedor eliminado con éxito", id);
-        return ResponseEntity.noContent().build();
+
+        ApiSuccessResponse respuesta = ApiSuccessResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.OK.value())
+                .message("El proveedor con ID " + id + " fue eliminado correctamente.")
+                .path(request.getRequestURI())
+                .build();
+
+        logger.info("DELETE /api/proveedores/{} - Eliminado. Respondiendo 200 OK", id);
+        return ResponseEntity.ok(respuesta);
     }
 }

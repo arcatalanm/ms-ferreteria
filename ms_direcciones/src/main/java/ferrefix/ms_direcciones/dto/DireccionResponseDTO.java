@@ -18,6 +18,6 @@ public class DireccionResponseDTO {
     private String departamento;
     private String comuna;
     private String ciudad;
-    // Campo enriquecido para mostrar en el frontend de forma limpia
+    // Campo para mostrar de forma limpia
     private String direccionCompleta;
 }

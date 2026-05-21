@@ -1,18 +1,20 @@
 package ferrefix.ms_usuarios.mapper;
 
 import org.springframework.stereotype.Component;
+
 import ferrefix.ms_usuarios.dto.EmpleadoRequestDTO;
 import ferrefix.ms_usuarios.dto.EmpleadoResponseDTO;
 import ferrefix.ms_usuarios.model.Cargo;
 import ferrefix.ms_usuarios.model.Empleado;
+import ferrefix.ms_usuarios.util.RutUtil;
 
 @Component
 public class EmpleadoMapper {
 
-    public Empleado toEntity(EmpleadoRequestDTO dto, Character dvChar, Cargo cargo) {
+    public Empleado toEntity(EmpleadoRequestDTO dto, Integer run, Character dv, Cargo cargo) {
         return Empleado.builder()
-                .runEmpleado(dto.getRunEmpleado())
-                .dvEmpleado(dvChar) // Usamos el validado
+                .runEmpleado(run)
+                .dvEmpleado(dv)
                 .pnombreEmpleado(dto.getPnombreEmpleado())
                 .snombreEmpleado(dto.getSnombreEmpleado())
                 .appaternoEmpleado(dto.getAppaternoEmpleado())
@@ -22,12 +24,13 @@ public class EmpleadoMapper {
                 .sueldoBaseEmpleado(dto.getSueldoBaseEmpleado())
                 .fechaContratacionEmpleado(dto.getFechaContratacionEmpleado())
                 .telefonoEmpleado(dto.getTelefonoEmpleado())
-                .cargo(cargo) // Asignamos el cargo real
+                .cargo(cargo)
                 .build();
     }
 
-    public void updateEntity(Empleado existing, EmpleadoRequestDTO dto, Character dvChar, Cargo cargo) {
-        existing.setDvEmpleado(dvChar);
+    public void updateEntity(Empleado existing, EmpleadoRequestDTO dto, Integer run, Character dv, Cargo cargo) {
+        // El run (PK) no se modifica asi que solo actualizamos los datos editables
+        existing.setDvEmpleado(dv);
         existing.setPnombreEmpleado(dto.getPnombreEmpleado());
         existing.setSnombreEmpleado(dto.getSnombreEmpleado());
         existing.setAppaternoEmpleado(dto.getAppaternoEmpleado());
@@ -41,16 +44,15 @@ public class EmpleadoMapper {
     }
 
     public EmpleadoResponseDTO toResponseDTO(Empleado empleado) {
-        String runCompleto = empleado.getRunEmpleado() + "-" + empleado.getDvEmpleado();
         String nombreCompleto = empleado.getPnombreEmpleado() + " "
                 + (empleado.getSnombreEmpleado() != null ? empleado.getSnombreEmpleado() + " " : "")
                 + empleado.getAppaternoEmpleado() + " " + empleado.getApmaternoEmpleado();
 
         return EmpleadoResponseDTO.builder()
-                .runEmpleadoCompleto(runCompleto)
+                .runEmpleadoCompleto(RutUtil.formatear(empleado.getRunEmpleado(), empleado.getDvEmpleado()))
                 .nombreEmpleadoCompleto(nombreCompleto.trim())
                 .emailEmpleado(empleado.getEmailEmpleado())
-                .telefonoEmpleado(empleado.getTelefonoEmpleado())                
+                .telefonoEmpleado(empleado.getTelefonoEmpleado())
                 .nombreCargo(empleado.getCargo().getNombreCargo())
                 .fechaContratacionEmpleado(empleado.getFechaContratacionEmpleado())
                 .build();

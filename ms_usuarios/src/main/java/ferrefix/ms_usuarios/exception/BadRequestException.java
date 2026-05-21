@@ -1,9 +1,8 @@
 package ferrefix.ms_usuarios.exception;
 
-/**
- * Excepción personalizada para manejar errores de validación de negocio (400 Bad Request).
- * Se lanza cuando hay conflictos de datos o reglas de negocio incumplidas.
- */
+
+//Excepción personalizada para manejar errores de validación de negocio (400 Bad Request).
+
 
 public class BadRequestException extends RuntimeException {
     

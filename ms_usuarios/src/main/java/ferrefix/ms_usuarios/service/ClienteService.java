@@ -31,29 +31,31 @@ public class ClienteService {
     private final DireccionClient direccionClient;
 
     public ClienteResponseDTO crearCliente(ClienteRequestDTO dto) {
-        logger.info("Iniciando creación de cliente con RUN: {}-{}", dto.getRunCliente(), dto.getDvCliente());
+        logger.info("Iniciando creación de cliente RUT: {}", dto.getRunCliente());
 
-        if (clienteRepository.existsById(dto.getRunCliente())) {
-            logger.warn("Conflicto al crear: El cliente con RUN {} ya existe", dto.getRunCliente());
-            throw new BadRequestException("El cliente con run " + dto.getRunCliente() + " ya existe");
+        // 1. Validar formato y dígito verificador (una sola línea, tolerante a formato)
+        if (!RutUtil.esValido(dto.getRunCliente())) {
+            logger.warn("RUT inválido recibido: {}", dto.getRunCliente());
+            throw new BadRequestException("El RUT ingresado no es válido: " + dto.getRunCliente());
         }
 
-        Character dvChar = dto.getDvCliente().toUpperCase().charAt(0);
-        if (!RutUtil.isRutValido(dto.getRunCliente(), dvChar)) {
-            logger.warn("Validación fallida: El RUN {}-{} es inválido", dto.getRunCliente(), dvChar);
-            throw new BadRequestException("El run del cliente no es válido");
+        // 2. Extraer partes ya validadas
+        Integer run = RutUtil.extraerRun(dto.getRunCliente());
+        Character dv = RutUtil.extraerDv(dto.getRunCliente());
+
+        // 3. Verificar duplicado por RUN (la PK real)
+        if (clienteRepository.existsById(run)) {
+            logger.warn("Conflicto: el cliente RUN {} ya existe", run);
+            throw new BadRequestException("El cliente con RUN " + run + " ya existe.");
         }
 
         validarEmailUnico(dto.getEmailCliente(), null);
 
-        // DELEGACIÓN: El Mapper construye la entidad
-        Cliente cliente = clienteMapper.toEntity(dto, dvChar);
-                
-        Cliente clienteGuardado = clienteRepository.save(cliente);
-        logger.info("Cliente creado exitosamente con RUN: {}", clienteGuardado.getRunCliente());
-        
-        // Retornamos el DTO enriquecido llamando a ms_direcciones
-        return mapToDTO(clienteGuardado);
+        Cliente cliente = clienteMapper.toEntity(dto, run, dv);
+        Cliente guardado = clienteRepository.save(cliente);
+
+        logger.info("Cliente RUN {} creado exitosamente", guardado.getRunCliente());
+        return mapToDTO(guardado);
     }
 
     public ClienteResponseDTO actualizarCliente(Integer runCliente, ClienteRequestDTO dto) {
@@ -64,27 +66,28 @@ public class ClienteService {
                     logger.warn("Fallo al actualizar: No se encontró un cliente con RUN {}", runCliente);
                     return new ResourceNotFoundException("No se encontró un cliente con run " + runCliente);
                 });
-        
-        if (!runCliente.equals(dto.getRunCliente())) {
-            logger.warn("Conflicto de integridad: El RUN URL ({}) no coincide con Body ({})", runCliente, dto.getRunCliente());
-            throw new BadRequestException("El run de la ruta debe coincidir con el run del cuerpo de la solicitud");
+
+        // Validar y extraer el RUT del body con la API nueva
+        if (!RutUtil.esValido(dto.getRunCliente())) {
+            logger.warn("RUT inválido al actualizar: {}", dto.getRunCliente());
+            throw new BadRequestException("El RUT ingresado no es válido: " + dto.getRunCliente());
         }
 
-        Character dvChar = dto.getDvCliente().toUpperCase().charAt(0);
-        if (!RutUtil.isRutValido(dto.getRunCliente(), dvChar)) {
-            logger.warn("Validación fallida al actualizar: El RUN {}-{} es inválido", dto.getRunCliente(), dvChar);
-            throw new BadRequestException("El run del cliente no es válido");
+        Integer run = RutUtil.extraerRun(dto.getRunCliente());
+        Character dv  = RutUtil.extraerDv(dto.getRunCliente());
+
+        // El RUN del body debe coincidir con el de la URL
+        if (!runCliente.equals(run)) {
+            logger.warn("Conflicto de integridad: RUN URL ({}) no coincide con body ({})", runCliente, run);
+            throw new BadRequestException("El RUT del cuerpo debe corresponder al mismo cliente de la URL.");
         }
 
         validarEmailUnico(dto.getEmailCliente(), runCliente);
 
-        // DELEGACIÓN: El Mapper actualiza los campos
-        clienteMapper.updateEntity(clienteExistente, dto, dvChar);
-
+        clienteMapper.updateEntity(clienteExistente, dto, run, dv); // ← firma nueva
         Cliente clienteActualizado = clienteRepository.save(clienteExistente);
+
         logger.info("Cliente con RUN {} actualizado exitosamente", runCliente);
-        
-        // Retornamos el DTO enriquecido llamando a ms_direcciones
         return mapToDTO(clienteActualizado);
     }
 

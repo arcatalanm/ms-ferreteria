@@ -1,54 +1,53 @@
 package ferrefix.ms_proveedores.mapper;
 
+
 import ferrefix.ms_proveedores.dto.DireccionDTO;
 import ferrefix.ms_proveedores.dto.ProveedorRequestDTO;
 import ferrefix.ms_proveedores.dto.ProveedorResponseDTO;
 import ferrefix.ms_proveedores.model.Proveedor;
+import ferrefix.ms_proveedores.util.RutUtil;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ProveedorMapper {
 
-    public Proveedor toEntity(ProveedorRequestDTO requestDTO) {
+    public Proveedor toEntity(ProveedorRequestDTO dto, Integer run, Character dv) {
         return Proveedor.builder()
-                .rutProveedor(requestDTO.getRutProveedor())
-                .dvProveedor(requestDTO.getDvProveedor().toUpperCase().charAt(0))
-                .nombreProveedor(requestDTO.getNombreProveedor())
-                .giroProveedor(requestDTO.getGiroProveedor())
-                // La direccion es un Long
-                .direccionProveedor(requestDTO.getDireccionProveedor())
-                .telefonoProveedor(requestDTO.getTelefonoProveedor())
-                .correoProveedor(requestDTO.getCorreoProveedor())
+                .rutProveedor(run)
+                .dvProveedor(dv)
+                .nombreProveedor(dto.getNombreProveedor())
+                .giroProveedor(dto.getGiroProveedor())
+                .direccionProveedor(dto.getDireccionProveedor())
+                .telefonoProveedor(dto.getTelefonoProveedor())
+                .correoProveedor(dto.getCorreoProveedor())
                 .build();
     }
 
-    public Proveedor toEntity(ProveedorRequestDTO requestDTO, Integer idProveedor) {
-        return Proveedor.builder()
-                .idProveedor(idProveedor)
-                .rutProveedor(requestDTO.getRutProveedor())
-                .dvProveedor(requestDTO.getDvProveedor().toUpperCase().charAt(0))
-                .nombreProveedor(requestDTO.getNombreProveedor())
-                .giroProveedor(requestDTO.getGiroProveedor())
-                .direccionProveedor(requestDTO.getDireccionProveedor())
-                .telefonoProveedor(requestDTO.getTelefonoProveedor())
-                .correoProveedor(requestDTO.getCorreoProveedor())
-                .build();
+    public void updateEntity(Proveedor existing, ProveedorRequestDTO dto, Integer run, Character dv) {
+        // El id (PK autoincremental) no se toca pero el rut puede cambiar si pasa por validcaiones
+        existing.setRutProveedor(run);
+        existing.setDvProveedor(dv);
+        existing.setNombreProveedor(dto.getNombreProveedor());
+        existing.setGiroProveedor(dto.getGiroProveedor());
+        existing.setDireccionProveedor(dto.getDireccionProveedor());
+        existing.setTelefonoProveedor(dto.getTelefonoProveedor());
+        existing.setCorreoProveedor(dto.getCorreoProveedor());
     }
 
     public ProveedorResponseDTO toResponseDTO(Proveedor proveedor, DireccionDTO dto) {
-        // Validacion de la direccion
-        String direccion = "Direccion no disponible";
+        String direccion = "Dirección no disponible";
 
         if (dto != null) {
             direccion = dto.getCalle() + " " + dto.getNumero();
-            // Validacion del depto
-            if (dto.getDepartamento() != null && dto.getDepartamento().isBlank()){
-                direccion += dto.getDepartamento();
+            // Bug corregido: era isBlank(), debe ser !isBlank()
+            if (dto.getDepartamento() != null && !dto.getDepartamento().isBlank()) {
+                direccion += " Depto. " + dto.getDepartamento();
             }
         }
+
         return ProveedorResponseDTO.builder()
                 .idProveedor(proveedor.getIdProveedor())
-                .rutProveedor(proveedor.getRutProveedor() + "-" + proveedor.getDvProveedor())
+                .rutProveedor(RutUtil.formatear(proveedor.getRutProveedor(), proveedor.getDvProveedor()))
                 .nombreProveedor(proveedor.getNombreProveedor())
                 .giroProveedor(proveedor.getGiroProveedor())
                 .direccionProveedor(direccion)

@@ -17,8 +17,8 @@ public interface UsuariosClient {
 
     // Hace un GET real a: http://[URL_GATEWAY]/api/usuarios/clientes/run/{runCliente}
     @GetMapping("/clientes/run/{runCliente}")
-    ClienteInfoDTO obtenerClientePorRun(@PathVariable("runCliente") Integer runCliente);
+    ClienteInfoDTO obtenerClientePorRun(@PathVariable("runCliente") String runCliente);
 
     @GetMapping("/empleados/run/{runEmpleado}")
-    EmpleadoInfoDTO obtenerEmpleadoPorRun(@PathVariable("runEmpleado") Integer runEmpleado);
+    EmpleadoInfoDTO obtenerEmpleadoPorRun(@PathVariable("runEmpleado") String runEmpleado);
 }

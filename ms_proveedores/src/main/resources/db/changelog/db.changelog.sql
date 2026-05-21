@@ -14,7 +14,7 @@ CREATE TABLE proveedor (
     CONSTRAINT UK_RUT_PROVEEDOR UNIQUE (rut_proveedor)
 );
 
---changeset ferrefix:3
+--changeset ferrefix:2
 INSERT INTO proveedor (rut_proveedor, dv_proveedor, nombre_proveedor, giro_proveedor, direccion_proveedor, telefono_proveedor, correo_proveedor) VALUES 
 (76123456, '9', 'Comercializadora Makita Chile', 'Herramientas Eléctricas', 1, '+56221112222', 'ventas@makita.cl'),
 (96765432, 'K', 'Cementos Bío Bío S.A.', 'Materiales de Construcción', 2, '+56223334444', 'contacto@cbb.cl'),

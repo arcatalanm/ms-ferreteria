@@ -1,112 +1,92 @@
 package ferrefix.ms_inventario.controller;
 
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import ferrefix.ms_inventario.dto.ProductoRequestDTO;
 import ferrefix.ms_inventario.dto.ProductoResponseDTO;
-import ferrefix.ms_inventario.model.Producto;
+import ferrefix.ms_inventario.exception.ApiSuccessResponse;
 import ferrefix.ms_inventario.service.ProductoService;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/inventario/productos")
 @RequiredArgsConstructor
 public class ProductoController {
 
-    private final ProductoService productoService;
-    
     private static final Logger logger = LoggerFactory.getLogger(ProductoController.class);
+    private final ProductoService productoService;
 
     @PostMapping
-    public ResponseEntity<ProductoResponseDTO> crearProducto(@RequestBody ProductoRequestDTO dto) {
-        logger.info("POST /api/productos - Solicitud para crear producto: '{}' con código de barras: {}", 
-                    dto.getNombre(), dto.getCodigoBarras());
-        
-        Producto productoCreado = productoService.crearProducto(dto);
-        ProductoResponseDTO response = ProductoResponseDTO.builder()
-                .id(productoCreado.getIdProducto().intValue())
-                .nombre(productoCreado.getNombreProducto())
-                .codigoBarras(productoCreado.getCodigoBarrasProducto())
-                .stock(productoCreado.getStockProducto())
-                .precioVenta(productoCreado.getPrecioVentaProducto())
-                .unidadMedida(productoCreado.getUnidadMedida().getIdUnidadMedida())
-                .categoria(productoCreado.getCategoriaProducto().getNombreCategoria())
-                .build();
-        
-        logger.info("Producto creado exitosamente. ID: {}, Nombre: '{}', Código de barras: {}", 
-                    productoCreado.getIdProducto(), productoCreado.getNombreProducto(), 
-                    productoCreado.getCodigoBarrasProducto());
-        
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<ProductoResponseDTO> crearProducto(@Valid @RequestBody ProductoRequestDTO dto) {
+
+        logger.info("POST /api/inventario/productos - Nombre: '{}' | código: {}", dto.getNombre(), dto.getCodigoBarras());
+        ProductoResponseDTO creado = productoService.crearProducto(dto);
+        logger.info("POST /api/inventario/productos - Producto creado ID: {}. Respondiendo 201 CREATED", creado.getId());
+        return ResponseEntity
+                .created(URI.create("/api/inventario/productos/" + creado.getId()))
+                .body(creado);
     }
 
     @GetMapping
     public ResponseEntity<List<ProductoResponseDTO>> buscarTodosProductos() {
-        logger.info("GET /api/productos - Solicitud para obtener listado completo de productos");
-        
-        List<ProductoResponseDTO> productos = productoService.buscarTodosProductos();
-        
-        logger.info("Listado de productos obtenido exitosamente. Total de registros: {}", productos.size());
-        
-        return ResponseEntity.ok(productos);
+        logger.info("GET /api/inventario/productos - Listando todos los productos");
+        List<ProductoResponseDTO> lista = productoService.buscarTodosProductos();
+        logger.info("GET /api/inventario/productos - {} registros. Respondiendo 200 OK", lista.size());
+        return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductoResponseDTO> buscarProductoPorId(@PathVariable Long id) {
-        logger.info("GET /api/productos/{} - Solicitud para obtener producto por ID", id);
-        
+        logger.info("GET /api/inventario/productos/{} - Buscando producto", id);
         ProductoResponseDTO producto = productoService.buscarProductoPorId(id);
-        
-        logger.info("Producto obtenido exitosamente. ID: {}, Nombre: '{}', Código de barras: {}", 
-                    producto.getId(), producto.getNombre(), producto.getCodigoBarras());
-        
+        logger.info("GET /api/inventario/productos/{} - Encontrado. Respondiendo 200 OK", id);
         return ResponseEntity.ok(producto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductoResponseDTO> actualizarProducto(@PathVariable Long id, @RequestBody ProductoRequestDTO dto) {
-        logger.info("PUT /api/productos/{} - Solicitud para actualizar producto. Nuevo nombre: '{}', Código de barras: {}", 
-                    id, dto.getNombre(), dto.getCodigoBarras());
-        
-        Producto productoActualizado = productoService.actualizarProducto(id, dto);
-        ProductoResponseDTO response = ProductoResponseDTO.builder()
-                .id(productoActualizado.getIdProducto().intValue())
-                .nombre(productoActualizado.getNombreProducto())
-                .codigoBarras(productoActualizado.getCodigoBarrasProducto())
-                .stock(productoActualizado.getStockProducto())
-                .precioVenta(productoActualizado.getPrecioVentaProducto())
-                .unidadMedida(productoActualizado.getUnidadMedida().getIdUnidadMedida())
-                .categoria(productoActualizado.getCategoriaProducto().getNombreCategoria())
-                .build();
-        
-        logger.info("Producto actualizado exitosamente. ID: {}, Nuevo nombre: '{}', Código de barras: {}", 
-                    productoActualizado.getIdProducto(), productoActualizado.getNombreProducto(), 
-                    productoActualizado.getCodigoBarrasProducto());
-        
-        return ResponseEntity.ok(response);
+    public ResponseEntity<ProductoResponseDTO> actualizarProducto(@PathVariable Long id, @Valid @RequestBody ProductoRequestDTO dto) {
+
+        logger.info("PUT /api/inventario/productos/{} - Actualizando producto", id);
+        ProductoResponseDTO actualizado = productoService.actualizarProducto(id, dto);
+        logger.info("PUT /api/inventario/productos/{} - Actualizado. Respondiendo 200 OK", id);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
-        logger.info("DELETE /api/productos/{} - Solicitud para eliminar producto", id);
-        
+    public ResponseEntity<ApiSuccessResponse> eliminarProducto(
+            @PathVariable Long id,
+            HttpServletRequest request) {
+
+        logger.info("DELETE /api/inventario/productos/{} - Solicitud de eliminación", id);
         productoService.eliminarProducto(id);
-        
-        logger.info("Producto eliminado exitosamente. ID: {}", id);
-        
-        return ResponseEntity.noContent().build();
+
+        ApiSuccessResponse respuesta = ApiSuccessResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.OK.value())
+                .message("El producto con ID " + id + " fue eliminado correctamente.")
+                .path(request.getRequestURI())
+                .build();
+
+        logger.info("DELETE /api/inventario/productos/{} - Eliminado. Respondiendo 200 OK", id);
+        return ResponseEntity.ok(respuesta);
+    }
+
+
+    @PatchMapping("/{id}/descontar-stock")
+    public ResponseEntity<Void> descontarStock(@PathVariable Long id, @RequestParam Integer cantidad) {
+        logger.info("PATCH /api/inventario/productos/{}/descontar-stock - Cantidad: {}", id, cantidad);
+        productoService.descontarStock(id, cantidad);
+        logger.info("PATCH /api/inventario/productos/{} - Stock descontado exitosamente", id);
+        return ResponseEntity.ok().build();
     }
 }

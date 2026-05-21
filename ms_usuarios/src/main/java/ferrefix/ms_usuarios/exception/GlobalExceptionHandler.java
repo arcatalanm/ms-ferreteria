@@ -1,132 +1,114 @@
 package ferrefix.ms_usuarios.exception;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Manejador global de excepciones para toda la aplicación.
- * Captura las excepciones personalizadas y las genéricas, retornando ApiErrorResponse.
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-    
-    /**
-     * Maneja BadRequestException (400 Bad Request)
-     */
+
+    // 400 Lógica de negocio 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ApiErrorResponse> handleBadRequestException(
-            BadRequestException ex, WebRequest request) {
-        
-        logger.error("BadRequestException capturada: {}", ex.getMessage());
-        
-        ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error("Bad Request")
-                .message(ex.getMessage())
-                .path(request.getDescription(false).replace("uri=", ""))
-                .build();
-        
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-    
-    /**
-     * Maneja ResourceNotFoundException (404 Not Found)
-     */
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleResourceNotFoundException(
-            ResourceNotFoundException ex, WebRequest request) {
-        
-        logger.error("ResourceNotFoundException capturada: {}", ex.getMessage());
-        
-        ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.NOT_FOUND.value())
-                .error("Not Found")
-                .message(ex.getMessage())
-                .path(request.getDescription(false).replace("uri=", ""))
-                .build();
-        
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-    
-    /**
-     * Maneja errores de validación (MethodArgumentNotValidException)
-     */
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, WebRequest request) {
-        
-        Map<String, String> fieldErrors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            fieldErrors.put(fieldName, errorMessage);
-        });
-        
-        String detailedMessage = "Errores de validación: " + fieldErrors.toString();
-        logger.warn("MethodArgumentNotValidException: {}", detailedMessage);
-        
-        ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.BAD_REQUEST.value())
-                .error("Validation Failed")
-                .message(detailedMessage)
-                .path(request.getDescription(false).replace("uri=", ""))
-                .build();
-        
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-    
-    /**
-     * Maneja excepciones genéricas no previstas
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleGenericException(
-            Exception ex, WebRequest request) {
-        
-        logger.error("Excepción no manejada: ", ex);
-        
-        ApiErrorResponse errorResponse = ApiErrorResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .error("Internal Server Error")
-                .message("Ocurrió un error interno. Por favor, contacte al administrador.")
-                .path(request.getDescription(false).replace("uri=", ""))
-                .build();
-        
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiErrorResponse> handleBadRequest(
+            BadRequestException ex, HttpServletRequest request) {
+
+        logger.warn("400 Bad Request: {} | path: {}", ex.getMessage(), request.getRequestURI());
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), request);
     }
 
-    // Manejo para Restricciones de Violaciones con otras tablas (RESTRICCION CASCADA)
+    // 400 Validación @Valid 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiErrorResponse> handleValidation(
+            MethodArgumentNotValidException ex, HttpServletRequest request) {
+
+        Map<String, String> errores = new LinkedHashMap<>();
+        for (FieldError fe : ex.getBindingResult().getFieldErrors()) {
+            errores.put(fe.getField(), fe.getDefaultMessage());
+        }
+        String mensaje = "Errores de validación: " + errores;
+        logger.warn("400 Validation: {} | path: {}", errores, request.getRequestURI());
+        return build(HttpStatus.BAD_REQUEST, mensaje, request);
+    }
+
+    // 400 JSON malformado 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiErrorResponse> handleUnreadable(
+            HttpMessageNotReadableException ex, HttpServletRequest request) {
+
+        logger.warn("400 JSON ilegible | path: {}", request.getRequestURI());
+        return build(HttpStatus.BAD_REQUEST,
+                "El cuerpo de la solicitud es inválido o está malformado.", request);
+    }
+
+    //  400 Tipo incorrecto en @PathVariable / @RequestParam
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ApiErrorResponse> handleTypeMismatch(
+            MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+
+        String tipo = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "desconocido";
+        String mensaje = String.format(
+                "El parámetro '%s' recibió '%s', se esperaba tipo: %s.",
+                ex.getName(), ex.getValue(), tipo);
+
+        logger.warn("400 Type Mismatch: {} | path: {}", mensaje, request.getRequestURI());
+        return build(HttpStatus.BAD_REQUEST, mensaje, request);
+    }
+
+    //  404 Recurso no encontrado 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleNotFound(
+            ResourceNotFoundException ex, HttpServletRequest request) {
+
+        logger.warn("404 Not Found: {} | path: {}", ex.getMessage(), request.getRequestURI());
+        return build(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    }
+
+    // 409 Violación de integridad referencial 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiErrorResponse> handleDataIntegrityViolation(
-            DataIntegrityViolationException ex, WebRequest request) {
-        
-        logger.warn("Violación de integridad de datos (Llave foránea): {}", ex.getMessage());
-        
-        ApiErrorResponse errorResponse = ApiErrorResponse.builder()
+    public ResponseEntity<ApiErrorResponse> handleDataIntegrity(
+            DataIntegrityViolationException ex, HttpServletRequest request) {
+
+        logger.warn("409 Conflict (FK): {} | path: {}", ex.getMessage(), request.getRequestURI());
+        return build(HttpStatus.CONFLICT,
+                "No se puede completar la operación: el registro está referenciado por otros datos.", request);
+    }
+
+    //  500 Error interno como por ejemplo que no se pudo hacer la peticion a otro ms
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> handleGeneric(
+            Exception ex, HttpServletRequest request) {
+
+        logger.error("500 Internal Error | path: {} | causa: {}", request.getRequestURI(), ex.getMessage(), ex);
+        return build(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Error interno inesperado. Contacte al administrador.", request);
+    }
+
+    // Asistente de Error 
+    private ResponseEntity<ApiErrorResponse> build(
+            HttpStatus status, String message, HttpServletRequest request) {
+
+        ApiErrorResponse body = ApiErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
-                .status(HttpStatus.CONFLICT.value()) // Código 409 Conflict
-                .error("Conflict")
-                .message("No se puede eliminar el registro porque está siendo utilizado o referenciado por otros datos en el sistema.")
-                .path(request.getDescription(false).replace("uri=", ""))
+                .status(status.value())
+                .error(status.getReasonPhrase())
+                .message(message)
+                .path(request.getRequestURI())
                 .build();
-        
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(body, status);
     }
 }

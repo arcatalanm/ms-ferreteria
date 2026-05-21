@@ -6,6 +6,7 @@ CREATE TABLE tipo_pago (
     nombre_tipo_pago VARCHAR(50) NOT NULL UNIQUE
 );
 
+--changeset ferrefix:2
 CREATE TABLE venta (
     id_venta BIGINT AUTO_INCREMENT PRIMARY KEY,
     fecha_venta DATETIME NOT NULL,
@@ -16,6 +17,7 @@ CREATE TABLE venta (
     CONSTRAINT fk_venta_tipo_pago FOREIGN KEY (id_tipo_pago_fk) REFERENCES tipo_pago(id_tipo_pago)
 );
 
+--changeset ferrefix:3
 CREATE TABLE detalle_venta (
     id_detalle BIGINT AUTO_INCREMENT PRIMARY KEY,
     id_producto_fk BIGINT NOT NULL,
@@ -25,7 +27,7 @@ CREATE TABLE detalle_venta (
     CONSTRAINT fk_detalle_venta_venta FOREIGN KEY (id_venta) REFERENCES venta(id_venta)
 );
 
---changeset ferrefix:2
+--changeset ferrefix:4
 INSERT INTO tipo_pago (nombre_tipo_pago) VALUES 
 ('Efectivo'), ('Tarjeta de Débito'), ('Tarjeta de Crédito'), ('Transferencia Bancaria'), ('Crédito Ferretería');
 

@@ -12,16 +12,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ApiErrorResponse {
-    
+// Controlador de Respuestas exitosas 
+public class ApiSuccessResponse {
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime timestamp;
-    
-    private Integer status;
-    
-    private String error;
-    
-    private String message;
-    
-    private String path;
+
+    private Integer status;   // Ej: 200
+
+    private String message;   // Ej: "Dirección eliminada correctamente."
+
+    private String path;      // Ej: "/api/direcciones/5"
 }

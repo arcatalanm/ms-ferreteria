@@ -1,10 +1,15 @@
 package ferrefix.ms_usuarios.controller;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ferrefix.ms_usuarios.dto.CargoRequestDTO;
 import ferrefix.ms_usuarios.dto.CargoResponseDTO;
+import ferrefix.ms_usuarios.exception.ApiSuccessResponse;
 import ferrefix.ms_usuarios.model.Cargo;
 import ferrefix.ms_usuarios.service.CargoService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/usuarios/cargos")
@@ -64,10 +68,20 @@ public class CargoController {
     }
 
     @DeleteMapping("/{idCargo}")
-    public ResponseEntity<Void> eliminarCargo(@PathVariable Integer idCargo) {
+    public ResponseEntity<ApiSuccessResponse> eliminarCargo(
+            @PathVariable Integer idCargo,
+            HttpServletRequest request) {
         logger.info("DELETE /api/usuarios/cargos/{} - Solicitud para eliminar cargo", idCargo);
         cargoService.eliminarCargo(idCargo);
-        logger.info("DELETE /api/usuarios/cargos/{} - Cargo eliminado. Respondiendo 204 NO CONTENT", idCargo);
-        return ResponseEntity.noContent().build();
+
+        ApiSuccessResponse respuesta = ApiSuccessResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.OK.value())
+                .message("El cargo con ID " + idCargo + " fue eliminado correctamente.")
+                .path(request.getRequestURI())
+                .build();
+
+        logger.info("DELETE /api/usuarios/cargos/{} - Cargo eliminado. Respondiendo 200 OK", idCargo);
+        return ResponseEntity.ok(respuesta);
     }
 }

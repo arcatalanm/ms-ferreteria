@@ -1,15 +1,18 @@
 package ferrefix.ms_direcciones.controller;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ferrefix.ms_direcciones.dto.DireccionRequestDTO;
 import ferrefix.ms_direcciones.dto.DireccionResponseDTO;
+import ferrefix.ms_direcciones.exception.ApiSuccessResponse;
 import ferrefix.ms_direcciones.service.DireccionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,10 +60,18 @@ public class DireccionController {
     }
 
     @DeleteMapping("/{idDireccion}")
-    public ResponseEntity<Void> eliminarDireccion(@PathVariable Long idDireccion) {
+    public ResponseEntity<ApiSuccessResponse> eliminarDireccion(@PathVariable Long idDireccion) {
         logger.info("DELETE /api/direcciones/{} - Solicitud recibida para eliminar dirección", idDireccion);
         direccionService.eliminarDireccion(idDireccion);
-        logger.info("DELETE /api/direcciones/{} - Dirección eliminada. Respondiendo 204 NO CONTENT", idDireccion);
-        return ResponseEntity.noContent().build();
-    }
+
+        ApiSuccessResponse response = ApiSuccessResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.OK.value())
+                .message("La dirección con ID " + idDireccion + " fue eliminada correctamente.")
+                .path("/api/direcciones/" + idDireccion)
+                .build();
+
+        logger.info("DELETE /api/direcciones/{} - Dirección eliminada exitosamente. Respondiendo 200 OK", idDireccion);
+        return ResponseEntity.ok(response);
+}
 }

@@ -1,0 +1,318 @@
+### ============================================================
+###  FERREFIX — ms_ventas
+###  Puerto directo : 8083
+###  Vía Gateway    : 8080  →  /api/ventas/**
+###  Controladores  : TipoPagoController
+###                   VentaController
+###
+###  Notas clave del modelo:
+###    - VentaController NO tiene PUT (las ventas son inmutables)
+###    - runCliente y runEmpleado van con DV: "XXXXXXXX-D"
+###    - idTipoPago: 1=Efectivo | 2=Débito | 3=Crédito
+###                  4=Transferencia | 5=Crédito Ferretería
+###    - detalles: lista de {idProducto, cantidad}
+###      idProducto: IDs 1-30 existen en seed ms_inventario
+###    - Ventas del seed: IDs 1-20; Detalles: ~28 registros
+### ============================================================
+
+@baseUrl = http://localhost:8080
+# Para pruebas directas al microservicio, usa:
+# @baseUrl = http://localhost:8083
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 1 — TIPOS DE PAGO
+#  Ruta base: /api/ventas/tipos-pago
+#
+#  Seed: 1=Efectivo | 2=Tarjeta de Débito | 3=Tarjeta Crédito
+#        4=Transferencia Bancaria | 5=Crédito Ferretería
+# ══════════════════════════════════════════════════════════════
+
+### ─────────────────────────────────────────────────────────────
+### [TP-1] GET — Listar todos los tipos de pago
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/tipos-pago
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [TP-2] GET — Obtener tipo de pago por ID
+###               ID 3 = 'Tarjeta de Crédito' (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/tipos-pago/3
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [TP-3] POST — Crear nuevo tipo de pago
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas/tipos-pago
+Content-Type: application/json
+
+{
+  "nombreTipoPago": "Vale Vista"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [TP-4] PUT — Actualizar tipo de pago existente (ID 5 del seed)
+###              ID 5 = 'Crédito Ferretería'
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/ventas/tipos-pago/5
+Content-Type: application/json
+
+{
+  "nombreTipoPago": "Cuenta Corriente Ferrefix"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [TP-5] DELETE — Eliminar tipo de pago
+###                  ⚠ Solo IDs sin ventas asociadas
+###                  El tipo recién creado (ID > 5) es seguro
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/ventas/tipos-pago/6
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [TP-E1] ERROR 400 — nombreTipoPago vacío
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas/tipos-pago
+Content-Type: application/json
+
+{
+  "nombreTipoPago": ""
+}
+
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 2 — VENTAS
+#  Ruta base: /api/ventas
+#
+#  RUNs de clientes del seed (ms_usuarios):
+#    11111111-1 = Juan Pérez | 12222222-2 = María González
+#    66666666-6 = Consumidor Final (ventas en mesón)
+#
+#  RUNs de empleados del seed (ms_usuarios):
+#    13444555-6 = Felipe Garrido  | 18555666-7 = Andrea Molina
+#    16666777-8 = Sebastián Paredes
+#
+#  Productos del seed (ms_inventario, stock disponible):
+#    ID 3 = Martillo Stanley     (stock 45)
+#    ID 4 = Huincha de Medir 5m  (stock 100)
+#    ID 7 = Llave de Paso 1/2    (stock 80)
+#    ID 13 = Silicona Agorex     (stock 85)
+#    ID 24 = Guantes Cabritilla  (stock 150)
+# ══════════════════════════════════════════════════════════════
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-1] GET — Listar todas las ventas
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-2] GET — Obtener ventas por RUN de cliente
+###               66666666-6 = Consumidor Final (tiene varias ventas)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/run/66666666-6
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-3] GET — Obtener ventas de un cliente registrado
+###               12222222-2 = María González (ventas IDs 2 y 17)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/run/12222222-2
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-4] GET — Listar detalles de una venta
+###               Venta ID 8 tiene 4 detalles (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/8/detalles
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-5] GET — Obtener un detalle específico de una venta
+###               Venta ID 1, Detalle ID 1
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/1/detalles/1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-6] POST — Crear venta completa (cliente registrado)
+###                Cliente: 11111111-1 (Juan Pérez)
+###                Empleado: 18555666-7 (Andrea Molina)
+###                Pago: 2 = Tarjeta de Débito
+###                Productos: Martillo (3) x2 + Huincha (4) x1
+###
+###  ⚠ El backend descuenta stock vía ms_inventario (PATCH)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas
+Content-Type: application/json
+
+{
+  "runCliente": "11111111-1",
+  "runEmpleado": "18555666-7",
+  "idTipoPago": 2,
+  "detalles": [
+    {
+      "idProducto": 3,
+      "cantidad": 2
+    },
+    {
+      "idProducto": 4,
+      "cantidad": 1
+    }
+  ]
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-7] POST — Venta en mesón (Consumidor Final genérico)
+###                Cliente: 66666666-6 (Consumidor Final)
+###                Empleado: 13444555-6 (Felipe Garrido)
+###                Pago: 1 = Efectivo
+###                Productos: Silicona Agorex (13) x3
+###                           Guantes Cabritilla (24) x2
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas
+Content-Type: application/json
+
+{
+  "runCliente": "66666666-6",
+  "runEmpleado": "13444555-6",
+  "idTipoPago": 1,
+  "detalles": [
+    {
+      "idProducto": 13,
+      "cantidad": 3
+    },
+    {
+      "idProducto": 24,
+      "cantidad": 2
+    }
+  ]
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-8] POST — Venta múltiple (varios productos, pago crédito)
+###                Empleado: 16666777-8 (Sebastián Paredes)
+###                Pago: 3 = Tarjeta de Crédito
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas
+Content-Type: application/json
+
+{
+  "runCliente": "14444444-4",
+  "runEmpleado": "16666777-8",
+  "idTipoPago": 3,
+  "detalles": [
+    {
+      "idProducto": 7,
+      "cantidad": 1
+    },
+    {
+      "idProducto": 13,
+      "cantidad": 2
+    },
+    {
+      "idProducto": 4,
+      "cantidad": 5
+    }
+  ]
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-9] DELETE — Eliminar venta por ID
+###                  ⚠ Usar un ID de venta recién creada
+###                  Las ventas del seed (1-20) deben preservarse
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/ventas/21
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-E1] ERROR 400 — Lista de detalles vacía (@NotEmpty)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas
+Content-Type: application/json
+
+{
+  "runCliente": "11111111-1",
+  "runEmpleado": "13444555-6",
+  "idTipoPago": 1,
+  "detalles": []
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-E2] ERROR 400 — cantidad menor a 1 (@Min(1))
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas
+Content-Type: application/json
+
+{
+  "runCliente": "11111111-1",
+  "runEmpleado": "13444555-6",
+  "idTipoPago": 1,
+  "detalles": [
+    {
+      "idProducto": 3,
+      "cantidad": 0
+    }
+  ]
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-E3] ERROR 400 — runCliente sin DV
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/ventas
+Content-Type: application/json
+
+{
+  "runCliente": "11111111",
+  "runEmpleado": "13444555-6",
+  "idTipoPago": 1,
+  "detalles": [
+    {
+      "idProducto": 3,
+      "cantidad": 1
+    }
+  ]
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-E4] ERROR 404 — Venta inexistente al listar detalles
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/9999/detalles
+Accept: application/json

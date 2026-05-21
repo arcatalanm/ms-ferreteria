@@ -1,26 +1,18 @@
 package ferrefix.ms_inventario.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-
 public class ProductoResponseDTO {
-    private Integer id;
+    private Long id;
     private String codigoBarras;
-
     private String nombre;
-    
     private Integer stock;
     private Integer precioVenta;
-
-    private Integer unidadMedida;
+    private String unidadMedida;
     private String categoria;
 }

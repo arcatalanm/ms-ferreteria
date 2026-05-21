@@ -12,6 +12,6 @@ import ferrefix.ms_proveedores.dto.DireccionDTO;
     path = "/api/direcciones")
     
 public interface DireccionClient {
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     DireccionDTO obtenerDireccionPorId(@PathVariable("id") Long id);
 }

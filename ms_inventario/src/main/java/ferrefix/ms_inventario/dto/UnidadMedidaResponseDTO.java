@@ -13,8 +13,6 @@ import lombok.Setter;
 @Builder
 
 public class UnidadMedidaResponseDTO {
-    // No es necesario validar ya que viene validado desde la base de datos
-
     private Integer idUnidadMedida;
 
     private String nombreUnidadMedida;

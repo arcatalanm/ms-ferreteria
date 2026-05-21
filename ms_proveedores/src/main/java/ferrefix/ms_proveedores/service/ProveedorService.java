@@ -1,5 +1,7 @@
 package ferrefix.ms_proveedores.service;
 
+
+import feign.FeignException;
 import ferrefix.ms_proveedores.client.DireccionClient;
 import ferrefix.ms_proveedores.dto.DireccionDTO;
 import ferrefix.ms_proveedores.dto.ProveedorRequestDTO;
@@ -9,120 +11,126 @@ import ferrefix.ms_proveedores.exception.ResourceNotFoundException;
 import ferrefix.ms_proveedores.mapper.ProveedorMapper;
 import ferrefix.ms_proveedores.model.Proveedor;
 import ferrefix.ms_proveedores.repository.ProveedorRepository;
+import ferrefix.ms_proveedores.util.RutUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import feign.FeignException;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ProveedorService {
 
-    private final ProveedorRepository proveedorRepository;
-    private final ProveedorMapper proveedorMapper;
-    private final DireccionClient direccionClient; // Cliente Feign
     private static final Logger logger = LoggerFactory.getLogger(ProveedorService.class);
 
-    public ProveedorResponseDTO guardar(ProveedorRequestDTO requestDTO) {
-        logger.info("Inicio de operación: crear proveedor - rut={}", requestDTO.getRutProveedor());
+    private final ProveedorRepository proveedorRepository;
+    private final ProveedorMapper proveedorMapper;
+    private final DireccionClient direccionClient;
 
-        proveedorRepository.findByRutProveedor(requestDTO.getRutProveedor())
-                .ifPresent(existente -> {
-                    logger.warn("Conflicto de negocio: el rut ya existe para proveedor id={}", existente.getIdProveedor());
-                    throw new BadRequestException("El rut del proveedor ya está registrado.");
-                });
+    public ProveedorResponseDTO guardar(ProveedorRequestDTO dto) {
+        logger.info("Iniciando creación de proveedor RUT: {}", dto.getRutProveedor());
 
-        Proveedor proveedor = proveedorMapper.toEntity(requestDTO);
-        Proveedor savedProveedor = proveedorRepository.save(proveedor);
+        if (!RutUtil.esValido(dto.getRutProveedor())) {
+            logger.warn("RUT inválido recibido: {}", dto.getRutProveedor());
+            throw new BadRequestException("El RUT ingresado no es válido: " + dto.getRutProveedor());
+        }
 
-        logger.info("Proveedor creado con éxito. id={}", savedProveedor.getIdProveedor());
-        
-        // Usamos mapToDTO para incluir la dirección del otro microservicio
-        return mapToDTO(savedProveedor);
+        Integer run = RutUtil.extraerRun(dto.getRutProveedor());
+        Character dv  = RutUtil.extraerDv(dto.getRutProveedor());
+
+        proveedorRepository.findByRutProveedor(run).ifPresent(existente -> {
+            logger.warn("Conflicto: el RUT {} ya está registrado para el proveedor ID {}",
+                    run, existente.getIdProveedor());
+            throw new BadRequestException("El RUT del proveedor ya está registrado.");
+        });
+
+        Proveedor proveedor = proveedorMapper.toEntity(dto, run, dv);
+        Proveedor guardado = proveedorRepository.save(proveedor);
+
+        logger.info("Proveedor creado exitosamente. ID: {}", guardado.getIdProveedor());
+        return mapToDTO(guardado);
     }
 
     public List<ProveedorResponseDTO> listarTodos() {
-        logger.info("Inicio de operación: listar proveedores");
-        List<Proveedor> proveedores = proveedorRepository.findAll();
-        logger.info("Listado de proveedores devuelto con éxito. total={}", proveedores.size());
-        
-        // Transformamos cada entidad usando el método que llama a Direcciones
-        return proveedores.stream()
+        logger.info("Iniciando listado de todos los proveedores");
+        List<ProveedorResponseDTO> lista = proveedorRepository.findAll().stream()
                 .map(this::mapToDTO)
-                .collect(Collectors.toList());
+                .toList();
+        logger.info("Listado completado. Total: {}", lista.size());
+        return lista;
     }
 
     public ProveedorResponseDTO buscarPorId(Integer id) {
-        logger.info("Inicio de operación: buscar proveedor por id={}", id);
+        logger.info("Buscando proveedor por ID: {}", id);
         Proveedor proveedor = proveedorRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.warn("Proveedor no encontrado. id={}", id);
-                    return new ResourceNotFoundException("Proveedor con ID " + id + " no encontrado");
+                    logger.warn("404 - Proveedor ID {} no encontrado", id);
+                    return new ResourceNotFoundException("Proveedor con ID " + id + " no encontrado.");
                 });
-        
-        logger.info("Proveedor encontrado con éxito. id={}", id);
+        logger.info("Proveedor ID {} encontrado exitosamente", id);
         return mapToDTO(proveedor);
     }
 
-    public ProveedorResponseDTO actualizar(Integer id, ProveedorRequestDTO requestDTO) {
-        logger.info("Inicio de operación: actualizar proveedor id={}", id);
+    public ProveedorResponseDTO actualizar(Integer id, ProveedorRequestDTO dto) {
+        logger.info("Iniciando actualización de proveedor ID: {}", id);
 
-        Proveedor proveedorExistente = proveedorRepository.findById(id)
+        Proveedor existente = proveedorRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.warn("Proveedor no encontrado para actualizar. id={}", id);
-                    return new ResourceNotFoundException("Proveedor con ID " + id + " no encontrado");
+                    logger.warn("404 - Proveedor ID {} no encontrado para actualizar", id);
+                    return new ResourceNotFoundException("Proveedor con ID " + id + " no encontrado.");
                 });
 
-        proveedorRepository.findByRutProveedor(requestDTO.getRutProveedor())
-                .filter(existente -> !existente.getIdProveedor().equals(id))
-                .ifPresent(existente -> {
-                    logger.warn("Conflicto de negocio: el rut ya está en uso por proveedor id={}", existente.getIdProveedor());
-                    throw new BadRequestException("El rut del proveedor ya está registrado para otro proveedor.");
+        if (!RutUtil.esValido(dto.getRutProveedor())) {
+            logger.warn("RUT inválido al actualizar: {}", dto.getRutProveedor());
+            throw new BadRequestException("El RUT ingresado no es válido: " + dto.getRutProveedor());
+        }
+
+        Integer run = RutUtil.extraerRun(dto.getRutProveedor());
+        Character dv  = RutUtil.extraerDv(dto.getRutProveedor());
+
+        // Verificar que el nuevo RUT no pertenezca a otro proveedor
+        proveedorRepository.findByRutProveedor(run)
+                .filter(otro -> !otro.getIdProveedor().equals(id))
+                .ifPresent(otro -> {
+                    logger.warn("Conflicto: el RUT {} ya pertenece al proveedor ID {}", run, otro.getIdProveedor());
+                    throw new BadRequestException("El RUT ya está registrado para otro proveedor.");
                 });
 
-        Proveedor updatedProveedor = proveedorMapper.toEntity(requestDTO, id);
-        Proveedor savedProveedor = proveedorRepository.save(updatedProveedor);
+        // Mutar la entidad existente en vez de reconstruirla (patrón updateEntity)
+        proveedorMapper.updateEntity(existente, dto, run, dv);
+        Proveedor actualizado = proveedorRepository.save(existente);
 
-        logger.info("Proveedor actualizado con éxito. id={}", id);
-        return mapToDTO(savedProveedor);
+        logger.info("Proveedor ID {} actualizado exitosamente", id);
+        return mapToDTO(actualizado);
     }
 
     public void eliminar(Integer id) {
-        logger.info("Inicio de operación: eliminar proveedor id={}", id);
+        logger.info("Iniciando eliminación de proveedor ID: {}", id);
         if (!proveedorRepository.existsById(id)) {
-            logger.warn("Proveedor no encontrado para eliminar. id={}", id);
-            throw new ResourceNotFoundException("Proveedor con ID " + id + " no encontrado");
+            logger.warn("404 - Proveedor ID {} no encontrado para eliminar", id);
+            throw new ResourceNotFoundException("Proveedor con ID " + id + " no encontrado.");
         }
         proveedorRepository.deleteById(id);
-        logger.info("Proveedor eliminado con éxito. id={}", id);
+        logger.info("Proveedor ID {} eliminado exitosamente", id);
     }
 
-    /**
-     * Método interno que orquesta la integración con ms_direcciones.
-     * Si la dirección no existe o el microservicio falla, devuelve la data parcial.
-     */
+    // ─── Helper privado ───────────────────────────────────────────────────────
     private ProveedorResponseDTO mapToDTO(Proveedor proveedor) {
         DireccionDTO direccionDTO = null;
         try {
-            // Verificamos que el proveedor tenga un ID de dirección asociado en la entidad
             if (proveedor.getDireccionProveedor() != null) {
                 direccionDTO = direccionClient.obtenerDireccionPorId(proveedor.getDireccionProveedor());
             }
         } catch (FeignException.NotFound ex) {
-            logger.warn("Direccion ID {} no encontrada para el proveedor ID {}", 
-                        proveedor.getDireccionProveedor(), proveedor.getIdProveedor());
+            logger.warn("Dirección ID {} no encontrada para proveedor ID {}",
+                    proveedor.getDireccionProveedor(), proveedor.getIdProveedor());
         } catch (FeignException ex) {
             logger.error("Fallo de comunicación con ms_direcciones: {}", ex.getMessage());
         }
-
-        // Pasamos tanto la entidad como el DTO (que puede ser null) al Mapper
         return proveedorMapper.toResponseDTO(proveedor, direccionDTO);
     }
 }

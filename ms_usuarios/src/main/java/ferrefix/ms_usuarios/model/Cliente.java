@@ -77,7 +77,7 @@ public class Cliente {
     @Column(name = "fecha_registro_cliente")
     private LocalDate fechaRegistroCliente;
 
-    // --- NUEVO CAMPO: FK Lógica al ms_direcciones ---
+    // apunta al ms_direcciones
     @NotNull(message = "El ID de la dirección no puede ser nulo")
     @Column(name = "id_direccion_fk", nullable = false)
     private Long idDireccion;

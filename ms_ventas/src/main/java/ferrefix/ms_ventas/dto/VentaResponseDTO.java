@@ -19,10 +19,14 @@ import lombok.Setter;
 
 public class VentaResponseDTO {
     private Long idVenta;
+    
+    private String runCliente;
 
+    private String runEmpleado;
     // Obtenemos dia-mes-año hora:minuto:segundo
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime fechaVenta;
+
 
     private Integer totalVenta;
 

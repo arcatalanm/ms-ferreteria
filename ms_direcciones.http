@@ -1,0 +1,108 @@
+### ============================================================
+###  FERREFIX — ms_direcciones
+###  Puerto directo : 8085
+###  Vía Gateway    : 8080  →  /api/direcciones/**
+###  Controlador    : DireccionController
+### ============================================================
+
+@baseUrl = http://localhost:8080
+# Para pruebas directas al microservicio, usa:
+# @baseUrl = http://localhost:8085
+
+### ─────────────────────────────────────────────────────────────
+### [1] GET — Listar todas las direcciones
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/direcciones
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [2] GET — Obtener dirección por ID
+###         ID 1 = 'Av. Los Libertadores 1204, Rancagua' (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/direcciones/1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [3] POST — Crear nueva dirección
+###           Todos los campos @NotBlank/@NotNull son obligatorios
+###           departamento es opcional (puede omitirse o ser null)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/direcciones
+Content-Type: application/json
+
+{
+  "calle": "Av. Vicuña Mackenna",
+  "numero": 4860,
+  "departamento": "Bodega 7A",
+  "comuna": "San Joaquín",
+  "ciudad": "Santiago"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [4] POST — Crear dirección SIN departamento (campo opcional)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/direcciones
+Content-Type: application/json
+
+{
+  "calle": "Av. Grecia",
+  "numero": 2750,
+  "comuna": "Ñuñoa",
+  "ciudad": "Santiago"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [5] PUT — Actualizar dirección existente (ID 5 del seed)
+###          ID 5 = 'Av. Providencia 2550, Providencia'
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/direcciones/5
+Content-Type: application/json
+
+{
+  "calle": "Av. Providencia",
+  "numero": 2600,
+  "departamento": "Oficina 305",
+  "comuna": "Providencia",
+  "ciudad": "Santiago"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [6] DELETE — Eliminar dirección por ID
+###             ⚠ Usa un ID sin FK activa para evitar errores
+###             El seed tiene 15 registros; IDs 11-15 son seguros
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/direcciones/15
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [E1] ERROR 404 — ID inexistente
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/direcciones/9999
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [E2] ERROR 400 — Cuerpo inválido (calle vacía, numero null)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/direcciones
+Content-Type: application/json
+
+{
+  "calle": "",
+  "numero": null,
+  "comuna": "Santiago",
+  "ciudad": "Santiago"
+}

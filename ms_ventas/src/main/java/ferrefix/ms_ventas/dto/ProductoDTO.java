@@ -1,18 +1,16 @@
 package ferrefix.ms_ventas.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductoDTO {
-    private Long idProducto;
+    private Long id;
     private String nombre;
     private Integer precioVenta;
     private Integer stock;

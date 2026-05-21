@@ -1,0 +1,137 @@
+### ============================================================
+###  FERREFIX — ms_proveedores
+###  Puerto directo : 8084
+###  Vía Gateway    : 8080  →  /api/proveedores/**
+###  Controlador    : ProveedorController
+###
+###  Notas del modelo:
+###    - rutProveedor se envía como String "XXXXXXXX-DV"
+###      El backend separa rut y dv internamente
+###    - direccionProveedor es Long (FK a ms_direcciones)
+###      IDs 1-15 existen en el seed de ms_direcciones
+### ============================================================
+
+@baseUrl = http://localhost:8080
+# Para pruebas directas al microservicio, usa:
+# @baseUrl = http://localhost:8084
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-1] GET — Listar todos los proveedores
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/proveedores
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-2] GET — Obtener proveedor por ID
+###               ID 1 = 'Comercializadora Makita Chile' (seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/proveedores/1
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-3] POST — Crear nuevo proveedor
+###               direccionProveedor 6 = 'Av. Irarrázaval 2100, Ñuñoa'
+###               (ID 6 existe en seed de ms_direcciones)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/proveedores
+Content-Type: application/json
+
+{
+  "rutProveedor": "78901234-5",
+  "nombreProveedor": "Distribuidora Truper Chile",
+  "giroProveedor": "Herramientas y Equipos de Jardinería",
+  "direccionProveedor": 6,
+  "telefonoProveedor": "+56228889900",
+  "correoProveedor": "ventas@truper.cl"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-4] PUT — Actualizar proveedor existente (ID 3 del seed)
+###               ID 3 = 'Pinturas Tricolor S.A.'
+### ─────────────────────────────────────────────────────────────
+PUT {{baseUrl}}/api/proveedores/3
+Content-Type: application/json
+
+{
+  "rutProveedor": "77222333-4",
+  "nombreProveedor": "Pinturas Tricolor S.A.",
+  "giroProveedor": "Pinturas, Revestimientos y Barnices",
+  "direccionProveedor": 3,
+  "telefonoProveedor": "+56225556699",
+  "correoProveedor": "comercial@tricolor.cl"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-5] DELETE — Eliminar proveedor
+###                   Usar ID del proveedor recién creado (ID > 10)
+###                   para no romper FKs del seed
+### ─────────────────────────────────────────────────────────────
+DELETE {{baseUrl}}/api/proveedores/11
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-E1] ERROR 400 — RUT con formato incorrecto
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/proveedores
+Content-Type: application/json
+
+{
+  "rutProveedor": "RUT-INVALIDO",
+  "nombreProveedor": "Empresa Inválida",
+  "giroProveedor": "Test",
+  "direccionProveedor": 1,
+  "telefonoProveedor": "+56221111111",
+  "correoProveedor": "test@test.cl"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-E2] ERROR 400 — correo con formato inválido
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/proveedores
+Content-Type: application/json
+
+{
+  "rutProveedor": "76543210-K",
+  "nombreProveedor": "Empresa Test",
+  "giroProveedor": "Comercio",
+  "direccionProveedor": 1,
+  "telefonoProveedor": "+56229876543",
+  "correoProveedor": "esto-no-es-un-email"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-E3] ERROR 400 — teléfono fuera del rango (8-15 dígitos)
+### ─────────────────────────────────────────────────────────────
+POST {{baseUrl}}/api/proveedores
+Content-Type: application/json
+
+{
+  "rutProveedor": "76543211-8",
+  "nombreProveedor": "Empresa Test 2",
+  "giroProveedor": "Comercio",
+  "direccionProveedor": 1,
+  "telefonoProveedor": "123",
+  "correoProveedor": "test2@empresa.cl"
+}
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [PRV-E4] ERROR 404 — ID de proveedor inexistente
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/proveedores/9999
+Accept: application/json

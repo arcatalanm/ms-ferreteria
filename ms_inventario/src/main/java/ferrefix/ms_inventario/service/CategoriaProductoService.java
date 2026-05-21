@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import ferrefix.ms_inventario.dto.CategoriaProductoRequestDTO;
 import ferrefix.ms_inventario.dto.CategoriaProductoResponseDTO;
+import ferrefix.ms_inventario.exception.BadRequestException;
+import ferrefix.ms_inventario.exception.ResourceNotFoundException;
+import ferrefix.ms_inventario.mapper.CategoriaProductoMapper;
 import ferrefix.ms_inventario.model.CategoriaProducto;
 import ferrefix.ms_inventario.repository.CategoriaProductoRepository;
 import jakarta.transaction.Transactional;
@@ -17,83 +20,76 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class CategoriaProductoService {
-    // Inyectando el repositorio
-    private final CategoriaProductoRepository categoriaProductoRepository;
-    // Inyectando logger de la clase {slf4j}
-    private static final Logger logger = LoggerFactory.getLogger(CategoriaProductoService.class);
 
-    public CategoriaProducto crearCategoriaProducto(CategoriaProductoRequestDTO dto) {
-        logger.info("Creando Categoria del Producto");
+    private static final Logger logger = LoggerFactory.getLogger(CategoriaProductoService.class);
+    private final CategoriaProductoRepository categoriaProductoRepository;
+
+    // Inyeccion de los mapper para los mappeos
+    private final CategoriaProductoMapper categoriaProductoMapper;
+
+    public CategoriaProductoResponseDTO crearCategoriaProducto(CategoriaProductoRequestDTO dto) {
+        logger.info("Iniciando creación de categoría: '{}'", dto.getNombreCategoria());
+
         if (categoriaProductoRepository.existsByNombreCategoria(dto.getNombreCategoria())) {
-            logger.warn("Fallo al crear: La categoria del producto con nombre '{}' ya existe", dto.getNombreCategoria());
-            throw new IllegalArgumentException("La categoría de producto '" + dto.getNombreCategoria() + "' ya existe");
+            logger.warn("Conflicto: la categoría '{}' ya existe", dto.getNombreCategoria());
+            throw new BadRequestException("La categoría de producto '" + dto.getNombreCategoria() + "' ya existe.");
         }
 
-        CategoriaProducto categoria = CategoriaProducto.builder()
-                .nombreCategoria(dto.getNombreCategoria())
-                .build();
-        logger.info("Categoria '{}' guardada exitosamente con ID: {}", dto.getNombreCategoria(), categoria.getIdCategoria());
-        return categoriaProductoRepository.save(categoria);
+        CategoriaProducto guardada = categoriaProductoMapper.toEntity(dto);
+        guardada = categoriaProductoRepository.save(guardada);
+        logger.info("Categoría '{}' creada exitosamente con ID: {}", guardada.getNombreCategoria(), guardada.getIdCategoria());
+        return categoriaProductoMapper.toResponseDTO(guardada);
     }
 
     public List<CategoriaProductoResponseDTO> buscarTodasCategorias() {
-        logger.info("Listando todas las categorias de productos");
-        return categoriaProductoRepository.findAll().stream()
-                .map(this::toResponse)
+        logger.info("Listando todas las categorías de productos");
+        List<CategoriaProductoResponseDTO> lista = categoriaProductoRepository.findAll().stream()
+                .map(cat -> categoriaProductoMapper.toResponseDTO(cat))
                 .toList();
+        logger.info("Listado completado. Total: {}", lista.size());
+        return lista;
     }
 
-    public CategoriaProductoResponseDTO buscarCategoriaPorId(Integer idCategoria) {
-        logger.info("Buscando categoria de producto por ID: {}", idCategoria);
-
-        CategoriaProducto categoria = categoriaProductoRepository.findById(idCategoria)
+    public CategoriaProductoResponseDTO buscarCategoriaPorId(Integer id) {
+        logger.info("Buscando categoría por ID: {}", id);
+        CategoriaProducto categoria = categoriaProductoRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.warn("Busqueda fallida: No se encontro la categoria con ID: {}", idCategoria);
-                    return new IllegalArgumentException("No se encontró la categoría de producto con id: " + idCategoria);
+                    logger.warn("404 - Categoría ID {} no encontrada", id);
+                    return new ResourceNotFoundException("No se encontró la categoría con id: " + id);
                 });
-                
-        logger.info("Categoria encontrada: {}", categoria.getNombreCategoria());
-        return toResponse(categoria);
+        logger.info("Categoría ID {} encontrada: '{}'", id, categoria.getNombreCategoria());
+        return categoriaProductoMapper.toResponseDTO(categoria);
     }
 
-    public CategoriaProducto actualizarCategoriaProducto(Integer idCategoria, CategoriaProductoRequestDTO dto) {
-        logger.info("Actualizando categoria de producto con ID: {}", idCategoria);
-        
-        CategoriaProducto categoriaExistente = categoriaProductoRepository.findById(idCategoria)
+    public CategoriaProductoResponseDTO actualizarCategoriaProducto(Integer id, CategoriaProductoRequestDTO dto) {
+        logger.info("Iniciando actualización de categoría ID: {}", id);
+
+        CategoriaProducto existente = categoriaProductoRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.warn("Fallo al actualizar: No se encontro la categoria con ID: {}", idCategoria);
-                    return new IllegalArgumentException("No se encontró la categoría de producto con id: " + idCategoria);
+                    logger.warn("404 - Categoría ID {} no encontrada para actualizar", id);
+                    return new ResourceNotFoundException("No se encontró la categoría con id: " + id);
                 });
 
         if (categoriaProductoRepository.existsByNombreCategoria(dto.getNombreCategoria())
-                && !categoriaExistente.getNombreCategoria().equalsIgnoreCase(dto.getNombreCategoria())) {
-            logger.warn("Conflicto al actualizar: La categoria con nombre '{}' ya existe en otro registro", dto.getNombreCategoria());
-            throw new IllegalArgumentException("La categoría de producto '" + dto.getNombreCategoria() + "' ya existe");
+                && !existente.getNombreCategoria().equalsIgnoreCase(dto.getNombreCategoria())) {
+            logger.warn("Conflicto: el nombre '{}' ya pertenece a otra categoría", dto.getNombreCategoria());
+            throw new BadRequestException("La categoría de producto '" + dto.getNombreCategoria() + "' ya existe.");
         }
 
-        categoriaExistente.setNombreCategoria(dto.getNombreCategoria());
-        // Categoria actualizada con los valores del dto
-        CategoriaProducto categoriaActualizada = categoriaProductoRepository.save(categoriaExistente);
-        
-        logger.info("Categoria con ID: {} actualizada exitosamente al nuevo nombre: '{}'", idCategoria, dto.getNombreCategoria());
-        return categoriaActualizada;
+        // Aplicando actualizacion de la entidad con el Response DTO
+        categoriaProductoMapper.updateEntity(existente, dto);
+        CategoriaProducto actualizada = categoriaProductoRepository.save(existente);
+        logger.info("Categoría ID {} actualizada exitosamente a '{}'", id, actualizada.getNombreCategoria());
+        return categoriaProductoMapper.toResponseDTO(actualizada);
     }
 
-    public void eliminarCategoriaProducto(Integer idCategoria) {
-        logger.info("Inciando eliminacion de categoria con ID: {}", idCategoria);
-        if (!categoriaProductoRepository.existsById(idCategoria)) {
-            logger.warn("Fallo al eliminar: No se encontro la categoria con ID: {}", idCategoria);
-            throw new IllegalArgumentException("No se encontró la categoría de producto con id: " + idCategoria);
+    public void eliminarCategoriaProducto(Integer id) {
+        logger.info("Iniciando eliminación de categoría ID: {}", id);
+        if (!categoriaProductoRepository.existsById(id)) {
+            logger.warn("404 - Categoría ID {} no encontrada para eliminar", id);
+            throw new ResourceNotFoundException("No se encontró la categoría con id: " + id);
         }
-        categoriaProductoRepository.deleteById(idCategoria);
-        // Podemos ejecutar esto despues del deleById porque es una funcion void
-        logger.info("Categoria con ID: {} eliminada exitosamente", idCategoria);
-    }
-
-    private CategoriaProductoResponseDTO toResponse(CategoriaProducto categoriaProducto) {
-        return CategoriaProductoResponseDTO.builder()
-                .idCategoria(categoriaProducto.getIdCategoria())
-                .nombreCategoria(categoriaProducto.getNombreCategoria())
-                .build();
+        categoriaProductoRepository.deleteById(id);
+        logger.info("Categoría ID {} eliminada exitosamente", id);
     }
 }
