@@ -11,20 +11,10 @@ import ferrefix.ms_inventario.model.UnidadMedida;
 @Component
 public class ProductoMapper {
     // Metodo para convertir un DTO a una Entity
-    public Producto toEntity(ProductoRequestDTO dto) {
-        // Construimos la categoría del producto a partir del ID proporcionado en el DTO
-        CategoriaProducto categoriaProducto = CategoriaProducto.builder()
-            .idCategoria(dto.getCategoria())
-            .build();
-
-        // Construimos la unidad del producto a partir de su id
-        UnidadMedida unidadMedida = UnidadMedida.builder()
-            .idUnidadMedida(dto.getUnidadMedida())
-            .build();
-
-        // Construimos y Retornamos al Entity Producto 
+    public Producto toEntity(ProductoRequestDTO dto, CategoriaProducto categoria, UnidadMedida unidadMedida) {
+        // Construimos y Retornamos al Entity Producto
         return Producto.builder()
-            .categoriaProducto(categoriaProducto)
+            .categoriaProducto(categoria)
             .unidadMedida(unidadMedida)
             .codigoBarrasProducto(dto.getCodigoBarras())
             .nombreProducto(dto.getNombre())
@@ -47,23 +37,13 @@ public class ProductoMapper {
     }
 
     // Metodo para actualizar una Entity x un DTO
-    public void updateEntity(Producto entity, ProductoRequestDTO dto) {
-        // Construimos la categoría del producto a partir del ID proporcionado en el DTO
-        CategoriaProducto categoriaProducto = CategoriaProducto.builder()
-            .idCategoria(dto.getCategoria())
-            .build();
-
-        // Construimos la unidad del producto a partir de su id
-        UnidadMedida unidadMedida = UnidadMedida.builder()
-            .idUnidadMedida(dto.getUnidadMedida())
-            .build();
-
+    public void updateEntity(Producto entity, ProductoRequestDTO dto, CategoriaProducto categoria, UnidadMedida unidadMedida) {
         // EL ID NO LO CAMBIARE POR MOTIVOS DE EVITAR ERRORES EN LOS ID Y CHOQUES ENTRE ELLOS
         entity.setCodigoBarrasProducto(dto.getCodigoBarras());
         entity.setNombreProducto(dto.getNombre());
         entity.setStockProducto(dto.getStock());
         entity.setPrecioVentaProducto(dto.getPrecioVenta());
         entity.setUnidadMedida(unidadMedida);
-        entity.setCategoriaProducto(categoriaProducto);
+        entity.setCategoriaProducto(categoria);
     }
 }

@@ -41,12 +41,12 @@ POST {{baseUrl}}/api/proveedores
 Content-Type: application/json
 
 {
-  "rutProveedor": "78901234-5",
-  "nombreProveedor": "Distribuidora Truper Chile",
+  "rutProveedor": "41222643-0",
+  "nombreProveedor": "Sodimac",
   "giroProveedor": "Herramientas y Equipos de Jardinería",
   "direccionProveedor": 6,
   "telefonoProveedor": "+56228889900",
-  "correoProveedor": "ventas@truper.cl"
+  "correoProveedor": "sodi@gmail.com"
 }
 
 ###
@@ -74,7 +74,7 @@ Content-Type: application/json
 ###                   Usar ID del proveedor recién creado (ID > 10)
 ###                   para no romper FKs del seed
 ### ─────────────────────────────────────────────────────────────
-DELETE {{baseUrl}}/api/proveedores/11
+DELETE {{baseUrl}}/api/proveedores/10
 Accept: application/json
 
 ###

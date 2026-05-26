@@ -11,7 +11,9 @@ import ferrefix.ms_inventario.dto.ProductoResponseDTO;
 import ferrefix.ms_inventario.exception.BadRequestException;
 import ferrefix.ms_inventario.exception.ResourceNotFoundException;
 import ferrefix.ms_inventario.mapper.ProductoMapper;
+import ferrefix.ms_inventario.model.CategoriaProducto;
 import ferrefix.ms_inventario.model.Producto;
+import ferrefix.ms_inventario.model.UnidadMedida;
 import ferrefix.ms_inventario.repository.CategoriaProductoRepository;
 import ferrefix.ms_inventario.repository.ProductoRepository;
 import ferrefix.ms_inventario.repository.UnidadMedidaRepository;
@@ -40,19 +42,17 @@ public class ProductoService {
             throw new BadRequestException("Ya existe un producto con el código de barras " + dto.getCodigoBarras());
         }
         // Validacion para evitar inconsistencia por si no encuentra el recurso
-        categoriaProductoRepository.findById(dto.getCategoria())
+        CategoriaProducto categoria = categoriaProductoRepository.findById(dto.getCategoria())
             .orElseThrow(() -> new ResourceNotFoundException("La categoría ID " + dto.getCategoria() + " no existe."));
             
-        unidadMedidaRepository.findById(dto.getUnidadMedida())
+        UnidadMedida unidadMedida = unidadMedidaRepository.findById(dto.getUnidadMedida())
             .orElseThrow(() -> new ResourceNotFoundException("La unidad de medida ID " + dto.getUnidadMedida() + " no existe."));   
 
-        Producto productoGuardado = productoMapper.toEntity(dto);
+        Producto productoGuardado = productoMapper.toEntity(dto, categoria, unidadMedida);
         // Guardando la entidad en la base de datos
         productoGuardado = productoRepository.save(productoGuardado);
-        Producto productoCreado = productoRepository.findById(productoGuardado.getIdProducto())
-                .orElse(productoGuardado);
         logger.info("Producto '{}' creado exitosamente con ID interno: {}", dto.getNombre(), productoGuardado.getIdProducto());
-        return productoMapper.toDTO(productoCreado);
+        return productoMapper.toDTO(productoGuardado);
     }
 
     public List<ProductoResponseDTO> buscarTodosProductos() {
@@ -90,21 +90,19 @@ public class ProductoService {
                 });
         
         // Validando las relaciones para evitar errores 500
-        categoriaProductoRepository.findById(dto.getCategoria())
+        CategoriaProducto categoria = categoriaProductoRepository.findById(dto.getCategoria())
             .orElseThrow(() -> new ResourceNotFoundException("La categoría ID " + dto.getCategoria() + " no existe."));
             
-        unidadMedidaRepository.findById(dto.getUnidadMedida())
+        UnidadMedida unidadMedida = unidadMedidaRepository.findById(dto.getUnidadMedida())
                 .orElseThrow(() -> new ResourceNotFoundException("La unidad de medida ID " + dto.getUnidadMedida() + " no existe."));
 
         // Aplicando actualizacion de la entidad
-        productoMapper.updateEntity(productoExistente, dto);
+        productoMapper.updateEntity(productoExistente, dto, categoria, unidadMedida);
         // Guardando entidad actualizada a la base de datos
         productoExistente = productoRepository.save(productoExistente);
-        Producto productoActualizado = productoRepository.findById(productoExistente.getIdProducto())
-                .orElse(productoExistente);
         logger.info("Producto ID {} ('{}') actualizado correctamente", idProducto, dto.getNombre());
         // Retornamos el producto actualizado como DTO
-        return productoMapper.toDTO(productoActualizado);
+        return productoMapper.toDTO(productoExistente);
     }
 
     public void eliminarProducto(Long idProducto) {

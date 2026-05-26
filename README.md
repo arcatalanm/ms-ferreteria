@@ -23,7 +23,7 @@ Antes de levantar el proyecto, asegúrate de tener instalado:
 ## ⚙️ Instalación y Despliegue
 
 El sistema cuenta con un script de automatización que compila el código Java y levanta el entorno de producción en un solo paso.
-
+0. Instalar JDK 21: sdk install java 21.0.2-tem
 1. Abre una terminal de comandos (CMD o PowerShell) en la raíz del proyecto.
 2. Ejecuta el archivo batch:
     Esto creará los ejecutables.jar de cada micro servicio (./mvnw clean package -DskipTests)
@@ -48,42 +48,49 @@ El sistema cuenta con un script de automatización que compila el código Java y
 ## Diagrama de Arquitectura de Microservicios
 ```mermaid
 graph TD
-    Cliente["Cliente externo"]:::gray
+    title[<h1>Ecosistema de Microservicios: Ferrefix</h1>]:::titleStyle
 
-    GW["ms-gateway\n:8080 · único punto de entrada"]:::purple
+    Cliente["Cliente externo (Postman / Frontend)"]:::gray
+
+    GW["ms-gateway\n:8080 · Spring Cloud Gateway MVC"]:::purple
 
     MS1["ms_inventario\nProductos · :8081"]:::teal
     MS2["ms_usuarios\nClientes · Empleados · :8082"]:::teal
     MS3["ms_ventas\nVentas · DetalleVenta · :8083"]:::teal
     MS4["ms_proveedores\nProveedores · :8084"]:::teal
-    MS5["ms_direcciones\nUbicaciones · :8085"]:::teal
+    MS5["ms_direcciones\nDirecciones · :8085"]:::teal
 
-    DB1[("db_inventario")]:::amber
-    DB2[("db_usuarios")]:::amber
-    DB3[("db_ventas")]:::amber
-    DB4[("db_proveedores")]:::amber
-    DB5[("db_direcciones")]:::amber
+    DB1[("db_inventario\n(MySQL 8.0)")]:::amber
+    DB2[("db_usuarios\n(MySQL 8.0)")]:::amber
+    DB3[("db_ventas\n(MySQL 8.0)")]:::amber
+    DB4[("db_proveedores\n(MySQL 8.0)")]:::amber
+    DB5[("db_direcciones\n(MySQL 8.0)")]:::amber
 
+    %% Flujo de Entrada
     Cliente --> GW
 
+    %% Enrutamiento del Gateway
     GW -->|/api/inventario/**| MS1
     GW -->|/api/usuarios/**| MS2
     GW -->|/api/ventas/**| MS3
     GW -->|/api/proveedores/**| MS4
     GW -->|/api/direcciones/**| MS5
 
-    MS3 -.->|Feign: valida RUN| MS2
-    MS3 -.->|Feign: valida producto/precio| MS1
+    %% Comunicaciones Inter-servicio mediante OpenFeign
+    MS3 -.->|Feign: valida RUN Cliente/Emp| MS2
+    MS3 -.->|Feign: consulta Precio/Stock| MS1
+    MS4 -.->|Feign: resuelve idDireccion| MS5
 
+    %% Persistencia Independiente (Database-per-service)
     MS1 --- DB1
     MS2 --- DB2
     MS3 --- DB3
     MS4 --- DB4
     MS5 --- DB5
 
-    classDef gray    fill:#D3D1C7,stroke:#5F5E5A,color:#2C2C2A
-    classDef purple  fill:#CECBF6,stroke:#534AB7,color:#26215C
-    classDef teal    fill:#9FE1CB,stroke:#0F6E56,color:#04342C
-    classDef amber   fill:#FAC775,stroke:#854F0B,color:#412402
-    classDef future  fill:#F1EFE8,stroke:#B4B2A9,color:#888780,stroke-dasharray:6 4
-
+    %% Estilos Visuales
+    classDef gray     fill:#D3D1C7,stroke:#5F5E5A,color:#2C2C2A
+    classDef purple   fill:#CECBF6,stroke:#534AB7,color:#26215C
+    classDef teal     fill:#9FE1CB,stroke:#0F6E56,color:#04342C
+    classDef amber    fill:#FAC775,stroke:#854F0B,color:#412402
+    classDef titleStyle fill:none,stroke:none,color:#26215C
