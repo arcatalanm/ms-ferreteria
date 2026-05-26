@@ -140,13 +140,13 @@ POST {{baseUrl}}/api/usuarios/clientes
 Content-Type: application/json
 
 {
-  "runCliente": "26111222-3",
-  "pnombreCliente": "Ignacio",
+  "runCliente": "21687838-8",
+  "pnombreCliente": "Sandra",
   "snombreCliente": "Andrés",
   "appaternoCliente": "Fuentes",
   "apmaternoCliente": "Contreras",
   "fechaNacimientoCliente": "15-06-1995",
-  "emailCliente": "ifuentes@mail.cl",
+  "emailCliente": "ifuenstes@mail.cl",
   "contrasenaCliente": "Ferrefix2024!",
   "telefonoCliente": "912345678",
   "idDireccion": 7
@@ -292,12 +292,12 @@ POST {{baseUrl}}/api/usuarios/empleados
 Content-Type: application/json
 
 {
-  "rutEmpleado": "30111222-3",
-  "pnombreEmpleado": "Tomás",
+  "rutEmpleado": "22169412-0",
+  "pnombreEmpleado": "Ariel",
   "snombreEmpleado": "Esteban",
   "appaternoEmpleado": "Vergara",
   "apmaternoEmpleado": "Campos",
-  "emailEmpleado": "tvergara@ferrefix.cl",
+  "emailEmpleado": "tvergarssa@ferrefix.cl",
   "contrasenaEmpleado": "Emp2024Secure!",
   "sueldoBaseEmpleado": 580000,
   "fechaContratacionEmpleado": "01-03-2024",

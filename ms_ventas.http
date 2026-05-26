@@ -170,8 +170,8 @@ POST {{baseUrl}}/api/ventas
 Content-Type: application/json
 
 {
-  "runCliente": "66666666-6",
-  "runEmpleado": "14888999-0",
+  "runCliente": "21687838-8",
+  "runEmpleado": "22169412-0",
   "idTipoPago": 2,
   "detalles": [
     {

@@ -1,12 +1,10 @@
 Personas (RUTs de prueba limpios y con guión):
-    19503124-7
-    18432109-K
-    16234987-6
-    12345678-5
-    21943821-2
+    21687838-8
+    13516660-k
+    21777606-6
 
 Empresas / Proveedores (RUTs > 50 millones para ms_proveedores o empresas):
-    76543210-K
-    76885332-9
-    96555444-3
-    55666777-2
+    60910000-1
+    76194238-7
+    77234810-K
+    76043210-2
