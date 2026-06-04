@@ -9,10 +9,9 @@ import ferrefix.ms_ventas.dto.EmpleadoInfoDTO;
 // Cliente Feign para comunicarse con el microservicio de Usuarios (ms_usuarios).
 
 @FeignClient(
-    name = "ms-usuarios-client",
-    url = "${api.gateway.url}",
-    path = "/api/usuarios")
-    
+    name = "ms-usuarios",
+    path = "/api/usuarios"
+)
 public interface UsuariosClient {
 
     // Hace un GET real a: http://[URL_GATEWAY]/api/usuarios/clientes/run/{runCliente}

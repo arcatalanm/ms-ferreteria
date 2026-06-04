@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import ferrefix.ms_usuarios.dto.DireccionDTO;
 
 @FeignClient(
-    name = "ms-direcciones-client", // nombre
-    url = "${api.gateway.url}", // Puerto 8085
-    path = "/api/direcciones" // ruta deffault
+    name = "ms-direcciones",
+    path = "/api/direcciones"
 )
 public interface DireccionClient {
     @GetMapping("/{id}")

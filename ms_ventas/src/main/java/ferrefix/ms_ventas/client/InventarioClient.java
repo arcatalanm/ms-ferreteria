@@ -12,10 +12,9 @@ import ferrefix.ms_ventas.dto.ProductoDTO;
 // Cliente Feign sirve para comunicarse con el microservicio de Inventario (ms_inventario).
 
 @FeignClient(
-            name = "ms-inventario-client",
-            url = "${api.gateway.url}",
-            path = "/api/inventario")
-            
+            name = "ms-inventario",
+            path = "/api/inventario"
+        )     
 public interface InventarioClient {
 
     @GetMapping("/productos/{idProducto}")
