@@ -1,0 +1,24 @@
+### Listar todas las máquinas
+GET http://localhost:8087/api/arriendos/maquinas
+
+### Registrar nueva máquina
+POST http://localhost:8087/api/arriendos/maquinas
+Content-Type: application/json
+
+{
+    "codigoInterno": "TAL-001",
+    "nombreMaquina": "Taladro Percutor DeWalt",
+    "precioPorDia": 5000
+}
+
+### Procesar Arriendo (Éxito si el cliente existe en ms-usuarios)
+PUT http://localhost:8087/api/arriendos/maquinas/1/arrendar
+Content-Type: application/json
+
+{
+    "runCliente": 12345678,
+    "diasArriendo": 3
+}
+
+### Procesar Devolución
+PUT http://localhost:8087/api/arriendos/maquinas/1/devolver
