@@ -1,0 +1,27 @@
+### Listar todas las marcas
+GET http://localhost:8086/api/marcas
+
+### Obtener una marca por ID
+GET http://localhost:8086/api/marcas/1
+
+### Crear una nueva marca
+POST http://localhost:8086/api/marcas
+Content-Type: application/json
+
+{
+    "nombreMarca": "Sata"
+}
+
+### Actualizar una marca
+PUT http://localhost:8086/api/marcas/1
+Content-Type: application/json
+
+{
+    "nombreMarca": "Bosch Professional"
+}
+
+### Eliminar una marca
+DELETE http://localhost:8086/api/marcas/11
+
+###  Vía Gateway (si estuviera configurado)
+### GET http://localhost:8080/api/marcas
