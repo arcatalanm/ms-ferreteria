@@ -4,12 +4,17 @@ echo "Iniciando limpieza y empaquetado de Microservicios - Ferrefix"
 
 # Lista de carpetas actualizadas con los ms
 servicios=(
+    "ms_eureka_server"
     "api-gateway"
     "ms_direcciones"
     "ms_usuarios"
     "ms_inventario"
     "ms_proveedores"
     "ms_ventas"
+    "ms_marcas"
+    "ms_arriendo"
+    "ms_compras"
+    "ms_sugerencia"
 )
 
 for ms in "${servicios[@]}"

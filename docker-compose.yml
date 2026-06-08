@@ -318,6 +318,59 @@ services:
       start_period: 30s
     restart: unless-stopped
 
+  # ============================================================
+  # MS-SUGERENCIA
+  # ============================================================
+  ms-sugerencia:
+    image: ms-ferreteria/ms-sugerencia:latest
+    build: ./ms_sugerencia
+    container_name: ms-sugerencia
+    ports:
+      - "8009:8009"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8009
+      - SPRING_APPLICATION_NAME=ms-sugerencia
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-sugerencia:3306/ferrefix_sugerencia?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=ferrefix_user
+      - SPRING_DATASOURCE_PASSWORD=ferrefix_pass
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - JAVA_OPTS=-Xmx512m -Xms256m
+    networks:
+      - ferrefix-net
+    depends_on:
+      mysql-sugerencia:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8009/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  mysql-sugerencia:
+    image: mysql:8.0
+    container_name: mysql-sugerencia
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_pass
+      - MYSQL_DATABASE=ferrefix_sugerencia
+      - MYSQL_USER=ferrefix_user
+      - MYSQL_PASSWORD=ferrefix_pass
+    networks:
+      - ferrefix-net
+    volumes:
+      - mysql-sugerencia-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
 # ============================================================
 # VOLÚMENES Y REDES
 # ============================================================
@@ -327,6 +380,7 @@ volumes:
   mysql-ventas-data:
   mysql-proveedores-data:
   mysql-direcciones-data:
+  mysql-sugerencia-data:
 
 networks:
   ferrefix-net:

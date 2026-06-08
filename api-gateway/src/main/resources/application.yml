@@ -67,6 +67,11 @@ spring:
           predicates:
             - Path=/api/notificaciones/**
 
+        - id: ms-sugerencia
+          uri: lb://ms-sugerencia
+          predicates:
+            - Path=/api/sugerencias/**
+
 eureka:
   client:
     serviceUrl:

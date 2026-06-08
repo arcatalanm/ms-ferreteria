@@ -1,0 +1,16 @@
+### Listar todas las sugerencias
+GET http://localhost:8089/api/sugerencias
+
+### Ingresar una sugerencia/reclamo
+POST http://localhost:8089/api/sugerencias
+Content-Type: application/json
+
+{
+    "contenidoMensaje": "El personal de seguridad fue muy amable al ayudarme con la carga pesada."
+}
+
+### Eliminar una sugerencia
+DELETE http://localhost:8089/api/sugerencias/1
+
+###  Vía Gateway
+### GET http://localhost:8080/api/sugerencias
