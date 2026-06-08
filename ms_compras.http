@@ -1,0 +1,25 @@
+### Crear una nueva orden de compra
+POST http://localhost:8088/api/compras
+Content-Type: application/json
+
+{
+    "idProveedor": 1,
+    "detalles": [
+        {
+            "idProducto": 1,
+            "cantidad": 50,
+            "precioCompraUnitario": 10000
+        },
+        {
+            "idProducto": 2,
+            "cantidad": 20,
+            "precioCompraUnitario": 5000
+        }
+    ]
+}
+
+### Procesar recepción de mercancía (Incrementa stock en ms-inventario)
+PUT http://localhost:8088/api/compras/1/recibir
+
+###  Vía Gateway
+### POST http://localhost:8080/api/compras
