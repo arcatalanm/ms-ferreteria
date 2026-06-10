@@ -15,7 +15,7 @@ spring:
   cloud:
     gateway:
       routes:
-      # URI (Identificador Universal de Recursos)
+        # URI (Identificador Universal de Recursos)
         - id: ms-usuarios
           uri: http://localhost:8082
           predicates:
@@ -65,18 +65,3 @@ spring:
           uri: http://localhost:8090
           predicates:
             - Path=/api/reportes/**
-
-        - id: ms-reportes-legacy
-          uri: http://localhost:8090
-          predicates:
-            - Path=/api/reportes/**
-
-        - id: ms-reportes-actual
-          uri: http://localhost:8090
-          predicates:
-            - Path=/api/reportes/**
-
-        - id: ms-notificaciones
-          uri: http://localhost:8091
-          predicates:
-            - Path=/api/notificaciones/**

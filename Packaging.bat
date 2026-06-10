@@ -8,7 +8,7 @@ echo ========================================================
 :: El ejecutable se guarda en la carpeta target del ms
 
 echo Empaquetando ms_direcciones...
-cd ../ms_direcciones
+cd ms_direcciones
 call ./mvnw clean package -DskipTests
 
 echo.
