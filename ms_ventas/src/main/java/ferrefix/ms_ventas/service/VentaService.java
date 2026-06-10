@@ -122,21 +122,41 @@ public class VentaService {
 
     // Conversion del rut
     private Integer parseRun(String runConDv, String tipo) {
-        if (runConDv == null) {
+        if (runConDv == null || runConDv.isBlank()) {
             throw new BadRequestException("El run de " + tipo + " es obligatorio.");
         }
+        
+        // Limpiar puntos y espacios
         String limpio = runConDv.replace(".", "").replace(" ", "").trim();
-        if (!limpio.contains("-")) {
-            throw new BadRequestException("El run de " + tipo + " debe incluir DV y guion: " + runConDv);
+        
+        String parteNumerica;
+        if (limpio.contains("-")) {
+            // Si tiene guion, separamos y tomamos la primera parte
+            String[] partes = limpio.split("-");
+            if (partes.length < 1 || partes[0].isBlank()) {
+                throw new BadRequestException("El formato del run de " + tipo + " es inválido.");
+            }
+            parteNumerica = partes[0];
+        } else {
+            // Si NO tiene guion (ej: solo numeros), intentamos procesarlo segun longitud
+            if (limpio.length() > 1) {
+                // Asumimos que el ultimo caracter seria el DV si el usuario no puso guion
+                // Pero para busquedas, permitimos que el RUN sea el numero completo si es corto
+                // o que se le quite el ultimo digito si parece un RUN completo
+                if (limpio.length() >= 8) {
+                    parteNumerica = limpio.substring(0, limpio.length() - 1);
+                } else {
+                    parteNumerica = limpio;
+                }
+            } else {
+                parteNumerica = limpio;
+            }
         }
-        String[] partes = limpio.split("-");
-        if (partes.length != 2 || partes[0].isBlank()) {
-            throw new BadRequestException("El run de " + tipo + " no tiene formato válido: " + runConDv);
-        }
+
         try {
-            return Integer.valueOf(partes[0]);
+            return Integer.valueOf(parteNumerica);
         } catch (NumberFormatException ex) {
-            throw new BadRequestException("El run de " + tipo + " debe ser numérico antes del DV: " + runConDv);
+            throw new BadRequestException("El run de " + tipo + " debe contener una parte numérica válida.");
         }
     }
 

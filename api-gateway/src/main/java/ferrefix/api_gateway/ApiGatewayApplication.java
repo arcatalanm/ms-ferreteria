@@ -2,7 +2,6 @@ package ferrefix.api_gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 /**
  * API Gateway para Ferrefix
@@ -17,7 +16,6 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * Puerto: 8000
  */
 @SpringBootApplication
-@EnableDiscoveryClient  // Explícito: registrarse en Eureka y descobrir otros servicios
 public class ApiGatewayApplication {
 
 	public static void main(String[] args) {

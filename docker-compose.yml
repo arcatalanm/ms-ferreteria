@@ -1,387 +1,238 @@
-# ============================================================
-# FERREFIX MICROSERVICIOS - ORQUESTACIÓN COMPLETA
-# ============================================================
-# Nota: Se eliminó la etiqueta 'version' porque ya es obsoleta en Docker Compose moderno.
-
 services:
-
-  # ============================================================
-  # EUREKA SERVER - Service Discovery
-  # ============================================================
-  eureka-server:
-    image: ms-ferreteria/eureka-server:latest
-    build: ./ms_eureka_server  # <-- RUTA PARA COMPILAR
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/eureka"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-
-  # ============================================================
-  # API GATEWAY - Punto de entrada único
-  # ============================================================
-  api-gateway:
-    image: ms-ferreteria/api-gateway:latest
-    build: ./ms-gateway          # <-- RUTA PARA COMPILAR
-    container_name: api-gateway
+  # EL GATEWAY
+  ms-gateway:
+    build: ./api-gateway
+    container_name: ferrefix-gateway
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
-    depends_on:
-      eureka-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
-    restart: unless-stopped
+      - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://ms-usuarios:8082
+      - SPRING_CLOUD_GATEWAY_ROUTES_1_URI=http://ms-inventario:8081
+      - SPRING_CLOUD_GATEWAY_ROUTES_2_URI=http://ms-ventas:8083
+      - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://ms-proveedores:8084
+      - SPRING_CLOUD_GATEWAY_ROUTES_4_URI=http://ms-direcciones:8085
+      - SPRING_CLOUD_GATEWAY_ROUTES_5_URI=http://ms-marcas:8086
+      - SPRING_CLOUD_GATEWAY_ROUTES_6_URI=http://ms-arriendo:8087
+      - SPRING_CLOUD_GATEWAY_ROUTES_7_URI=http://ms-compras:8088
+      - SPRING_CLOUD_GATEWAY_ROUTES_8_URI=http://ms-sugerencia:8089
+      - SPRING_CLOUD_GATEWAY_ROUTES_9_URI=http://ms-reportes:8090
+      - SPRING_CLOUD_GATEWAY_ROUTES_10_URI=http://ms-reportes:8090
+      - SPRING_CLOUD_GATEWAY_ROUTES_11_URI=http://ms-reportes:8090
+      - SPRING_CLOUD_GATEWAY_ROUTES_12_URI=http://ms-notificaciones:8091
 
-  # ============================================================
-  # MS-INVENTARIO
-  # ============================================================
+  # MICROSERVICIO: INVENTARIO
+  db-inventario:
+    image: mysql:8.0
+    container_name: ferrefix-db-inventario
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixinv
+    ports:
+      - "3312:3306"
   ms-inventario:
-    image: ms-ferreteria/ms-inventario:latest
-    build: ./ms_inventario       # <-- RUTA PARA COMPILAR
-    container_name: ms-inventario
-    ports:
-      - "8001:8001"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8001
-      - SPRING_APPLICATION_NAME=ms-inventario
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-inventario:3306/ferrefix_inventario?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=ferrefix_user
-      - SPRING_DATASOURCE_PASSWORD=ferrefix_pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
+    build: ./ms_inventario
+    container_name: ferrefix-ms-inventario
     depends_on:
-      mysql-inventario:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8001/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-
-  mysql-inventario:
-    image: mysql:8.0
-    container_name: mysql-inventario
+      - db-inventario
+    ports:
+      - "8081:8081"
     environment:
-      - MYSQL_ROOT_PASSWORD=root_pass
-      - MYSQL_DATABASE=ferrefix_inventario
-      - MYSQL_USER=ferrefix_user
-      - MYSQL_PASSWORD=ferrefix_pass
-    networks:
-      - ferrefix-net
-    volumes:
-      - mysql-inventario-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-inventario:3306/ferrefixinv
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
 
-  # ============================================================
-  # MS-USUARIOS
-  # ============================================================
+  # MICROSERVICIO: USUARIOS
+  db-usuarios:
+    image: mysql:8.0
+    container_name: ferrefix-db-usuarios
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixusr
+    ports:
+      - "3310:3306"
   ms-usuarios:
-    image: ms-ferreteria/ms-usuarios:latest
-    build: ./ms_usuarios         # <-- RUTA PARA COMPILAR
-    container_name: ms-usuarios
-    ports:
-      - "8002:8002"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8002
-      - SPRING_APPLICATION_NAME=ms-usuarios
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-usuarios:3306/ferrefix_usuarios?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=ferrefix_user
-      - SPRING_DATASOURCE_PASSWORD=ferrefix_pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
+    build: ./ms_usuarios
+    container_name: ferrefix-ms-usuarios
     depends_on:
-      mysql-usuarios:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8002/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-
-  mysql-usuarios:
-    image: mysql:8.0
-    container_name: mysql-usuarios
+      - db-usuarios
+    ports: 
+      - "8082:8082"
     environment:
-      - MYSQL_ROOT_PASSWORD=root_pass
-      - MYSQL_DATABASE=ferrefix_usuarios
-      - MYSQL_USER=ferrefix_user
-      - MYSQL_PASSWORD=ferrefix_pass
-    networks:
-      - ferrefix-net
-    volumes:
-      - mysql-usuarios-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-usuarios:3306/ferrefixusr
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
 
-  # ============================================================
-  # MS-VENTAS
-  # ============================================================
+  # MICROSERVICIO: VENTAS
+  db-ventas:
+    image: mysql:8.0
+    container_name: ferrefix-db-ventas
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixventas
+    ports:
+      - "3314:3306"
   ms-ventas:
-    image: ms-ferreteria/ms-ventas:latest
-    build: ./ms_ventas           # <-- RUTA PARA COMPILAR
-    container_name: ms-ventas
-    ports:
-      - "8003:8003"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8003
-      - SPRING_APPLICATION_NAME=ms-ventas
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-ventas:3306/ferrefix_ventas?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=ferrefix_user
-      - SPRING_DATASOURCE_PASSWORD=ferrefix_pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
+    build: ./ms_ventas
+    container_name: ferrefix-ms-ventas
     depends_on:
-      mysql-ventas:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8003/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-
-  mysql-ventas:
-    image: mysql:8.0
-    container_name: mysql-ventas
+      - db-ventas
+    ports:
+      - "8083:8083"
     environment:
-      - MYSQL_ROOT_PASSWORD=root_pass
-      - MYSQL_DATABASE=ferrefix_ventas
-      - MYSQL_USER=ferrefix_user
-      - MYSQL_PASSWORD=ferrefix_pass
-    networks:
-      - ferrefix-net
-    volumes:
-      - mysql-ventas-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-ventas:3306/ferrefixventas
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
 
-  # ============================================================
-  # MS-PROVEEDORES
-  # ============================================================
+  # MICROSERVICIO: PROVEEDORES
+  db-proveedores:
+    image: mysql:8.0
+    container_name: ferrefix-db-proveedores
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixprov
+    ports:
+      - "3311:3306"
   ms-proveedores:
-    image: ms-ferreteria/ms-proveedores:latest
-    build: ./ms_proveedores      # <-- RUTA PARA COMPILAR
-    container_name: ms-proveedores
-    ports:
-      - "8004:8004"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8004
-      - SPRING_APPLICATION_NAME=ms-proveedores
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-proveedores:3306/ferrefix_proveedores?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=ferrefix_user
-      - SPRING_DATASOURCE_PASSWORD=ferrefix_pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
+    build: ./ms_proveedores
+    container_name: ferrefix-ms-proveedores
     depends_on:
-      mysql-proveedores:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8004/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-
-  mysql-proveedores:
-    image: mysql:8.0
-    container_name: mysql-proveedores
+      - db-proveedores
+    ports:
+      - "8084:8084"
     environment:
-      - MYSQL_ROOT_PASSWORD=root_pass
-      - MYSQL_DATABASE=ferrefix_proveedores
-      - MYSQL_USER=ferrefix_user
-      - MYSQL_PASSWORD=ferrefix_pass
-    networks:
-      - ferrefix-net
-    volumes:
-      - mysql-proveedores-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-proveedores:3306/ferrefixprov
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
 
-  # ============================================================
-  # MS-DIRECCIONES
-  # ============================================================
+  # MICROSERVICIO: DIRECCIONES
+  db-direcciones:
+    image: mysql:8.0
+    container_name: ferrefix-db-direcciones
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixadress
+    ports:
+      - "3313:3306"
   ms-direcciones:
-    image: ms-ferreteria/ms-direcciones:latest
-    build: ./ms_direcciones      # <-- RUTA PARA COMPILAR
-    container_name: ms-direcciones
-    ports:
-      - "8005:8005"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8005
-      - SPRING_APPLICATION_NAME=ms-direcciones
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-direcciones:3306/ferrefix_direcciones?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=ferrefix_user
-      - SPRING_DATASOURCE_PASSWORD=ferrefix_pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
+    build: ./ms_direcciones
+    container_name: ferrefix-ms-direcciones
     depends_on:
-      mysql-direcciones:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8005/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-
-  mysql-direcciones:
-    image: mysql:8.0
-    container_name: mysql-direcciones
+      - db-direcciones
+    ports:
+      - "8085:8085"
     environment:
-      - MYSQL_ROOT_PASSWORD=root_pass
-      - MYSQL_DATABASE=ferrefix_direcciones
-      - MYSQL_USER=ferrefix_user
-      - MYSQL_PASSWORD=ferrefix_pass
-    networks:
-      - ferrefix-net
-    volumes:
-      - mysql-direcciones-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-direcciones:3306/ferrefixadress
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
 
-  # ============================================================
-  # MS-SUGERENCIA
-  # ============================================================
+  # MICROSERVICIO: MARCAS
+  db-marcas:
+    image: mysql:8.0
+    container_name: ferrefix-db-marcas
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixmarcas
+    ports:
+      - "3315:3306"
+  ms-marcas:
+    build: ./ms_marcas
+    container_name: ferrefix-ms-marcas
+    depends_on:
+      - db-marcas
+    ports:
+      - "8086:8086"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-marcas:3306/ferrefixmarcas
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
+
+  # MICROSERVICIO: ARRIENDO
+  db-arriendo:
+    image: mysql:8.0
+    container_name: ferrefix-db-arriendo
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixarriendo
+    ports:
+      - "3316:3306"
+  ms-arriendo:
+    build: ./ms_arriendo
+    container_name: ferrefix-ms-arriendo
+    depends_on:
+      - db-arriendo
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-arriendo:3306/ferrefixarriendo
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
+
+  # MICROSERVICIO: COMPRAS
+  db-compras:
+    image: mysql:8.0
+    container_name: ferrefix-db-compras
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixcompras
+    ports:
+      - "3317:3306"
+  ms-compras:
+    build: ./ms_compras
+    container_name: ferrefix-ms-compras
+    depends_on:
+      - db-compras
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-compras:3306/ferrefixcompras
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
+
+  # MICROSERVICIO: SUGERENCIA
+  db-sugerencia:
+    image: mysql:8.0
+    container_name: ferrefix-db-sugerencia
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixsug
+    ports:
+      - "3318:3306"
   ms-sugerencia:
-    image: ms-ferreteria/ms-sugerencia:latest
     build: ./ms_sugerencia
-    container_name: ms-sugerencia
-    ports:
-      - "8009:8009"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8009
-      - SPRING_APPLICATION_NAME=ms-sugerencia
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-sugerencia:3306/ferrefix_sugerencia?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=ferrefix_user
-      - SPRING_DATASOURCE_PASSWORD=ferrefix_pass
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - JAVA_OPTS=-Xmx512m -Xms256m
-    networks:
-      - ferrefix-net
+    container_name: ferrefix-ms-sugerencia
     depends_on:
-      mysql-sugerencia:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8009/actuator/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
-
-  mysql-sugerencia:
-    image: mysql:8.0
-    container_name: mysql-sugerencia
+      - db-sugerencia
+    ports:
+      - "8089:8089"
     environment:
-      - MYSQL_ROOT_PASSWORD=root_pass
-      - MYSQL_DATABASE=ferrefix_sugerencia
-      - MYSQL_USER=ferrefix_user
-      - MYSQL_PASSWORD=ferrefix_pass
-    networks:
-      - ferrefix-net
-    volumes:
-      - mysql-sugerencia-data:/var/lib/mysql
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-    restart: unless-stopped
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db-sugerencia:3306/ferrefixsug
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
 
-# ============================================================
-# VOLÚMENES Y REDES
-# ============================================================
-volumes:
-  mysql-inventario-data:
-  mysql-usuarios-data:
-  mysql-ventas-data:
-  mysql-proveedores-data:
-  mysql-direcciones-data:
-  mysql-sugerencia-data:
-
-networks:
-  ferrefix-net:
-    driver: bridge
+  # MICROSERVICIO: REPORTES
+  ms-reportes:
+    build: ./ms_reportes
+    container_name: ferrefix-ms-reportes
+    ports:
+      - "8090:8090"
+    environment:
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure

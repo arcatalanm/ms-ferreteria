@@ -8,6 +8,7 @@ import ferrefix.ms_proveedores.dto.DireccionDTO;
 
 @FeignClient(
     name = "ms-direcciones",
+    url = "${api.gateway.url}",
     path = "/api/direcciones"
 )
 public interface DireccionClient {

@@ -10,6 +10,7 @@ import ferrefix.ms_ventas.dto.EmpleadoInfoDTO;
 
 @FeignClient(
     name = "ms-usuarios",
+    url = "${api.gateway.url}",
     path = "/api/usuarios"
 )
 public interface UsuariosClient {
