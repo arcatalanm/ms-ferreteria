@@ -18,7 +18,6 @@ services:
       - SPRING_CLOUD_GATEWAY_ROUTES_9_URI=http://ms-reportes:8090
       - SPRING_CLOUD_GATEWAY_ROUTES_10_URI=http://ms-reportes:8090
       - SPRING_CLOUD_GATEWAY_ROUTES_11_URI=http://ms-reportes:8090
-      - SPRING_CLOUD_GATEWAY_ROUTES_12_URI=http://ms-notificaciones:8091
 
   # MICROSERVICIO: INVENTARIO
   db-inventario:
@@ -234,5 +233,28 @@ services:
     ports:
       - "8090:8090"
     environment:
+      - API_GATEWAY_URL=http://ms-gateway:8080
+    restart: on-failure
+
+  # MICROSERVICIO: AUTH
+  ferrefix-db-auth:
+    image: mysql:8.0
+    container_name: ferrefix-db-auth
+    environment:
+      MYSQL_ROOT_PASSWORD: iha3gaFBMMzwiee8
+      MYSQL_DATABASE: ferrefixauth
+    ports:
+      - "3320:3306"
+  ferrefix-ms-auth:
+    build: ./ms_auth
+    container_name: ferrefix-ms-auth
+    depends_on:
+      - ferrefix-db-auth
+    ports:
+      - "8092:8092"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://ferrefix-db-auth:3306/ferrefixauth
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
       - API_GATEWAY_URL=http://ms-gateway:8080
     restart: on-failure

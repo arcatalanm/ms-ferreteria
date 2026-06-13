@@ -1,6 +1,13 @@
 server:
   port: 8080 # Puerto estándar de interacción
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: alpha
+
 spring:
   main:
     web-application-type: reactive # Obliga a correr en un servidor Netty
@@ -9,13 +16,18 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-        # Clave secreta para la autenticacion de los tokens
-          secret-key: "clavesupersecreta"
+        # Clave secreta para la autenticacion de los tokens (minimo 32 caracteres para HS256)
+          secret-key: "FerreFix_Secure_JWT_Secret_Key_2024_!@#"
 
   cloud:
     gateway:
       routes:
         # URI (Identificador Universal de Recursos)
+        - id: ms-auth
+          uri: http://localhost:8092
+          predicates:
+            - Path=/auth/**
+
         - id: ms-usuarios
           uri: http://localhost:8082
           predicates:

@@ -1,8 +1,12 @@
 @echo off
 :: Limpia y Compila cada proyecto saltandose la etapa de pruebas
 
+echo Limpiando ms_auth...
+cd ms_auth
+call mvnw.cmd clean install -DskipTests
+
 echo Limpiando ms_direcciones...
-cd ms_direcciones
+cd ../ms_direcciones
 call mvnw.cmd clean install -DskipTests
 
 echo Limpiando ms_inventario...
