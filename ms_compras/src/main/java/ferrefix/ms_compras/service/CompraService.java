@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,18 @@ public class CompraService {
     private final CompraMapper compraMapper;
     private final ProveedorClient proveedorClient;
     private final InventarioClient inventarioClient;
+
+    public List<CompraResponseDTO> listarTodas() {
+        return compraRepository.findAll().stream()
+                .map(compraMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    public CompraResponseDTO obtenerPorId(Long id) {
+        return compraRepository.findById(id)
+                .map(compraMapper::toResponseDTO)
+                .orElseThrow(() -> new ResourceNotFoundException("Orden de compra no encontrada con ID: " + id));
+    }
 
     @Transactional
     public CompraResponseDTO crearOrdenCompra(CompraRequestDTO request) {

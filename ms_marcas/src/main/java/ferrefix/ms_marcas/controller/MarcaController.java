@@ -6,12 +6,16 @@ import ferrefix.ms_marcas.exception.ApiSuccessResponse;
 import ferrefix.ms_marcas.service.MarcaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/marcas")
@@ -21,57 +25,66 @@ public class MarcaController {
     private final MarcaService marcaService;
 
     @GetMapping
-    public ResponseEntity<ApiSuccessResponse<List<MarcaResponseDTO>>> listarTodas() {
+    public ResponseEntity<CollectionModel<EntityModel<MarcaResponseDTO>>> listarTodas() {
         List<MarcaResponseDTO> marcas = marcaService.listarTodas();
-        return ResponseEntity.ok(ApiSuccessResponse.<List<MarcaResponseDTO>>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("Listado de marcas obtenido con éxito")
-                .data(marcas)
-                .build());
+
+        List<EntityModel<MarcaResponseDTO>> models = marcas.stream()
+                .map(m -> EntityModel.of(m,
+                        linkTo(methodOn(MarcaController.class).obtenerPorId(m.getIdMarca())).withSelfRel(),
+                        linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas")
+                ))
+                .toList();
+
+        CollectionModel<EntityModel<MarcaResponseDTO>> collection = CollectionModel.of(
+                models,
+                linkTo(methodOn(MarcaController.class).listarTodas()).withSelfRel()
+        );
+
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiSuccessResponse<MarcaResponseDTO>> obtenerPorId(@PathVariable Integer id) {
+    public ResponseEntity<EntityModel<MarcaResponseDTO>> obtenerPorId(@PathVariable Integer id) {
         MarcaResponseDTO marca = marcaService.obtenerPorId(id);
-        return ResponseEntity.ok(ApiSuccessResponse.<MarcaResponseDTO>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("Marca encontrada")
-                .data(marca)
-                .build());
+
+        EntityModel<MarcaResponseDTO> model = EntityModel.of(marca,
+                linkTo(methodOn(MarcaController.class).obtenerPorId(id)).withSelfRel(),
+                linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas"),
+                linkTo(methodOn(MarcaController.class).actualizar(id, null)).withRel("actualizar"),
+                linkTo(methodOn(MarcaController.class).eliminar(id)).withRel("eliminar")
+        );
+
+        return ResponseEntity.ok(model);
     }
 
     @PostMapping
-    public ResponseEntity<ApiSuccessResponse<MarcaResponseDTO>> crear(@Valid @RequestBody MarcaRequestDTO dto) {
+    public ResponseEntity<EntityModel<MarcaResponseDTO>> crear(@Valid @RequestBody MarcaRequestDTO dto) {
         MarcaResponseDTO creada = marcaService.crear(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiSuccessResponse.<MarcaResponseDTO>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.CREATED.value())
-                .message("Marca creada con éxito")
-                .data(creada)
-                .build());
+
+        EntityModel<MarcaResponseDTO> model = EntityModel.of(creada,
+                linkTo(methodOn(MarcaController.class).obtenerPorId(creada.getIdMarca())).withSelfRel(),
+                linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas")
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiSuccessResponse<MarcaResponseDTO>> actualizar(
+    public ResponseEntity<EntityModel<MarcaResponseDTO>> actualizar(
             @PathVariable Integer id, @Valid @RequestBody MarcaRequestDTO dto) {
         MarcaResponseDTO actualizada = marcaService.actualizar(id, dto);
-        return ResponseEntity.ok(ApiSuccessResponse.<MarcaResponseDTO>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("Marca actualizada con éxito")
-                .data(actualizada)
-                .build());
+
+        EntityModel<MarcaResponseDTO> model = EntityModel.of(actualizada,
+                linkTo(methodOn(MarcaController.class).obtenerPorId(id)).withSelfRel(),
+                linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas")
+        );
+
+        return ResponseEntity.ok(model);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiSuccessResponse<Void>> eliminar(@PathVariable Integer id) {
+    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
         marcaService.eliminar(id);
-        return ResponseEntity.ok(ApiSuccessResponse.<Void>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("Marca eliminada con éxito")
-                .build());
+        return ResponseEntity.noContent().build();
     }
 }

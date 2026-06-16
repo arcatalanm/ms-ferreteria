@@ -36,8 +36,9 @@ public class ReporteController {
     public void generarReporteVentasPorRun(@PathVariable String run, HttpServletResponse response) throws IOException {
         log.info("Iniciando generación de PDF de ventas para el RUN: {}", run);
 
-        // 1. Rescatar datos de ms-ventas vía Feign
-        List<VentaDTO> ventas = ventaClient.obtenerVentasPorRun(run);
+        // 1. Rescatar datos de ms-ventas vía Feign (usando CollectionModel por HATEOAS)
+        var collectionModel = ventaClient.obtenerVentasPorRun(run);
+        List<VentaDTO> ventas = collectionModel != null ? collectionModel.getContent().stream().toList() : List.of();
 
         if (ventas == null || ventas.isEmpty()) {
             log.warn("No se encontraron ventas para el RUN: {}", run);

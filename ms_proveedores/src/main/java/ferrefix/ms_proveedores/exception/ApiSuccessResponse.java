@@ -1,21 +1,16 @@
 package ferrefix.ms_proveedores.exception;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Builder
-public class ApiSuccessResponse {
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+public class ApiSuccessResponse<T> {
     private LocalDateTime timestamp;
-
-    private Integer status;
+    private int status;
     private String message;
     private String path;
+    private T data;
 }

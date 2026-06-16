@@ -3,16 +3,19 @@ package ferrefix.ms_arriendo.controller;
 import ferrefix.ms_arriendo.dto.MaquinaRequestDTO;
 import ferrefix.ms_arriendo.dto.MaquinaResponseDTO;
 import ferrefix.ms_arriendo.dto.ProcesarArriendoRequestDTO;
-import ferrefix.ms_arriendo.exception.ApiSuccessResponse;
 import ferrefix.ms_arriendo.service.MaquinaArriendoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/arriendos/maquinas")
@@ -22,49 +25,61 @@ public class MaquinaArriendoController {
     private final MaquinaArriendoService maquinaArriendoService;
 
     @GetMapping
-    public ResponseEntity<ApiSuccessResponse<List<MaquinaResponseDTO>>> listarTodas() {
+    public ResponseEntity<CollectionModel<EntityModel<MaquinaResponseDTO>>> listarTodas() {
         List<MaquinaResponseDTO> maquinas = maquinaArriendoService.listarTodas();
-        return ResponseEntity.ok(ApiSuccessResponse.<List<MaquinaResponseDTO>>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("Listado de máquinas obtenido con éxito")
-                .data(maquinas)
-                .build());
+
+        List<EntityModel<MaquinaResponseDTO>> models = maquinas.stream()
+                .map(m -> EntityModel.of(m,
+                        linkTo(methodOn(MaquinaArriendoController.class).listarTodas()).withRel("maquinas"),
+                        linkTo(methodOn(MaquinaArriendoController.class).arrendar(m.getIdEquipo(), null)).withRel("arrendar"),
+                        linkTo(methodOn(MaquinaArriendoController.class).devolver(m.getIdEquipo())).withRel("devolver")
+                ))
+                .toList();
+
+        CollectionModel<EntityModel<MaquinaResponseDTO>> collection = CollectionModel.of(
+                models,
+                linkTo(methodOn(MaquinaArriendoController.class).listarTodas()).withSelfRel()
+        );
+
+        return ResponseEntity.ok(collection);
     }
 
     @PostMapping
-    public ResponseEntity<ApiSuccessResponse<MaquinaResponseDTO>> registrar(@Valid @RequestBody MaquinaRequestDTO dto) {
+    public ResponseEntity<EntityModel<MaquinaResponseDTO>> registrar(@Valid @RequestBody MaquinaRequestDTO dto) {
         MaquinaResponseDTO registrada = maquinaArriendoService.registrar(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiSuccessResponse.<MaquinaResponseDTO>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.CREATED.value())
-                .message("Máquina registrada con éxito")
-                .data(registrada)
-                .build());
+
+        EntityModel<MaquinaResponseDTO> model = EntityModel.of(registrada,
+                linkTo(methodOn(MaquinaArriendoController.class).listarTodas()).withRel("maquinas"),
+                linkTo(methodOn(MaquinaArriendoController.class).arrendar(registrada.getIdEquipo(), null)).withRel("arrendar")
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }
 
     @PutMapping("/{idEquipo}/arrendar")
-    public ResponseEntity<ApiSuccessResponse<MaquinaResponseDTO>> arrendar(
+    public ResponseEntity<EntityModel<MaquinaResponseDTO>> arrendar(
             @PathVariable Integer idEquipo,
             @Valid @RequestBody ProcesarArriendoRequestDTO dto) {
         
         MaquinaResponseDTO arrendada = maquinaArriendoService.procesarArriendo(idEquipo, dto);
-        return ResponseEntity.ok(ApiSuccessResponse.<MaquinaResponseDTO>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("Arriendo procesado exitosamente")
-                .data(arrendada)
-                .build());
+
+        EntityModel<MaquinaResponseDTO> model = EntityModel.of(arrendada,
+                linkTo(methodOn(MaquinaArriendoController.class).listarTodas()).withRel("maquinas"),
+                linkTo(methodOn(MaquinaArriendoController.class).devolver(idEquipo)).withRel("devolver")
+        );
+
+        return ResponseEntity.ok(model);
     }
 
     @PutMapping("/{idEquipo}/devolver")
-    public ResponseEntity<ApiSuccessResponse<MaquinaResponseDTO>> devolver(@PathVariable Integer idEquipo) {
+    public ResponseEntity<EntityModel<MaquinaResponseDTO>> devolver(@PathVariable Integer idEquipo) {
         MaquinaResponseDTO devuelta = maquinaArriendoService.procesarDevolucion(idEquipo);
-        return ResponseEntity.ok(ApiSuccessResponse.<MaquinaResponseDTO>builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("Devolución procesada exitosamente")
-                .data(devuelta)
-                .build());
+
+        EntityModel<MaquinaResponseDTO> model = EntityModel.of(devuelta,
+                linkTo(methodOn(MaquinaArriendoController.class).listarTodas()).withRel("maquinas"),
+                linkTo(methodOn(MaquinaArriendoController.class).arrendar(idEquipo, null)).withRel("arrendar")
+        );
+
+        return ResponseEntity.ok(model);
     }
 }

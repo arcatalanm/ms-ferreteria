@@ -103,6 +103,13 @@ public class VentaService {
         return ventas;
     }
 
+    public VentaResponseDTO obtenerVentaPorId(Long idVenta) {
+        logger.info("Buscando venta por ID: {}", idVenta);
+        Venta venta = ventaRepository.findById(idVenta)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró la venta con ID: " + idVenta));
+        return mapVentaToDTO(venta, null);
+    }
+
     /* Buscar <Ventas> por runCliente */
     public List<VentaResponseDTO> buscarVentasPorRunCliente(String runCliente) {
         Integer run = parseRun(runCliente, "cliente");

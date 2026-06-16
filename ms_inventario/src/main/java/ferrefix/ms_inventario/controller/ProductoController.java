@@ -1,7 +1,5 @@
 package ferrefix.ms_inventario.controller;
 
-import java.net.URI;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,8 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import ferrefix.ms_inventario.dto.ProductoRequestDTO;
 import ferrefix.ms_inventario.dto.ProductoResponseDTO;
-import ferrefix.ms_inventario.exception.ApiSuccessResponse;
 import ferrefix.ms_inventario.service.ProductoService;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/inventario/productos")
@@ -27,58 +29,80 @@ public class ProductoController {
     private final ProductoService productoService;
 
     @PostMapping
-    public ResponseEntity<ProductoResponseDTO> crearProducto(@Valid @RequestBody ProductoRequestDTO dto) {
-
+    public ResponseEntity<EntityModel<ProductoResponseDTO>> crearProducto(@Valid @RequestBody ProductoRequestDTO dto) {
         logger.info("POST /api/inventario/productos - Nombre: '{}' | código: {}", dto.getNombre(), dto.getCodigoBarras());
         ProductoResponseDTO creado = productoService.crearProducto(dto);
+        
+        EntityModel<ProductoResponseDTO> model = EntityModel.of(creado,
+                linkTo(methodOn(ProductoController.class).buscarProductoPorId(creado.getId())).withSelfRel(),
+                linkTo(methodOn(ProductoController.class).buscarTodosProductos()).withRel("productos")
+        );
+
         logger.info("POST /api/inventario/productos - Producto creado ID: {}. Respondiendo 201 CREATED", creado.getId());
-        return ResponseEntity
-                .created(URI.create("/api/inventario/productos/" + creado.getId()))
-                .body(creado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductoResponseDTO>> buscarTodosProductos() {
+    public ResponseEntity<CollectionModel<EntityModel<ProductoResponseDTO>>> buscarTodosProductos() {
         logger.info("GET /api/inventario/productos - Listando todos los productos");
         List<ProductoResponseDTO> lista = productoService.buscarTodosProductos();
+
+        List<EntityModel<ProductoResponseDTO>> models = lista.stream()
+                .map(p -> EntityModel.of(p,
+                        linkTo(methodOn(ProductoController.class).buscarProductoPorId(p.getId())).withSelfRel(),
+                        linkTo(methodOn(ProductoController.class).buscarTodosProductos()).withRel("productos")
+                ))
+                .toList();
+
+        CollectionModel<EntityModel<ProductoResponseDTO>> collection = CollectionModel.of(
+                models,
+                linkTo(methodOn(ProductoController.class).buscarTodosProductos()).withSelfRel()
+        );
+
         logger.info("GET /api/inventario/productos - {} registros. Respondiendo 200 OK", lista.size());
-        return ResponseEntity.ok(lista);
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoResponseDTO> buscarProductoPorId(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<ProductoResponseDTO>> buscarProductoPorId(@PathVariable Long id) {
         logger.info("GET /api/inventario/productos/{} - Buscando producto", id);
         ProductoResponseDTO producto = productoService.buscarProductoPorId(id);
+
+        EntityModel<ProductoResponseDTO> model = EntityModel.of(producto,
+                linkTo(methodOn(ProductoController.class).buscarProductoPorId(id)).withSelfRel(),
+                linkTo(methodOn(ProductoController.class).buscarTodosProductos()).withRel("productos"),
+                linkTo(methodOn(ProductoController.class).actualizarProducto(id, null)).withRel("actualizar"),
+                linkTo(methodOn(ProductoController.class).eliminarProducto(id, null)).withRel("eliminar")
+        );
+
         logger.info("GET /api/inventario/productos/{} - Encontrado. Respondiendo 200 OK", id);
-        return ResponseEntity.ok(producto);
+        return ResponseEntity.ok(model);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductoResponseDTO> actualizarProducto(@PathVariable Long id, @Valid @RequestBody ProductoRequestDTO dto) {
-
+    public ResponseEntity<EntityModel<ProductoResponseDTO>> actualizarProducto(@PathVariable Long id, @Valid @RequestBody ProductoRequestDTO dto) {
         logger.info("PUT /api/inventario/productos/{} - Actualizando producto", id);
         ProductoResponseDTO actualizado = productoService.actualizarProducto(id, dto);
+
+        EntityModel<ProductoResponseDTO> model = EntityModel.of(actualizado,
+                linkTo(methodOn(ProductoController.class).buscarProductoPorId(id)).withSelfRel(),
+                linkTo(methodOn(ProductoController.class).buscarTodosProductos()).withRel("productos")
+        );
+
         logger.info("PUT /api/inventario/productos/{} - Actualizado. Respondiendo 200 OK", id);
-        return ResponseEntity.ok(actualizado);
+        return ResponseEntity.ok(model);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiSuccessResponse> eliminarProducto(
+    public ResponseEntity<Void> eliminarProducto(
             @PathVariable Long id,
             HttpServletRequest request) {
 
         logger.info("DELETE /api/inventario/productos/{} - Solicitud de eliminación", id);
         productoService.eliminarProducto(id);
 
-        ApiSuccessResponse respuesta = ApiSuccessResponse.builder()
-                .timestamp(LocalDateTime.now())
-                .status(HttpStatus.OK.value())
-                .message("El producto con ID " + id + " fue eliminado correctamente.")
-                .path(request.getRequestURI())
-                .build();
-
-        logger.info("DELETE /api/inventario/productos/{} - Eliminado. Respondiendo 200 OK", id);
-        return ResponseEntity.ok(respuesta);
+        logger.info("DELETE /api/inventario/productos/{} - Eliminado. Respondiendo 204 NO CONTENT", id);
+        return ResponseEntity.noContent().build();
     }
 
 
