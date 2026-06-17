@@ -1,0 +1,44 @@
+### ============================================================
+###  FERREFIX — ms_auth
+###  Puerto directo : 8092
+###  Vía Gateway    : 8080  →  /auth/**
+###  Controladores  : AuthController
+### ============================================================
+
+@baseUrl = http://localhost:8080
+# Para pruebas directas al microservicio, usa:
+# @baseUrl = http://localhost:8092
+
+
+### ============================================================
+### 1. Registrar un nuevo usuario
+### ============================================================
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@ferrefix.com",
+  "password": "securepassword123",
+  "role": "ROLE_USER"
+}
+
+###
+
+### ============================================================
+### 2. Iniciar sesión (Login) - Retorna un token JWT
+### ============================================================
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@ferrefix.com",
+  "password": "securepassword123"
+}
+
+###
+
+### ============================================================
+### 3. Validar token JWT
+### Reemplazar 'TU_TOKEN_JWT_AQUÍ' con el token obtenido en el login
+### ============================================================
+GET {{baseUrl}}/auth/validate?token=TU_TOKEN_JWT_AQUÍ

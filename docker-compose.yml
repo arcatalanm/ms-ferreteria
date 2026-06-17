@@ -1,23 +1,23 @@
 services:
   # EL GATEWAY
-  ms-gateway:
+  api-gateway:
     build: ./api-gateway
     container_name: ferrefix-gateway
     ports:
       - "8080:8080"
     environment:
-      - SPRING_CLOUD_GATEWAY_ROUTES_0_URI=http://ms-usuarios:8082
-      - SPRING_CLOUD_GATEWAY_ROUTES_1_URI=http://ms-inventario:8081
-      - SPRING_CLOUD_GATEWAY_ROUTES_2_URI=http://ms-ventas:8083
-      - SPRING_CLOUD_GATEWAY_ROUTES_3_URI=http://ms-proveedores:8084
-      - SPRING_CLOUD_GATEWAY_ROUTES_4_URI=http://ms-direcciones:8085
-      - SPRING_CLOUD_GATEWAY_ROUTES_5_URI=http://ms-marcas:8086
-      - SPRING_CLOUD_GATEWAY_ROUTES_6_URI=http://ms-arriendo:8087
-      - SPRING_CLOUD_GATEWAY_ROUTES_7_URI=http://ms-compras:8088
-      - SPRING_CLOUD_GATEWAY_ROUTES_8_URI=http://ms-sugerencia:8089
-      - SPRING_CLOUD_GATEWAY_ROUTES_9_URI=http://ms-reportes:8090
-      - SPRING_CLOUD_GATEWAY_ROUTES_10_URI=http://ms-reportes:8090
-      - SPRING_CLOUD_GATEWAY_ROUTES_11_URI=http://ms-reportes:8090
+      - MS_AUTH_URI=http://ferrefix-ms-auth:8092
+      - MS_USUARIOS_URI=http://ms-usuarios:8082
+      - MS_INVENTARIO_URI=http://ms-inventario:8081
+      - MS_VENTAS_URI=http://ms-ventas:8083
+      - MS_PROVEEDORES_URI=http://ms-proveedores:8084
+      - MS_DIRECCIONES_URI=http://ms-direcciones:8085
+      - MS_MARCAS_URI=http://ms-marcas:8086
+      - MS_ARRIENDO_URI=http://ms-arriendo:8087
+      - MS_COMPRAS_URI=http://ms-compras:8088
+      - MS_SUGERENCIA_URI=http://ms-sugerencia:8089
+      - MS_REPORTES_URI=http://ms-reportes:8090
+    restart: on-failure
 
   # MICROSERVICIO: INVENTARIO
   db-inventario:
@@ -39,7 +39,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-inventario:3306/ferrefixinv
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: USUARIOS
@@ -62,7 +62,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-usuarios:3306/ferrefixusr
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: VENTAS
@@ -85,7 +85,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-ventas:3306/ferrefixventas
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: PROVEEDORES
@@ -108,7 +108,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-proveedores:3306/ferrefixprov
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: DIRECCIONES
@@ -131,7 +131,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-direcciones:3306/ferrefixadress
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: MARCAS
@@ -154,7 +154,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-marcas:3306/ferrefixmarcas
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: ARRIENDO
@@ -177,7 +177,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-arriendo:3306/ferrefixarriendo
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: COMPRAS
@@ -200,7 +200,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-compras:3306/ferrefixcompras
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: SUGERENCIA
@@ -223,7 +223,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db-sugerencia:3306/ferrefixsug
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: REPORTES
@@ -233,7 +233,7 @@ services:
     ports:
       - "8090:8090"
     environment:
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure
 
   # MICROSERVICIO: AUTH
@@ -256,5 +256,5 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://ferrefix-db-auth:3306/ferrefixauth
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=iha3gaFBMMzwiee8
-      - API_GATEWAY_URL=http://ms-gateway:8080
+      - API_GATEWAY_URL=http://api-gateway:8080
     restart: on-failure

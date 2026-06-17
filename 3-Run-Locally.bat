@@ -1,9 +1,9 @@
 @echo off
 title FerreFix Launcher
 echo ========================================================
-echo                   INICIANDO FERREFIX
+echo                   INICIANDO FERREFIX LOCALLY
 echo ========================================================
-echo Para detener todo, presiona Ctrl+C.
+echo Para detener todo, presiona Ctrl+C o ejecuta 4-Stop-Locally.bat.
 
 :: 1. Microservicios (en segundo plano /b para no abrir ventanas nuevas)
 echo [1/12] Levantando MS Auth...
@@ -76,7 +76,5 @@ echo   TODOS LOS SERVICIOS ESTAN ARRANCANDO EN SEGUNDO PLANO
 echo   Tu API Gateway esta escuchando en http://localhost:8080
 echo ========================================================
 echo.
-echo Presiona una tecla para ver los logs combinados aqui mismo...
+echo Presiona una tecla para finalizar este script (los servicios seguiran corriendo)...
 pause > nul
-echo Mostrando logs (puedes cerrar esta ventana cuando quieras)...
-pause

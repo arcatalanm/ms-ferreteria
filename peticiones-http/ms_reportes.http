@@ -1,0 +1,22 @@
+### ============================================================
+###  FERREFIX — ms_reportes
+###  Puerto directo : 8090
+###  Vía Gateway    : 8080  →  /api/reportes/**
+###  Controladores  : ReporteController
+### ============================================================
+
+@baseUrl = http://localhost:8080
+# Para pruebas directas al microservicio, usa:
+# @baseUrl = http://localhost:8090
+
+
+### ============================================================
+### 1. Generar Reporte de Ventas en PDF por RUN de cliente
+### Retorna un archivo PDF conteniendo todas las ventas del cliente indicado.
+###
+### RUNs de ejemplo de seed:
+###   - 11111111-1 (Juan Pérez Soto)
+###   - 12222222-2 (María González Tapia)
+### ============================================================
+GET {{baseUrl}}/api/reportes/run/11111111-1
+Accept: application/pdf

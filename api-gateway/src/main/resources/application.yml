@@ -24,56 +24,56 @@ spring:
       routes:
         # URI (Identificador Universal de Recursos)
         - id: ms-auth
-          uri: http://localhost:8092
+          uri: ${MS_AUTH_URI:http://localhost:8092}
           predicates:
             - Path=/auth/**
 
         - id: ms-usuarios
-          uri: http://localhost:8082
+          uri: ${MS_USUARIOS_URI:http://localhost:8082}
           predicates:
             - Path=/api/usuarios/**
 
         - id: ms-inventario
-          uri: http://localhost:8081
+          uri: ${MS_INVENTARIO_URI:http://localhost:8081}
           predicates:
             - Path=/api/inventario/**
 
         - id: ms-ventas
-          uri: http://localhost:8083
+          uri: ${MS_VENTAS_URI:http://localhost:8083}
           predicates:
             - Path=/api/ventas/**
 
         - id: ms-proveedores
-          uri: http://localhost:8084
+          uri: ${MS_PROVEEDORES_URI:http://localhost:8084}
           predicates:
             - Path=/api/proveedores/**
 
         - id: ms-direcciones
-          uri: http://localhost:8085
+          uri: ${MS_DIRECCIONES_URI:http://localhost:8085}
           predicates:
             - Path=/api/direcciones/**
     
         - id: ms-marcas
-          uri: http://localhost:8086
+          uri: ${MS_MARCAS_URI:http://localhost:8086}
           predicates:
             - Path=/api/marcas/**
 
         - id: ms-arriendo
-          uri: http://localhost:8087
+          uri: ${MS_ARRIENDO_URI:http://localhost:8087}
           predicates:
             - Path=/api/arriendos/**
 
         - id: ms-compras
-          uri: http://localhost:8088
+          uri: ${MS_COMPRAS_URI:http://localhost:8088}
           predicates:
             - Path=/api/compras/**
 
         - id: ms-sugerencia
-          uri: http://localhost:8089
+          uri: ${MS_SUGERENCIA_URI:http://localhost:8089}
           predicates:
             - Path=/api/sugerencias/**
 
         - id: ms-reportes
-          uri: http://localhost:8090
+          uri: ${MS_REPORTES_URI:http://localhost:8090}
           predicates:
             - Path=/api/reportes/**
