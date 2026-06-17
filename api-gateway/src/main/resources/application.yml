@@ -19,6 +19,12 @@ spring:
         # Clave secreta para la autenticacion de los tokens (minimo 32 caracteres para HS256)
           secret-key: "FerreFix_Secure_JWT_Secret_Key_2024_!@#"
 
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.web: DEBUG
+
   cloud:
     gateway:
       routes:
