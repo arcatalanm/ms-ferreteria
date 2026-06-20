@@ -1,22 +1,10 @@
 # Ferrefix - Plataforma de Microservicios para Ferreterías
 
-FerreFix es un ecosistema distribuido y escalable diseñado bajo una arquitectura de microservicios para la gestión integral de ferreterías. El sistema implementa patrones modernos como **API Gateway**, **Database-per-Service** (aislamiento de datos), **seguridad integrada** y **carga dinámica de datos** para entornos de desarrollo.
+Ferrefix es un ecosistema distribuido y escalable diseñado bajo una arquitectura de microservicios para la gestión integral de ferreterías. El sistema implementa patrones modernos como **API Gateway**, **Database-per-Service** (aislamiento de datos), **seguridad integrada** y **carga dinámica de datos** para entornos de desarrollo.
 
 <p align="center">
-  <img src="./logoferrefix.png" alt="Ferrefix Logo" width="600px">
+  <img src="./logoferrefix.png" alt="Ferrefix Logo" width="200px">
 </p>
-
----
-
-## 🏛️ Arquitectura del Sistema
-
-El sistema está compuesto por **11 microservicios individuales**, un **API Gateway** centralizador y **bases de datos MySQL independientes** para garantizar la autonomía y alta disponibilidad de cada dominio de negocio.
-
-### Diagrama de Despliegue
-![Diagrama de Despliegue](./Diagrama%20de%20Despliegue%20(Microservicios).svg)
-
-### Flujo de Peticiones
-![Flujo de Peticiones](./Flujo%20de%20Peticiones.svg)
 
 ---
 
