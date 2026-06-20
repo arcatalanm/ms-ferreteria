@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MsInventorarioApplication<ms_inventario>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "ferrefix.ms_inventario.MsInventorarioApplication",
+            "projectName": "ms_inventario",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

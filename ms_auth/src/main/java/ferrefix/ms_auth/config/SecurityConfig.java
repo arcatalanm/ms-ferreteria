@@ -15,7 +15,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            // Auth HTTP Requests 
             .authorizeHttpRequests(auth -> auth
+                // Permitimos la peticion a la direccion /auth/**" Como NO AUTH para el registro y loggin 
                 .requestMatchers("/auth/**").permitAll()
                 .anyRequest().authenticated()
             )
