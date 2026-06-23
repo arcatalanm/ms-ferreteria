@@ -26,18 +26,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * ┌──────────────────────────────────────────────────────────┐
- * │                 SugerenciaControllerTest                 │
- * ├──────────────────────────────────────────────────────────┤
- * │  Mocks the MVC layer to test SugerenciaController        │
- * │                                                          │
- * │  [MockMvc] ────► [SugerenciaController]                  │
- * │                           │ (delegates)                  │
- * │                           ▼                              │
- * │              [SugerenciaService] (Mock)                  │
- * └──────────────────────────────────────────────────────────┘
- */
 @ExtendWith(MockitoExtension.class)
 class SugerenciaControllerTest {
 
@@ -76,41 +64,13 @@ class SugerenciaControllerTest {
     @Test
     @DisplayName("Debería crear una sugerencia")
     void deberiaCrear() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock & Request │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: POST /sugerencias  │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 201 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE:
-         *  Request DTO:
-         *  └── SugerenciaRequestDTO
-         *      └── contenidoMensaje: "Excelente atención." (String)
-         *
-         *  Response DTO (Expected):
-         *  └── SugerenciaResponseDTO
-         *      ├── idSugerencia: 1 (Long)
-         *      └── contenidoMensaje: "Excelente atención." (String)
-         */
 
-        // === ARRANGE ===
         SugerenciaRequestDTO request = SugerenciaRequestDTO.builder()
                 .contenidoMensaje("Excelente atención.")
                 .build();
 
         when(sugerenciaService.crear(any(SugerenciaRequestDTO.class))).thenReturn(response1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(post("/api/sugerencias")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -124,33 +84,9 @@ class SugerenciaControllerTest {
     @Test
     @DisplayName("Debería listar todas las sugerencias")
     void deberiaListarTodas() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock service   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: GET /sugerencias   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + LIST │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE (Expected):
-         *  └── Response (List wrapper)
-         *      └── content [Array]
-         *          ├── [0]: { idSugerencia: 1, contenidoMensaje: "Excelente atención.", ... }
-         *          └── [1]: { idSugerencia: 2, contenidoMensaje: "Mejorar stock de herramientas.", ... }
-         */
 
-        // === ARRANGE ===
         when(sugerenciaService.listarTodas()).thenReturn(List.of(response1, response2));
 
-        // === ACT & ASSERT ===
         mockMvc.perform(get("/api/sugerencias"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)))
@@ -165,27 +101,9 @@ class SugerenciaControllerTest {
     @Test
     @DisplayName("Debería eliminar una sugerencia")
     void deberiaEliminar() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌───────────────────────────┐
-         *  │ ARRANGE: Mock doNothing() │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ACT: DELETE /sugerencias/1│
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ASSERT: HTTP 204 NoContent│
-         *  └───────────────────────────┘
-         */
 
-        // === ARRANGE ===
         doNothing().when(sugerenciaService).eliminar(1L);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(delete("/api/sugerencias/1"))
                 .andExpect(status().isNoContent());
 

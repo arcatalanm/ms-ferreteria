@@ -26,20 +26,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-/**
- * ┌──────────────────────────────────────────────────────────┐
- * │                  ProveedorServiceTest                    │
- * ├──────────────────────────────────────────────────────────┤
- * │  Tests ProveedorService using Mockito.                   │
- * │                                                          │
- * │                   [ProveedorService]                     │
- * │             /             |            \                 │
- * │  (calls repo)       (calls client)  (uses mapper)        │
- * │        ▼                  ▼              ▼               │
- * │ [ProveedorRepository] [DireccionClient] [ProveedorMapper]│
- * │      (Mock)             (Mock)          (Spy)            │
- * └──────────────────────────────────────────────────────────┘
- */
 @ExtendWith(MockitoExtension.class)
 class ProveedorServiceTest {
 
@@ -95,27 +81,7 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería guardar un nuevo proveedor exitosamente")
     void deberiaGuardarProveedor() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE: Request DTO               │
-         *  │ Mock: findByRut -> Empty           │
-         *  │ Mock: save -> return entity        │
-         *  │ Mock: DireccionClient.get -> DTO   │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT: guardar()                     │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ASSERT: Validate response values   │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         ProveedorRequestDTO request = ProveedorRequestDTO.builder()
                 .rutProveedor("12.345.678-5")
                 .nombreProveedor("Proveedor Uno")
@@ -129,10 +95,8 @@ class ProveedorServiceTest {
         when(proveedorRepository.save(any(Proveedor.class))).thenReturn(proveedor1);
         when(direccionClient.obtenerDireccionPorId(10L)).thenReturn(direccionDTO);
 
-        // === ACT ===
         ProveedorResponseDTO result = proveedorService.guardar(request);
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(1, result.getIdProveedor());
         assertEquals("12345678-5", result.getRutProveedor());
@@ -144,30 +108,11 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería lanzar BadRequestException al guardar con un RUT inválido")
     void deberiaFallarAlGuardarRutInvalido() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE: Request with invalid RUT  │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT & ASSERT:                      │
-         *  │ assertThrows BadRequestExc         │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ VERIFY: save() never called        │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         ProveedorRequestDTO request = ProveedorRequestDTO.builder()
                 .rutProveedor("12.345-K")
                 .build();
 
-        // === ACT & ASSERT ===
         assertThrows(BadRequestException.class, () ->
                 proveedorService.guardar(request)
         );
@@ -178,33 +123,13 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería lanzar BadRequestException al guardar con un RUT duplicado")
     void deberiaFallarAlGuardarRutDuplicado() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: findByRut -> Duplicated Rut  │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT & ASSERT:                      │
-         *  │ assertThrows BadRequestExc         │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ VERIFY: save() never called        │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         ProveedorRequestDTO request = ProveedorRequestDTO.builder()
                 .rutProveedor("12.345.678-5")
                 .build();
 
         when(proveedorRepository.findByRutProveedor(12345678)).thenReturn(Optional.of(proveedor1));
 
-        // === ACT & ASSERT ===
         assertThrows(BadRequestException.class, () ->
                 proveedorService.guardar(request)
         );
@@ -216,33 +141,12 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería listar todos los proveedores")
     void deberiaListarTodos() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: findAll -> returns 2 entities│
-         *  │ Mock: DireccionClient.get -> DTO   │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT: listarTodos()                 │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ASSERT: Verify sizes & contents    │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(proveedorRepository.findAll()).thenReturn(List.of(proveedor1, proveedor2));
         when(direccionClient.obtenerDireccionPorId(10L)).thenReturn(direccionDTO);
 
-        // === ACT ===
         List<ProveedorResponseDTO> result = proveedorService.listarTodos();
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(1, result.get(0).getIdProveedor());
@@ -253,33 +157,12 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería buscar proveedor por ID")
     void deberiaBuscarPorId() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: findById -> returns entity   │
-         *  │ Mock: DireccionClient.get -> DTO   │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT: buscarPorId(1)                │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ASSERT: Verify fields              │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(proveedorRepository.findById(1)).thenReturn(Optional.of(proveedor1));
         when(direccionClient.obtenerDireccionPorId(10L)).thenReturn(direccionDTO);
 
-        // === ACT ===
         ProveedorResponseDTO result = proveedorService.buscarPorId(1);
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(1, result.getIdProveedor());
         verify(proveedorRepository, times(1)).findById(1);
@@ -288,24 +171,9 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería lanzar ResourceNotFoundException al buscar ID inexistente")
     void deberiaFallarAlBuscarInexistente() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: findById -> Empty            │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT & ASSERT:                      │
-         *  │ assertThrows NotFoundExc           │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(proveedorRepository.findById(99)).thenReturn(Optional.empty());
 
-        // === ACT & ASSERT ===
         assertThrows(ResourceNotFoundException.class, () ->
                 proveedorService.buscarPorId(99)
         );
@@ -316,28 +184,7 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería actualizar proveedor existente exitosamente")
     void deberiaActualizarProveedor() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: findById -> Found            │
-         *  │ Mock: findByRut -> Empty           │
-         *  │ Mock: save -> return entity        │
-         *  │ Mock: DireccionClient.get -> DTO   │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT: actualizar(1)                 │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ASSERT: Validate updated fields    │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         ProveedorRequestDTO request = ProveedorRequestDTO.builder()
                 .rutProveedor("12.345.678-5")
                 .nombreProveedor("Proveedor Modificado")
@@ -352,10 +199,8 @@ class ProveedorServiceTest {
         when(proveedorRepository.save(any(Proveedor.class))).thenAnswer(i -> i.getArgument(0));
         when(direccionClient.obtenerDireccionPorId(10L)).thenReturn(direccionDTO);
 
-        // === ACT ===
         ProveedorResponseDTO result = proveedorService.actualizar(1, request);
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(1, result.getIdProveedor());
         assertEquals("Proveedor Modificado", result.getNombreProveedor());
@@ -366,27 +211,7 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería lanzar BadRequestException al actualizar con un RUT ya registrado por otro proveedor")
     void deberiaFallarAlActualizarRutOcupado() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: findById -> Found            │
-         *  │ Mock: findByRut -> Duplicated Rut  │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT & ASSERT:                      │
-         *  │ assertThrows BadRequestExc         │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ VERIFY: save() never called        │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         ProveedorRequestDTO request = ProveedorRequestDTO.builder()
                 .rutProveedor("87.654.321-4")
                 .build();
@@ -394,7 +219,6 @@ class ProveedorServiceTest {
         when(proveedorRepository.findById(1)).thenReturn(Optional.of(proveedor1));
         when(proveedorRepository.findByRutProveedor(87654321)).thenReturn(Optional.of(proveedor2));
 
-        // === ACT & ASSERT ===
         assertThrows(BadRequestException.class, () ->
                 proveedorService.actualizar(1, request)
         );
@@ -407,33 +231,12 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería eliminar proveedor existente")
     void deberiaEliminarProveedor() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: existsById -> true           │
-         *  │ Mock: deleteById -> void           │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT: eliminar(1)                   │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ASSERT: Verify delete called       │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(proveedorRepository.existsById(1)).thenReturn(true);
         doNothing().when(proveedorRepository).deleteById(1);
 
-        // === ACT ===
         proveedorService.eliminar(1);
 
-        // === ASSERT ===
         verify(proveedorRepository, times(1)).existsById(1);
         verify(proveedorRepository, times(1)).deleteById(1);
     }
@@ -441,24 +244,9 @@ class ProveedorServiceTest {
     @Test
     @DisplayName("Debería lanzar ResourceNotFoundException al eliminar proveedor inexistente")
     void deberiaFallarAlEliminarInexistente() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock: existsById -> false          │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT & ASSERT:                      │
-         *  │ assertThrows NotFoundExc           │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(proveedorRepository.existsById(99)).thenReturn(false);
 
-        // === ACT & ASSERT ===
         assertThrows(ResourceNotFoundException.class, () ->
                 proveedorService.eliminar(99)
         );

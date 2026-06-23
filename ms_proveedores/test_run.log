@@ -1,0 +1,104 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< ferrefix:ms_proveedores >-----------------------
+[INFO] Building ms_proveedores 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ms_proveedores ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ms_proveedores ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 20 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ms_proveedores ---
+[INFO] skip non existing resourceDirectory C:\Users\ariel\Desktop\ms-ferreteria\ms_proveedores\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ms_proveedores ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ ms_proveedores ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ferrefix.ms_proveedores.controller.ProveedorControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\ariel\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+20:07:45.579 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.0.1.Final
+20:07:46.070 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:46.072 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:46.076 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 3 ms
+20:07:46.189 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- GET /api/proveedores - Listando todos los proveedores
+20:07:46.480 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- GET /api/proveedores - 2 registros. Respondiendo 200 OK
+20:07:46.799 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:46.799 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:46.799 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:46.814 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- GET /api/proveedores/1 - Buscando proveedor
+20:07:46.843 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- GET /api/proveedores/1 - Encontrado. Respondiendo 200 OK
+20:07:46.880 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:46.883 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:46.883 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:47.069 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- PUT /api/proveedores/1 - Actualizando proveedor
+20:07:47.072 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- PUT /api/proveedores/1 - Actualizado. Respondiendo 200 OK
+20:07:47.100 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:47.100 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:47.100 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:47.103 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- DELETE /api/proveedores/1 - Solicitud de eliminación
+20:07:47.103 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- DELETE /api/proveedores/1 - Eliminado. Respondiendo 204 NO CONTENT
+20:07:47.119 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:47.119 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:47.119 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:47.130 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- POST /api/proveedores - RUT: 12.345.678-5
+20:07:47.130 [main] INFO ferrefix.ms_proveedores.controller.ProveedorController -- POST /api/proveedores - Proveedor creado. ID: 1. Respondiendo 201 CREATED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.590 s -- in ferrefix.ms_proveedores.controller.ProveedorControllerTest
+[INFO] Running ferrefix.ms_proveedores.MsProveedoresApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in ferrefix.ms_proveedores.MsProveedoresApplicationTests
+[INFO] Running ferrefix.ms_proveedores.service.ProveedorServiceTest
+20:07:47.422 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando creación de proveedor RUT: 12.345.678-5
+20:07:47.424 [main] WARN ferrefix.ms_proveedores.service.ProveedorService -- Conflicto: el RUT 12345678 ya está registrado para el proveedor ID 1
+20:07:47.432 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando listado de todos los proveedores
+20:07:47.435 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Listado completado. Total: 2
+20:07:47.446 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando actualización de proveedor ID: 1
+20:07:47.450 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Proveedor ID 1 actualizado exitosamente
+20:07:47.456 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Buscando proveedor por ID: 99
+20:07:47.456 [main] WARN ferrefix.ms_proveedores.service.ProveedorService -- 404 - Proveedor ID 99 no encontrado
+20:07:47.462 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando eliminación de proveedor ID: 1
+20:07:47.462 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Proveedor ID 1 eliminado exitosamente
+20:07:47.468 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando actualización de proveedor ID: 1
+20:07:47.469 [main] WARN ferrefix.ms_proveedores.service.ProveedorService -- Conflicto: el RUT 87654321 ya pertenece al proveedor ID 2
+20:07:47.474 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando creación de proveedor RUT: 12.345-K
+20:07:47.474 [main] WARN ferrefix.ms_proveedores.service.ProveedorService -- RUT inválido recibido: 12.345-K
+20:07:47.480 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando creación de proveedor RUT: 12.345.678-5
+20:07:47.482 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Proveedor creado exitosamente. ID: 1
+20:07:47.487 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Iniciando eliminación de proveedor ID: 99
+20:07:47.487 [main] WARN ferrefix.ms_proveedores.service.ProveedorService -- 404 - Proveedor ID 99 no encontrado para eliminar
+20:07:47.493 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Buscando proveedor por ID: 1
+20:07:47.493 [main] INFO ferrefix.ms_proveedores.service.ProveedorService -- Proveedor ID 1 encontrado exitosamente
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.342 s -- in ferrefix.ms_proveedores.service.ProveedorServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.252 s
+[INFO] Finished at: 2026-06-22T20:07:47-04:00
+[INFO] ------------------------------------------------------------------------

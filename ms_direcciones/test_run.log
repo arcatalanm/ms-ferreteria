@@ -1,0 +1,99 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< ferrefix:ms_direcciones >-----------------------
+[INFO] Building ms_direcciones 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ms_direcciones ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ms_direcciones ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 16 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ms_direcciones ---
+[INFO] skip non existing resourceDirectory C:\Users\ariel\Desktop\ms-ferreteria\ms_direcciones\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ms_direcciones ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ ms_direcciones ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ferrefix.ms_direcciones.controller.DireccionControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\ariel\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+20:07:11.410 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.0.1.Final
+20:07:11.908 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:11.911 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:11.918 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 5 ms
+20:07:12.296 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- PUT /api/direcciones/1 - Solicitud recibida para actualizar dirección
+20:07:12.576 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- PUT /api/direcciones/1 - Dirección actualizada. Respondiendo 200 OK
+20:07:12.761 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:12.761 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:12.761 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:12.763 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- GET /api/direcciones - Solicitud recibida para listar todas las direcciones
+20:07:12.765 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- GET /api/direcciones - Respondiendo 200 OK with 2 registros
+20:07:12.802 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:12.802 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:12.802 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:12.803 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+20:07:12.812 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+20:07:12.836 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:12.836 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:12.836 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:12.839 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- DELETE /api/direcciones/1 - Solicitud recibida para eliminar dirección
+20:07:12.839 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- DELETE /api/direcciones/1 - Dirección eliminada exitosamente. Respondiendo 204 NO CONTENT
+20:07:12.857 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:12.858 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:12.858 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:12.866 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- POST /api/direcciones - Solicitud recibida para crear dirección
+20:07:12.867 [main] INFO ferrefix.ms_direcciones.controller.DireccionController -- POST /api/direcciones - Dirección creada. Respondiendo 201 CREATED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.812 s -- in ferrefix.ms_direcciones.controller.DireccionControllerTest
+[INFO] Running ferrefix.ms_direcciones.MsDireccionesApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in ferrefix.ms_direcciones.MsDireccionesApplicationTests
+[INFO] Running ferrefix.ms_direcciones.service.DireccionServiceTest
+20:07:13.106 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Iniciando actualización de dirección con ID: 1
+20:07:13.108 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Dirección ID 1 actualizada exitosamente
+20:07:13.116 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Iniciando búsqueda de todas las direcciones
+20:07:13.117 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Búsqueda completada. Total encontrado: 2
+20:07:13.121 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Buscando dirección con ID: 1
+20:07:13.127 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Iniciando eliminación de dirección con ID: 1
+20:07:13.128 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Dirección ID 1 eliminada exitosamente
+20:07:13.132 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Iniciando actualización de dirección con ID: 99
+20:07:13.132 [main] WARN ferrefix.ms_direcciones.service.DireccionService -- Fallo al actualizar: No se encontró dirección con ID: 99
+20:07:13.137 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Iniciando creación de nueva dirección
+20:07:13.138 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Dirección creada exitosamente con ID: 1
+20:07:13.150 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Iniciando eliminación de dirección con ID: 99
+20:07:13.151 [main] WARN ferrefix.ms_direcciones.service.DireccionService -- Fallo al eliminar: No se encontró dirección con ID: 99
+20:07:13.156 [main] INFO ferrefix.ms_direcciones.service.DireccionService -- Buscando dirección con ID: 99
+20:07:13.156 [main] WARN ferrefix.ms_direcciones.service.DireccionService -- Búsqueda fallida: No se encontró dirección con ID: 99
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.265 s -- in ferrefix.ms_direcciones.service.DireccionServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.613 s
+[INFO] Finished at: 2026-06-22T20:07:13-04:00
+[INFO] ------------------------------------------------------------------------

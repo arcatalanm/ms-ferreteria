@@ -1,0 +1,55 @@
+21:08:50 INFO  Starting MsArriendoApplication using Java 21.0.9 with PID 20372 (C:\Users\ariel\Desktop\ms-ferreteria\ms_arriendo\target\classes started by ariel in C:\Users\ariel\Desktop\ms-ferreteria\ms_arriendo)
+21:08:50 INFO  The following 1 profile is active: "dev"
+21:08:57 INFO  Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+21:08:57 INFO  Finished Spring Data repository scanning in 293 ms. Found 1 JPA repository interface.
+21:08:59 INFO  BeanFactory id=5f3ea0e0-e05e-323d-9dbf-f88863df497a
+21:09:01 INFO  Tomcat initialized with port 8087 (http)
+21:09:01 INFO  Starting service [Tomcat]
+21:09:01 INFO  Starting Servlet engine: [Apache Tomcat/11.0.21]
+21:09:01 INFO  Root WebApplicationContext: initialization completed in 10741 ms
+21:09:02 INFO  HHH008540: Processing PersistenceUnitInfo [name: default]
+21:09:03 INFO  HHH000001: Hibernate ORM core version 7.2.12.Final
+21:09:07 INFO  No LoadTimeWeaver setup: ignoring JPA class transformer
+21:09:07 INFO  HikariPool-1 - Starting...
+21:09:08 INFO  HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@244268a8
+21:09:08 INFO  HikariPool-1 - Start completed.
+21:09:08 WARN  HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly.The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+21:09:08 INFO  HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/ferrefixarriendo?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 5.5.5
+	Default catalog/schema: ferrefixarriendo/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+21:09:11 INFO  HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+21:09:11 INFO  Initialized JPA EntityManagerFactory for persistence unit 'default'
+21:09:12 INFO  Hibernate is in classpath; If applicable, HQL parser will be used.
+21:09:12 WARN  spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+21:09:13 WARN  
+
+Using generated security password: 77e1c77f-41c5-48cd-9d76-7b11559548bf
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+21:09:13 INFO  Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+21:09:15 INFO  Exposing 3 endpoints beneath base path '/actuator'
+21:09:15 INFO  Tomcat started on port 8087 (http) with context path '/'
+21:09:15 INFO  Started MsArriendoApplication in 31.567 seconds (process running for 40.104)
+21:09:15 INFO  Cargando datos de prueba para ms-arriendo...
+21:09:16 INFO  La base de datos de arriendo ya contiene datos. Omitiendo.
+21:09:16 WARN  SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+21:09:16 WARN  SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+21:16:08 INFO  Initializing Spring DispatcherServlet 'dispatcherServlet'
+21:16:08 INFO  Initializing Servlet 'dispatcherServlet'
+21:16:08 INFO  Completed initialization in 4 ms
+21:16:09 INFO  Registrando nueva máquina: TAL-001
+21:16:09 INFO  Iniciando proceso de arriendo para equipo ID: 1 y cliente RUN: 12345678
+21:16:09 WARN  Error validando cliente en ms-usuarios: [500 Internal Server Error] during [GET] to [http://localhost:8080/api/usuarios/clientes/12345678] [UsuarioClient#validarCliente(Integer)]: [{"timestamp":"2026-06-22T21:16:09","status":500,"error":"Internal Server Error","message":"Error interno inesperado. Contacte al administrador.","path":"/api/usuarios/clientes/12345678"}] | Status: 500
+21:16:09 WARN  400 - Bad request: No se pudo validar el cliente. Verifique que el RUN sea correcto o que el servicio de usuarios esté disponible. | path: /api/arriendos/maquinas/1/arrendar
+21:16:09 INFO  Procesando devolución para equipo ID: 1
+21:16:09 INFO  Devolución completada con éxito para equipo ID: 1

@@ -18,7 +18,7 @@ Ferrefix es un ecosistema distribuido y escalable diseñado bajo una arquitectur
 | **ms_inventario** | `8081` | Control de stock de productos y herramientas. | `ferrefixinv` |
 | **ms_ventas** | `8083` | Procesamiento de ventas, boletas y facturas. | `ferrefixventas` |
 | **ms_proveedores** | `8084` | Gestión de proveedores e insumos. | `ferrefixprov` |
-| **ms_direcciones** | `8085` | Ubicaciones físicas y sucursales. | `ferrefixdir` |
+| **ms_direcciones** | `8085` | Ubicaciones físicas y sucursales. | `ferrefixadress` |
 | **ms_marcas** | `8086` | Marcas y fabricantes de productos. | `ferrefixmarcas` |
 | **ms_arriendo** | `8087` | Alquiler de maquinaria y herramientas pesadas. | `ferrefixarriendo` |
 | **ms_compras** | `8088` | Órdenes de compra y reposición de stock. | `ferrefixcompras` |
@@ -51,16 +51,16 @@ Asegúrate de tener instalado en tu máquina local:
 
 Tienes dos alternativas para levantar el entorno:
 
-### Opción A: Ejecución Local en Desarrollo (Recomendada)
+### Opción A: Ejecución Local en Desarrollo 
 
 1. **Limpiar todo:** Ejecuta `1-Clean-All.bat` para eliminar compilaciones previas.
-2. **Compilar y generar JARs:** Ejecuta `2-Build-JARs.bat` para empaquetar todos los servicios.
-3. **Levantar localmente:** Ejecuta `3-Run-Locally.bat`. Levantará de forma ordenada los 11 microservicios en segundo plano, esperará 30 segundos a que estén listos, y finalmente iniciará el API Gateway.
-4. **Detener servicios:** Si deseas finalizar la ejecución, abre y corre `4-Stop-Locally.bat` (o finaliza los procesos Java de tu sistema).
+2. **Levantar localmente:** Ejecuta `3-Run-Locally.bat`. Levantará de forma ordenada los 11 microservicios en segundo plano, esperará 30 segundos a que estén listos, y finalmente iniciará el API Gateway.
+3. **Detener servicios:** Si deseas finalizar la ejecución, abre y corre `4-Stop-Locally.bat` (o finaliza los procesos Java de tu sistema).
 
 ### Opción B: Orquestación Completa con Docker
 Si prefieres aislar todo el entorno, incluido el motor de bases de datos:
 
+1. Ejecuta `2-Build-JARs.bat` para empaquetar todos los servicios.
 ```bash
 # Construir las imágenes y levantar los contenedores en red interna
 docker compose up --build -d

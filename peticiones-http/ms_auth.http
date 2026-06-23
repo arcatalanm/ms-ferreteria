@@ -18,8 +18,7 @@ Content-Type: application/json
 
 {
   "email": "user@ferrefix.com",
-  "password": "securepassword123",
-  "role": "ROLE_USER"
+  "password": "securepassword123"
 }
 
 ###
@@ -35,10 +34,5 @@ Content-Type: application/json
   "password": "securepassword123"
 }
 
-###
-
-### ============================================================
-### 3. Validar token JWT
-### Reemplazar 'TU_TOKEN_JWT_AQUÍ' con el token obtenido en el login
-### ============================================================
+### VALIDAR CON TOKEN
 GET {{baseUrl}}/auth/validate?token=TU_TOKEN_JWT_AQUÍ

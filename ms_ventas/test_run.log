@@ -1,0 +1,186 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------------< ferrefix:ms_ventas >-------------------------
+[INFO] Building ms_ventas 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ms_ventas ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ms_ventas ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 33 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ms_ventas ---
+[INFO] skip non existing resourceDirectory C:\Users\ariel\Desktop\ms-ferreteria\ms_ventas\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ms_ventas ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ ms_ventas ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ferrefix.ms_ventas.controller.TipoPagoControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\ariel\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+20:08:23.506 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.0.1.Final
+20:08:24.012 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:24.013 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:24.016 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 2 ms
+20:08:24.113 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- GET /api/ventas/tipos-pago - Listando tipos de pago
+20:08:24.368 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- GET /api/ventas/tipos-pago - 2 registros. Respondiendo 200 OK
+20:08:24.654 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:24.654 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:24.654 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:24.666 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- GET /api/ventas/tipos-pago/1 - Buscando tipo de pago
+20:08:24.681 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- GET /api/ventas/tipos-pago/1 - Encontrado. Respondiendo 200 OK
+20:08:24.722 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:24.722 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:24.722 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:24.726 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- GET /api/ventas/tipos-pago/99 - Buscando tipo de pago
+20:08:24.734 [main] WARN ferrefix.ms_ventas.exception.GlobalExceptionHandler -- 404 Not Found: Tipo de pago no encontrado con ID: 99 | path: /api/ventas/tipos-pago/99
+20:08:24.766 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:24.766 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:24.766 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:24.917 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- POST /api/ventas/tipos-pago - Nombre: 'Efectivo'
+20:08:24.919 [main] WARN ferrefix.ms_ventas.exception.GlobalExceptionHandler -- 400 Bad Request: Ya existe un tipo de pago con el nombre: Efectivo | path: /api/ventas/tipos-pago
+20:08:24.936 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:24.938 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:24.938 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:24.945 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- PUT /api/ventas/tipos-pago/1 - Actualizando tipo de pago
+20:08:24.947 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- PUT /api/ventas/tipos-pago/1 - Actualizado. Respondiendo 200 OK
+20:08:24.972 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:24.972 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:24.972 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:24.975 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- DELETE /api/ventas/tipos-pago/1 - Solicitud de eliminación
+20:08:24.977 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- DELETE /api/ventas/tipos-pago/1 - Eliminado. Respondiendo 204 NO CONTENT
+20:08:24.996 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:24.996 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:24.996 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.001 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- POST /api/ventas/tipos-pago - Nombre: 'Efectivo'
+20:08:25.003 [main] INFO ferrefix.ms_ventas.controller.TipoPagoController -- POST /api/ventas/tipos-pago - Creado ID: 1. Respondiendo 201 CREATED
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.697 s -- in ferrefix.ms_ventas.controller.TipoPagoControllerTest
+[INFO] Running ferrefix.ms_ventas.controller.VentaControllerTest
+20:08:25.140 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.142 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.142 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.265 [main] INFO ferrefix.ms_ventas.controller.VentaController -- POST /api/ventas - Cliente RUN: 12.345.678-5 | Empleado RUN: 87.654.321-0 | TipoPago ID: 1
+20:08:25.283 [main] INFO ferrefix.ms_ventas.controller.VentaController -- POST /api/ventas - Venta ID 1 creada. Respondiendo 201 CREATED
+20:08:25.310 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.311 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.311 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.313 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas - Listando todas las ventas
+20:08:25.313 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas - 1 registros. Respondiendo 200 OK
+20:08:25.359 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.359 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.359 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.363 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/1/detalles/10 - Buscando detalle
+20:08:25.365 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/1/detalles/10 - Encontrado. Respondiendo 200 OK
+20:08:25.410 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.410 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.410 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.413 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/1/detalles - Buscando detalles de venta
+20:08:25.416 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/1/detalles - 1 ítems. Respondiendo 200 OK
+20:08:25.453 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.453 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.453 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.455 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/99 - Buscando venta por ID
+20:08:25.457 [main] WARN ferrefix.ms_ventas.exception.GlobalExceptionHandler -- 404 Not Found: No se encontró la venta con ID: 99 | path: /api/ventas/99
+20:08:25.475 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.475 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.477 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 2 ms
+20:08:25.478 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/1 - Buscando venta por ID
+20:08:25.483 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/1 - Encontrada. Respondiendo 200 OK
+20:08:25.516 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.517 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.517 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.521 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/run/12.345.678-5 - Buscando ventas por RUN cliente
+20:08:25.527 [main] INFO ferrefix.ms_ventas.controller.VentaController -- GET /api/ventas/run/12.345.678-5 - 1 ventas encontradas. Respondiendo 200 OK
+20:08:25.579 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.579 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.579 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.622 [main] INFO ferrefix.ms_ventas.controller.VentaController -- POST /api/ventas - Cliente RUN: 12.345.678-5 | Empleado RUN: 87.654.321-0 | TipoPago ID: 1
+20:08:25.622 [main] WARN ferrefix.ms_ventas.exception.GlobalExceptionHandler -- 400 Bad Request: El cliente o empleado no existe. | path: /api/ventas
+20:08:25.645 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:25.645 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:25.645 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:25.647 [main] INFO ferrefix.ms_ventas.controller.VentaController -- DELETE /api/ventas/1 - Solicitud de eliminación
+20:08:25.647 [main] INFO ferrefix.ms_ventas.controller.VentaController -- DELETE /api/ventas/1 - Eliminada. Respondiendo 204 NO CONTENT
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.627 s -- in ferrefix.ms_ventas.controller.VentaControllerTest
+[INFO] Running ferrefix.ms_ventas.MsVentasApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in ferrefix.ms_ventas.MsVentasApplicationTests
+[INFO] Running ferrefix.ms_ventas.service.TipoPagoServiceTest
+20:08:25.899 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Iniciando actualización de tipo de pago ID: 1
+20:08:25.902 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Tipo de pago ID 1 actualizado a 'Tarjeta'
+20:08:25.912 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Iniciando creación de tipo de pago: 'Efectivo'
+20:08:25.912 [main] WARN ferrefix.ms_ventas.service.TipoPagoService -- Conflicto: el tipo de pago 'Efectivo' ya existe
+20:08:25.918 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Listando todos los tipos de pago
+20:08:25.918 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Listado completado. Total: 1
+20:08:25.923 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Buscando tipo de pago ID: 1
+20:08:25.925 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Tipo de pago ID 1 encontrado: 'Efectivo'
+20:08:25.930 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Iniciando creación de tipo de pago: 'Efectivo'
+20:08:25.932 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Tipo de pago 'Efectivo' creado exitosamente con ID: 1
+20:08:25.936 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Iniciando eliminación de tipo de pago ID: 1
+20:08:25.936 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Tipo de pago ID 1 eliminado exitosamente
+20:08:25.939 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Iniciando eliminación de tipo de pago ID: 99
+20:08:25.939 [main] WARN ferrefix.ms_ventas.service.TipoPagoService -- 404 - Tipo de pago ID 99 no encontrado para eliminar
+20:08:25.943 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Iniciando actualización de tipo de pago ID: 1
+20:08:25.945 [main] WARN ferrefix.ms_ventas.service.TipoPagoService -- Conflicto: el nombre 'Tarjeta' ya pertenece a otro tipo de pago
+20:08:25.947 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Buscando tipo de pago ID: 99
+20:08:25.947 [main] WARN ferrefix.ms_ventas.service.TipoPagoService -- 404 - Tipo de pago ID 99 no encontrado
+20:08:25.951 [main] INFO ferrefix.ms_ventas.service.TipoPagoService -- Iniciando actualización de tipo de pago ID: 99
+20:08:25.952 [main] WARN ferrefix.ms_ventas.service.TipoPagoService -- 404 - Tipo de pago ID 99 no encontrado para actualizar
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.288 s -- in ferrefix.ms_ventas.service.TipoPagoServiceTest
+[INFO] Running ferrefix.ms_ventas.service.VentaServiceTest
+20:08:26.216 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando eliminación de venta con ID: 99
+20:08:26.216 [main] WARN ferrefix.ms_ventas.service.VentaService -- Fallo al eliminar: Venta no encontrada con ID: 99
+20:08:26.233 [main] INFO ferrefix.ms_ventas.service.VentaService -- Buscando venta por run: 12.345.678-5
+20:08:26.233 [main] INFO ferrefix.ms_ventas.service.VentaService -- Ventas encontradas con el run: 12.345.678-5
+20:08:26.242 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando creación de nueva venta para cliente RUN: 12.345.678-5
+20:08:26.249 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando búsqueda de todas las ventas
+20:08:26.250 [main] INFO ferrefix.ms_ventas.service.VentaService -- Búsqueda completada. Total encontrado: 1
+20:08:26.351 [main] INFO ferrefix.ms_ventas.service.VentaService -- Buscando venta por ID: 1
+20:08:26.353 [main] WARN ferrefix.ms_ventas.service.VentaService -- Producto eliminado del inventario, pero registrado en histórico. ID: 101
+20:08:26.364 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando creación de nueva venta para cliente RUN: 12.345.678-5
+20:08:26.369 [main] INFO ferrefix.ms_ventas.service.VentaService -- Stock descontado para ID 101: -2
+20:08:26.370 [main] INFO ferrefix.ms_ventas.service.VentaService -- Venta creada exitosamente. ID: 1, Total: $20000
+20:08:26.378 [main] INFO ferrefix.ms_ventas.service.VentaService -- Buscando venta por ID: 1
+20:08:26.424 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando creación de nueva venta para cliente RUN: 12.345.678-5
+20:08:26.424 [main] WARN ferrefix.ms_ventas.service.VentaService -- Tipo de pago ID 1 no encontrado
+20:08:26.438 [main] INFO ferrefix.ms_ventas.service.VentaService -- Buscando venta por run: 99.999.999-9
+20:08:26.440 [main] WARN ferrefix.ms_ventas.service.VentaService -- No se encontraron ventas de ese usuario
+20:08:26.445 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando creación de nueva venta para cliente RUN: 12.345.678-5
+20:08:26.446 [main] WARN ferrefix.ms_ventas.service.VentaService -- Cliente o Empleado no encontrado
+20:08:26.452 [main] INFO ferrefix.ms_ventas.service.VentaService -- Buscando venta por ID: 99
+20:08:26.456 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando eliminación de venta con ID: 1
+20:08:26.458 [main] INFO ferrefix.ms_ventas.service.VentaService -- Venta y sus detalles eliminados exitosamente con ID: 1
+20:08:26.465 [main] INFO ferrefix.ms_ventas.service.VentaService -- Iniciando creación de nueva venta para cliente RUN: 12.345.678-5
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.509 s -- in ferrefix.ms_ventas.service.VentaServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 46, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.663 s
+[INFO] Finished at: 2026-06-22T20:08:26-04:00
+[INFO] ------------------------------------------------------------------------

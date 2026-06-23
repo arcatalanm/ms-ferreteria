@@ -24,11 +24,11 @@ public class SecurityConfig {
         http
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchanges -> exchanges
-                // Rutas públicas de autenticación
+                // Ruta publica
                 .pathMatchers("/auth/**").permitAll()
-                // Rutas públicas de documentación Swagger (si se accede por el gateway)
+                // Documentación Swagger
                 .pathMatchers("/swagger-ui/**", "/v3/api-docs/**", "/webjars/**").permitAll()
-                // Todo lo demás requiere JWT válido
+                // else JWT válido
                 .anyExchange().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2

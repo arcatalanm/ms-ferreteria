@@ -34,7 +34,7 @@ public class DataLoader implements CommandLineRunner {
                 marcaRepository.save(Marca.builder().nombreMarca(nombre).build());
             }
 
-            // 2. Generar marcas adicionales con DataFaker (5 en este caso)
+            // 2. Generar con DataFaker
             Faker faker = new Faker();
             for (int i = 1; i <= 5; i++) {
                 String randomBrand = faker.company().name();

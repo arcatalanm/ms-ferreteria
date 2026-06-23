@@ -26,18 +26,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * ┌──────────────────────────────────────────────────────────┐
- * │              UnidadMedidaControllerTest                  │
- * ├──────────────────────────────────────────────────────────┤
- * │  Mocks the MVC layer to test UnidadMedidaController       │
- * │                                                          │
- * │  [MockMvc] ────► [UnidadMedidaController]                │
- * │                           │ (delegates)                  │
- * │                           ▼                              │
- * │              [UnidadMedidaService] (Mock)                │
- * └──────────────────────────────────────────────────────────┘
- */
 @ExtendWith(MockitoExtension.class)
 class UnidadMedidaControllerTest {
 
@@ -74,41 +62,13 @@ class UnidadMedidaControllerTest {
     @Test
     @DisplayName("Debería crear una unidad de medida")
     void deberiaCrear() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock & Request │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────────┐
-         *  │ ACT: POST /unidades_medida  │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 201 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE:
-         *  Request DTO:
-         *  └── UnidadMedidaRequestDTO
-         *      └── nombreUnidadMedida: "Unidad" (String)
-         *
-         *  Response DTO (Expected):
-         *  └── UnidadMedidaResponseDTO
-         *      ├── idUnidadMedida: 1 (Integer)
-         *      └── nombreUnidadMedida: "Unidad" (String)
-         */
 
-        // === ARRANGE ===
         UnidadMedidaRequestDTO request = UnidadMedidaRequestDTO.builder()
                 .nombreUnidadMedida("Unidad")
                 .build();
 
         when(unidadMedidaService.crearUnidadMedida(any(UnidadMedidaRequestDTO.class))).thenReturn(u1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(post("/api/inventario/unidades_medida")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -122,33 +82,9 @@ class UnidadMedidaControllerTest {
     @Test
     @DisplayName("Debería listar todas las unidades de medida")
     void deberiaListarTodas() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock service   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────────┐
-         *  │ ACT: GET /unidades_medida   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + LIST │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE (Expected):
-         *  └── Response (List wrapper)
-         *      └── content [Array]
-         *          ├── [0]: { idUnidadMedida: 1, nombreUnidadMedida: "Unidad" }
-         *          └── [1]: { idUnidadMedida: 2, nombreUnidadMedida: "Metros" }
-         */
 
-        // === ARRANGE ===
         when(unidadMedidaService.buscarTodasUnidadesMedida()).thenReturn(List.of(u1, u2));
 
-        // === ACT & ASSERT ===
         mockMvc.perform(get("/api/inventario/unidades_medida"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)))
@@ -163,32 +99,9 @@ class UnidadMedidaControllerTest {
     @Test
     @DisplayName("Debería obtener unidad de medida por ID")
     void deberiaObtenerPorId() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock service   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌───────────────────────────────┐
-         *  │ ACT: GET /unidades_medida/1   │
-         *  └────────────┬───────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE (Expected):
-         *  └── UnidadMedidaResponseDTO
-         *      ├── idUnidadMedida: 1 (Integer)
-         *      └── nombreUnidadMedida: "Unidad" (String)
-         */
 
-        // === ARRANGE ===
         when(unidadMedidaService.buscarUnidadMedidaPorId(1)).thenReturn(u1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(get("/api/inventario/unidades_medida/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idUnidadMedida", is(1)))
@@ -200,34 +113,7 @@ class UnidadMedidaControllerTest {
     @Test
     @DisplayName("Debería actualizar una unidad de medida")
     void deberiaActualizar() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock & Request │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌───────────────────────────────┐
-         *  │ ACT: PUT /unidades_medida/1   │
-         *  └────────────┬───────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE:
-         *  Request DTO:
-         *  └── UnidadMedidaRequestDTO
-         *      └── nombreUnidadMedida: "Unidades" (String)
-         *
-         *  Response DTO (Expected):
-         *  └── UnidadMedidaResponseDTO
-         *      ├── idUnidadMedida: 1 (Integer)
-         *      └── nombreUnidadMedida: "Unidades" (String)
-         */
 
-        // === ARRANGE ===
         UnidadMedidaRequestDTO request = UnidadMedidaRequestDTO.builder()
                 .nombreUnidadMedida("Unidades")
                 .build();
@@ -239,7 +125,6 @@ class UnidadMedidaControllerTest {
 
         when(unidadMedidaService.actualizarUnidadMedida(eq(1), any(UnidadMedidaRequestDTO.class))).thenReturn(actualizada);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(put("/api/inventario/unidades_medida/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -253,27 +138,9 @@ class UnidadMedidaControllerTest {
     @Test
     @DisplayName("Debería eliminar una unidad de medida")
     void deberiaEliminar() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌───────────────────────────┐
-         *  │ ARRANGE: Mock doNothing() │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌──────────────────────────────────┐
-         *  │ ACT: DELETE /unidades_medida/1   │
-         *  └─────────────┬──────────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ASSERT: HTTP 204 NoContent│
-         *  └───────────────────────────┘
-         */
 
-        // === ARRANGE ===
         doNothing().when(unidadMedidaService).eliminarUnidadMedida(1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(delete("/api/inventario/unidades_medida/1"))
                 .andExpect(status().isNoContent());
 

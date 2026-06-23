@@ -1,0 +1,73 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< ferrefix:ms_sugerencia >-----------------------
+[INFO] Building ms_sugerencia 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ms_sugerencia ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ms_sugerencia ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 16 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ms_sugerencia ---
+[INFO] skip non existing resourceDirectory C:\Users\ariel\Desktop\ms-ferreteria\ms_sugerencia\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ms_sugerencia ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ ms_sugerencia ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ferrefix.ms_sugerencia.controller.SugerenciaControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+WARNING: A Java agent has been loaded dynamically (C:\Users\ariel\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+20:09:36.085 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.0.1.Final
+20:09:36.567 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:09:36.571 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:09:36.579 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 3 ms
+20:09:36.695 [main] INFO ferrefix.ms_sugerencia.controller.SugerenciaController -- Petición recibida: GET /api/sugerencias
+20:09:37.340 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:09:37.340 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:09:37.340 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:09:37.360 [main] INFO ferrefix.ms_sugerencia.controller.SugerenciaController -- Petición recibida: DELETE /api/sugerencias/1
+20:09:37.385 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:09:37.385 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:09:37.385 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:09:37.555 [main] INFO ferrefix.ms_sugerencia.controller.SugerenciaController -- Petición recibida: POST /api/sugerencias
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.781 s -- in ferrefix.ms_sugerencia.controller.SugerenciaControllerTest
+[INFO] Running ferrefix.ms_sugerencia.service.SugerenciaServiceTest
+20:09:37.881 [main] INFO ferrefix.ms_sugerencia.service.SugerenciaService -- Sugerencia ID 1 eliminada
+20:09:37.886 [main] INFO ferrefix.ms_sugerencia.service.SugerenciaService -- Listando todas las sugerencias por orden cronológico
+20:09:37.905 [main] INFO ferrefix.ms_sugerencia.service.SugerenciaService -- Ingresando nueva sugerencia/reclamo
+20:09:37.907 [main] INFO ferrefix.ms_sugerencia.service.SugerenciaService -- Sugerencia guardada con éxito. ID: 1
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.305 s -- in ferrefix.ms_sugerencia.service.SugerenciaServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.528 s
+[INFO] Finished at: 2026-06-22T20:09:37-04:00
+[INFO] ------------------------------------------------------------------------

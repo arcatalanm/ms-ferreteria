@@ -1,0 +1,182 @@
+21:08:53 INFO  Starting MsDireccionesApplication using Java 21.0.9 with PID 20764 (C:\Users\ariel\Desktop\ms-ferreteria\ms_direcciones\target\classes started by ariel in C:\Users\ariel\Desktop\ms-ferreteria\ms_direcciones)
+21:08:53 INFO  The following 1 profile is active: "dev"
+21:09:01 INFO  Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+21:09:01 INFO  Finished Spring Data repository scanning in 334 ms. Found 1 JPA repository interface.
+21:09:03 INFO  BeanFactory id=14db9229-5358-30f0-ab69-c73d37b87ac4
+21:09:05 INFO  Tomcat initialized with port 8085 (http)
+21:09:06 INFO  Starting service [Tomcat]
+21:09:06 INFO  Starting Servlet engine: [Apache Tomcat/11.0.21]
+21:09:06 INFO  Root WebApplicationContext: initialization completed in 12102 ms
+21:09:09 INFO  HHH008540: Processing PersistenceUnitInfo [name: default]
+21:09:09 INFO  HHH000001: Hibernate ORM core version 7.2.12.Final
+21:09:11 INFO  No LoadTimeWeaver setup: ignoring JPA class transformer
+21:09:11 INFO  HikariPool-1 - Starting...
+21:09:12 INFO  HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@19ce19b7
+21:09:12 INFO  HikariPool-1 - Start completed.
+21:09:12 WARN  HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly.The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+21:09:12 INFO  HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/ferrefixadress?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 5.5.5
+	Default catalog/schema: ferrefixadress/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+21:09:14 INFO  HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+21:09:14 INFO  Initialized JPA EntityManagerFactory for persistence unit 'default'
+21:09:14 INFO  Hibernate is in classpath; If applicable, HQL parser will be used.
+21:09:17 INFO  Reading from ferrefixadress.databasechangelog
+21:09:17 INFO  Database is up to date, no changesets to execute
+21:09:17 INFO  Reading from ferrefixadress.databasechangelog
+21:09:17 INFO  UPDATE SUMMARY
+21:09:17 INFO  Run:                          0
+21:09:17 INFO  Previously run:               2
+21:09:17 INFO  Filtered out:                 0
+21:09:17 INFO  -------------------------------
+21:09:17 INFO  Total change sets:            2
+21:09:17 INFO  Update summary generated
+21:09:17 INFO  Command execution complete
+21:09:18 WARN  spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+21:09:18 WARN  
+
+Using generated security password: 94e8a7f6-54b8-4d7c-8274-d9064074cce7
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+21:09:18 INFO  Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+21:09:19 INFO  Tomcat started on port 8085 (http) with context path '/'
+21:09:19 INFO  Started MsDireccionesApplication in 29.062 seconds (process running for 32.144)
+21:09:19 WARN  SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+21:09:19 WARN  SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+21:16:10 INFO  Initializing Spring DispatcherServlet 'dispatcherServlet'
+21:16:10 INFO  Initializing Servlet 'dispatcherServlet'
+21:16:10 INFO  Completed initialization in 3 ms
+21:16:10 INFO  GET /api/direcciones - Solicitud recibida para listar todas las direcciones
+21:16:10 INFO  Iniciando búsqueda de todas las direcciones
+21:16:10 INFO  Búsqueda completada. Total encontrado: 15
+21:16:10 INFO  GET /api/direcciones - Respondiendo 200 OK with 15 registros
+21:16:10 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:10 INFO  Buscando dirección con ID: 1
+21:16:10 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+21:16:10 INFO  POST /api/direcciones - Solicitud recibida para crear dirección
+21:16:10 INFO  Iniciando creación de nueva dirección
+21:16:10 INFO  Dirección creada exitosamente con ID: 16
+21:16:10 INFO  POST /api/direcciones - Dirección creada. Respondiendo 201 CREATED
+21:16:10 INFO  POST /api/direcciones - Solicitud recibida para crear dirección
+21:16:10 INFO  Iniciando creación de nueva dirección
+21:16:10 INFO  Dirección creada exitosamente con ID: 17
+21:16:10 INFO  POST /api/direcciones - Dirección creada. Respondiendo 201 CREATED
+21:16:11 INFO  PUT /api/direcciones/5 - Solicitud recibida para actualizar dirección
+21:16:11 INFO  Iniciando actualización de dirección con ID: 5
+21:16:11 INFO  Dirección ID 5 actualizada exitosamente
+21:16:11 INFO  PUT /api/direcciones/5 - Dirección actualizada. Respondiendo 200 OK
+21:16:11 INFO  DELETE /api/direcciones/15 - Solicitud recibida para eliminar dirección
+21:16:11 INFO  Iniciando eliminación de dirección con ID: 15
+21:16:11 INFO  Dirección ID 15 eliminada exitosamente
+21:16:11 INFO  DELETE /api/direcciones/15 - Dirección eliminada exitosamente. Respondiendo 204 NO CONTENT
+21:16:11 INFO  GET /api/direcciones/9999 - Solicitud recibida para buscar dirección
+21:16:11 INFO  Buscando dirección con ID: 9999
+21:16:11 WARN  Búsqueda fallida: No se encontró dirección con ID: 9999
+21:16:11 WARN  404 - Recurso no encontrado: No se encontró la dirección con ID: 9999 | path: /api/direcciones/9999
+21:16:11 WARN  400 - Validación fallida: {calle=La calle no puede estar vacía, numero=El número no puede ser nulo} | path: /api/direcciones
+21:16:13 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 1
+21:16:13 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/2 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 2
+21:16:13 INFO  GET /api/direcciones/2 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/3 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 3
+21:16:13 INFO  GET /api/direcciones/3 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/4 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 4
+21:16:13 INFO  GET /api/direcciones/4 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/5 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 5
+21:16:13 INFO  GET /api/direcciones/5 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/6 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 6
+21:16:13 INFO  GET /api/direcciones/6 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/7 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 7
+21:16:13 INFO  GET /api/direcciones/7 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/8 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 8
+21:16:13 INFO  GET /api/direcciones/8 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/9 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 9
+21:16:13 INFO  GET /api/direcciones/9 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/10 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 10
+21:16:13 INFO  GET /api/direcciones/10 - Dirección encontrada. Respondiendo 200 OK
+21:16:13 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:13 INFO  Buscando dirección con ID: 1
+21:16:13 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 1
+21:16:15 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/2 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 2
+21:16:15 INFO  GET /api/direcciones/2 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/3 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 3
+21:16:15 INFO  GET /api/direcciones/3 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/4 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 4
+21:16:15 INFO  GET /api/direcciones/4 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/5 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 5
+21:16:15 INFO  GET /api/direcciones/5 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/6 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 6
+21:16:15 INFO  GET /api/direcciones/6 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/7 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 7
+21:16:15 INFO  GET /api/direcciones/7 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/8 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 8
+21:16:15 INFO  GET /api/direcciones/8 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/9 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 9
+21:16:15 INFO  GET /api/direcciones/9 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/10 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 10
+21:16:15 INFO  GET /api/direcciones/10 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/11 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 11
+21:16:15 INFO  GET /api/direcciones/11 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/12 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 12
+21:16:15 INFO  GET /api/direcciones/12 - Dirección encontrada. Respondiendo 200 OK
+21:16:15 INFO  GET /api/direcciones/13 - Solicitud recibida para buscar dirección
+21:16:15 INFO  Buscando dirección con ID: 13
+21:16:15 INFO  GET /api/direcciones/13 - Dirección encontrada. Respondiendo 200 OK
+21:16:16 INFO  GET /api/direcciones/14 - Solicitud recibida para buscar dirección
+21:16:16 INFO  Buscando dirección con ID: 14
+21:16:16 INFO  GET /api/direcciones/14 - Dirección encontrada. Respondiendo 200 OK
+21:16:16 INFO  GET /api/direcciones/15 - Solicitud recibida para buscar dirección
+21:16:16 INFO  Buscando dirección con ID: 15
+21:16:16 WARN  Búsqueda fallida: No se encontró dirección con ID: 15
+21:16:16 WARN  404 - Recurso no encontrado: No se encontró la dirección con ID: 15 | path: /api/direcciones/15
+21:16:16 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:16 INFO  Buscando dirección con ID: 1
+21:16:16 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+21:16:16 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:16 INFO  Buscando dirección con ID: 1
+21:16:16 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+21:16:16 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:16 INFO  Buscando dirección con ID: 1
+21:16:16 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK
+21:16:16 INFO  GET /api/direcciones/7 - Solicitud recibida para buscar dirección
+21:16:16 INFO  Buscando dirección con ID: 7
+21:16:16 INFO  GET /api/direcciones/7 - Dirección encontrada. Respondiendo 200 OK
+21:16:18 INFO  GET /api/direcciones/7 - Solicitud recibida para buscar dirección
+21:16:18 INFO  Buscando dirección con ID: 7
+21:16:18 INFO  GET /api/direcciones/7 - Dirección encontrada. Respondiendo 200 OK
+21:16:18 INFO  GET /api/direcciones/1 - Solicitud recibida para buscar dirección
+21:16:18 INFO  Buscando dirección con ID: 1
+21:16:18 INFO  GET /api/direcciones/1 - Dirección encontrada. Respondiendo 200 OK

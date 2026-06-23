@@ -1,0 +1,205 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< ferrefix:ms_inventario >-----------------------
+[INFO] Building ms_inventario 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ms_inventario ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ms_inventario ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 30 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ms_inventario ---
+[INFO] skip non existing resourceDirectory C:\Users\ariel\Desktop\ms-ferreteria\ms_inventario\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ms_inventario ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ ms_inventario ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ferrefix.ms_inventario.controller.CategoriaProductoControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\ariel\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+20:07:28.054 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.0.1.Final
+20:07:28.516 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:28.516 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:28.520 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 3 ms
+20:07:28.611 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- GET /api/inventario/categorias - Listando todas las categorías
+20:07:28.843 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- GET /api/inventario/categorias - 2 registros. Respondiendo 200 OK
+20:07:29.124 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.124 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.124 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.138 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- GET /api/inventario/categorias/1 - Buscando categoría
+20:07:29.152 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- GET /api/inventario/categorias/1 - Encontrada. Respondiendo 200 OK
+20:07:29.186 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.186 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.186 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.346 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- PUT /api/inventario/categorias/1 - Actualizando categoría
+20:07:29.348 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- PUT /api/inventario/categorias/1 - Actualizada. Respondiendo 200 OK
+20:07:29.381 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.381 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.381 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.387 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- DELETE /api/inventario/categorias/1 - Solicitud de eliminación
+20:07:29.388 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- DELETE /api/inventario/categorias/1 - Eliminada. Respondiendo 204 NO CONTENT
+20:07:29.406 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.406 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.408 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.414 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- POST /api/inventario/categorias - Nombre: 'Herramientas'
+20:07:29.416 [main] INFO ferrefix.ms_inventario.controller.CategoriaProductoController -- POST /api/inventario/categorias - Categoría creada ID: 1. Respondiendo 201 CREATED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.287 s -- in ferrefix.ms_inventario.controller.CategoriaProductoControllerTest
+[INFO] Running ferrefix.ms_inventario.controller.ProductoControllerTest
+20:07:29.510 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.510 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.510 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.514 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- GET /api/inventario/productos - Listando todos los productos
+20:07:29.530 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- GET /api/inventario/productos - 2 registros. Respondiendo 200 OK
+20:07:29.557 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.557 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.557 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.557 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- GET /api/inventario/productos/101 - Buscando producto
+20:07:29.570 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- GET /api/inventario/productos/101 - Encontrado. Respondiendo 200 OK
+20:07:29.593 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.593 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.593 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.598 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- PATCH /api/inventario/productos/101/descontar-stock - Cantidad: 5
+20:07:29.598 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- PATCH /api/inventario/productos/101 - Stock descontado exitosamente
+20:07:29.615 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.615 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.615 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.640 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- PUT /api/inventario/productos/101 - Actualizando producto
+20:07:29.642 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- PUT /api/inventario/productos/101 - Actualizado. Respondiendo 200 OK
+20:07:29.664 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.666 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.666 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.667 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- DELETE /api/inventario/productos/101 - Solicitud de eliminación
+20:07:29.667 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- DELETE /api/inventario/productos/101 - Eliminado. Respondiendo 204 NO CONTENT
+20:07:29.682 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.682 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.682 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.692 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- POST /api/inventario/productos - Nombre: 'Martillo de Uña' | código: 123456789
+20:07:29.694 [main] INFO ferrefix.ms_inventario.controller.ProductoController -- POST /api/inventario/productos - Producto creado ID: 101. Respondiendo 201 CREATED
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.261 s -- in ferrefix.ms_inventario.controller.ProductoControllerTest
+[INFO] Running ferrefix.ms_inventario.controller.UnidadMedidaControllerTest
+20:07:29.762 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.762 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.764 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 2 ms
+20:07:29.766 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- GET /api/inventario/unidades_medida - Listando todas las unidades
+20:07:29.781 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- GET /api/inventario/unidades_medida - 2 registros. Respondiendo 200 OK
+20:07:29.801 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.802 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.802 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.802 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- GET /api/inventario/unidades_medida/1 - Buscando unidad
+20:07:29.807 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- GET /api/inventario/unidades_medida/1 - Encontrada. Respondiendo 200 OK
+20:07:29.823 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.825 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.825 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.833 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- PUT /api/inventario/unidades_medida/1 - Actualizando unidad
+20:07:29.834 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- PUT /api/inventario/unidades_medida/1 - Actualizada. Respondiendo 200 OK
+20:07:29.854 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.854 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.854 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.855 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- DELETE /api/inventario/unidades_medida/1 - Solicitud de eliminación
+20:07:29.855 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- DELETE /api/inventario/unidades_medida/1 - Eliminada. Respondiendo 204 NO CONTENT
+20:07:29.867 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:07:29.867 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:07:29.867 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:07:29.874 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- POST /api/inventario/unidades_medida - Nombre: 'Unidad'
+20:07:29.876 [main] INFO ferrefix.ms_inventario.controller.UnidadMedidaController -- POST /api/inventario/unidades_medida - Unidad creada ID: 1. Respondiendo 201 CREATED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.174 s -- in ferrefix.ms_inventario.controller.UnidadMedidaControllerTest
+[INFO] Running ferrefix.ms_inventario.MsInventorarioApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in ferrefix.ms_inventario.MsInventorarioApplicationTests
+[INFO] Running ferrefix.ms_inventario.service.CategoriaProductoServiceTest
+20:07:30.107 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Iniciando creación de categoría: 'Herramientas'
+20:07:30.107 [main] WARN ferrefix.ms_inventario.service.CategoriaProductoService -- Conflicto: la categoría 'Herramientas' ya existe
+20:07:30.111 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Listando todas las categorías de productos
+20:07:30.113 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Listado completado. Total: 2
+20:07:30.119 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Buscando categoría por ID: 1
+20:07:30.119 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Categoría ID 1 encontrada: 'Herramientas'
+20:07:30.123 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Iniciando eliminación de categoría ID: 99
+20:07:30.123 [main] WARN ferrefix.ms_inventario.service.CategoriaProductoService -- 404 - Categoría ID 99 no encontrada para eliminar
+20:07:30.127 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Iniciando actualización de categoría ID: 1
+20:07:30.127 [main] WARN ferrefix.ms_inventario.service.CategoriaProductoService -- Conflicto: el nombre 'Pinturas' ya pertenece a otra categoría
+20:07:30.132 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Iniciando actualización de categoría ID: 1
+20:07:30.132 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Categoría ID 1 actualizada exitosamente a 'Herramientas Eléctricas'
+20:07:30.136 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Iniciando eliminación de categoría ID: 1
+20:07:30.138 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Categoría ID 1 eliminada exitosamente
+20:07:30.140 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Buscando categoría por ID: 99
+20:07:30.140 [main] WARN ferrefix.ms_inventario.service.CategoriaProductoService -- 404 - Categoría ID 99 no encontrada
+20:07:30.146 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Iniciando creación de categoría: 'Herramientas'
+20:07:30.146 [main] INFO ferrefix.ms_inventario.service.CategoriaProductoService -- Categoría 'Herramientas' creada exitosamente con ID: 1
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.253 s -- in ferrefix.ms_inventario.service.CategoriaProductoServiceTest
+[INFO] Running ferrefix.ms_inventario.service.ProductoServiceTest
+20:07:30.280 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Listando todos los productos del inventario
+20:07:30.286 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Buscando producto por ID: 101
+20:07:30.290 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Iniciando creación de producto: 'null' con código: 123456789
+20:07:30.290 [main] WARN ferrefix.ms_inventario.service.ProductoService -- Fallo al crear producto: El código de barras 123456789 ya está registrado
+20:07:30.294 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Descontando 4 unidades del producto ID: 101
+20:07:30.294 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Stock del producto ID 101 actualizado. Nuevo stock: 6
+20:07:30.298 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Actualizando producto con ID: 101. Nuevo nombre: 'Martillo Modificado'
+20:07:30.300 [main] WARN ferrefix.ms_inventario.service.ProductoService -- Conflicto de actualización: El código de barras 987654321 ya pertenece a otro producto
+20:07:30.305 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Iniciando creación de producto: 'null' con código: 123456789
+20:07:30.310 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Iniciando eliminación de producto con ID: 99
+20:07:30.310 [main] WARN ferrefix.ms_inventario.service.ProductoService -- Fallo al eliminar: No existe producto con ID: 99
+20:07:30.315 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Actualizando producto con ID: 101. Nuevo nombre: 'Martillo Modificado'
+20:07:30.317 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Producto ID 101 ('Martillo Modificado') actualizado correctamente
+20:07:30.323 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Iniciando creación de producto: 'Martillo de Uña' con código: 123456789
+20:07:30.326 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Producto 'Martillo de Uña' creado exitosamente con ID interno: 101
+20:07:30.330 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Descontando 12 unidades del producto ID: 101
+20:07:30.330 [main] WARN ferrefix.ms_inventario.service.ProductoService -- Stock insuficiente para producto ID 101. Stock actual: 10 | Solicitado: 12
+20:07:30.334 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Iniciando creación de producto: 'null' con código: 123456789
+20:07:30.338 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Buscando producto por ID: 99
+20:07:30.340 [main] WARN ferrefix.ms_inventario.service.ProductoService -- Búsqueda fallida: No existe producto con ID: 99
+20:07:30.342 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Iniciando eliminación de producto con ID: 101
+20:07:30.342 [main] INFO ferrefix.ms_inventario.service.ProductoService -- Producto con ID: 101 eliminado exitosamente
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.194 s -- in ferrefix.ms_inventario.service.ProductoServiceTest
+[INFO] Running ferrefix.ms_inventario.service.UnidadMedidaServiceTest
+20:07:30.382 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Iniciando creación de unidad de medida: 'Unidad'
+20:07:30.382 [main] WARN ferrefix.ms_inventario.service.UnidadMedidaService -- Conflicto: la unidad 'Unidad' ya existe
+20:07:30.387 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Listando todas las unidades de medida
+20:07:30.388 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Listado completado. Total: 2
+20:07:30.390 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Buscando unidad de medida por ID: 1
+20:07:30.392 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Unidad ID 1 encontrada: 'Unidad'
+20:07:30.394 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Iniciando actualización de unidad de medida ID: 1
+20:07:30.396 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Unidad ID 1 actualizada exitosamente a 'Unidades'
+20:07:30.400 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Iniciando eliminación de unidad de medida ID: 99
+20:07:30.400 [main] WARN ferrefix.ms_inventario.service.UnidadMedidaService -- 404 - Unidad de medida ID 99 no encontrada para eliminar
+20:07:30.403 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Iniciando actualización de unidad de medida ID: 1
+20:07:30.403 [main] WARN ferrefix.ms_inventario.service.UnidadMedidaService -- Conflicto: el nombre 'Metros' ya pertenece a otra unidad
+20:07:30.407 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Iniciando creación de unidad de medida: 'Unidad'
+20:07:30.407 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Unidad 'Unidad' creada exitosamente con ID: 1
+20:07:30.412 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Buscando unidad de medida por ID: 99
+20:07:30.412 [main] WARN ferrefix.ms_inventario.service.UnidadMedidaService -- 404 - Unidad de medida ID 99 no encontrada
+20:07:30.414 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Iniciando eliminación de unidad de medida ID: 1
+20:07:30.414 [main] INFO ferrefix.ms_inventario.service.UnidadMedidaService -- Unidad de medida ID 1 eliminada exitosamente
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.071 s -- in ferrefix.ms_inventario.service.UnidadMedidaServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 48, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  13.276 s
+[INFO] Finished at: 2026-06-22T20:07:30-04:00
+[INFO] ------------------------------------------------------------------------

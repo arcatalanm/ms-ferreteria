@@ -1,0 +1,88 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< ferrefix:ms_compras >-------------------------
+[INFO] Building ms_compras 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ms_compras ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ms_compras ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 23 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ms_compras ---
+[INFO] skip non existing resourceDirectory C:\Users\ariel\Desktop\ms-ferreteria\ms_compras\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ms_compras ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ ms_compras ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ferrefix.ms_compras.controller.CompraControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\ariel\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+20:09:18.785 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.0.1.Final
+20:09:19.304 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:09:19.306 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:09:19.312 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 4 ms
+20:09:19.448 [main] INFO ferrefix.ms_compras.controller.CompraController -- Petición recibida: PUT /api/compras/1/recibir
+20:09:19.998 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:09:19.998 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:09:19.998 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:09:20.251 [main] INFO ferrefix.ms_compras.controller.CompraController -- Petición recibida: POST /api/compras
+20:09:20.288 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:09:20.288 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:09:20.289 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:09:20.291 [main] INFO ferrefix.ms_compras.controller.CompraController -- Petición recibida: GET /api/compras
+20:09:20.335 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:09:20.335 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:09:20.335 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:09:20.338 [main] INFO ferrefix.ms_compras.controller.CompraController -- Petición recibida: GET /api/compras/1
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.645 s -- in ferrefix.ms_compras.controller.CompraControllerTest
+[INFO] Running ferrefix.ms_compras.service.CompraServiceTest
+20:09:20.728 [main] INFO ferrefix.ms_compras.service.CompraService -- Iniciando creación de orden de compra para proveedor ID: 10
+20:09:20.729 [main] ERROR ferrefix.ms_compras.service.CompraService -- Error al validar proveedor vía Feign: Connection refused
+20:09:20.737 [main] INFO ferrefix.ms_compras.service.CompraService -- Iniciando recepción de mercancía para orden ID: 1
+20:09:20.738 [main] INFO ferrefix.ms_compras.service.CompraService -- Incrementando stock para los productos de la orden ID: 1
+20:09:20.739 [main] ERROR ferrefix.ms_compras.service.CompraService -- Error al incrementar stock vía Feign: Connection timed out. Aplicando Rollback.
+20:09:20.753 [main] INFO ferrefix.ms_compras.service.CompraService -- Iniciando recepción de mercancía para orden ID: 1
+20:09:20.753 [main] INFO ferrefix.ms_compras.service.CompraService -- Incrementando stock para los productos de la orden ID: 1
+20:09:20.753 [main] INFO ferrefix.ms_compras.service.CompraService -- Recepción de mercancía completada con éxito para orden ID: 1
+20:09:20.763 [main] INFO ferrefix.ms_compras.service.CompraService -- Iniciando recepción de mercancía para orden ID: 99
+20:09:20.770 [main] INFO ferrefix.ms_compras.service.CompraService -- Iniciando creación de orden de compra para proveedor ID: 10
+20:09:20.772 [main] INFO ferrefix.ms_compras.service.CompraService -- Orden de compra creada exitosamente con ID: 1
+20:09:20.778 [main] INFO ferrefix.ms_compras.service.CompraService -- Iniciando creación de orden de compra para proveedor ID: 99
+20:09:20.778 [main] ERROR ferrefix.ms_compras.service.CompraService -- Proveedor con ID 99 no existe.
+20:09:20.788 [main] INFO ferrefix.ms_compras.service.CompraService -- Iniciando recepción de mercancía para orden ID: 2
+20:09:20.789 [main] WARN ferrefix.ms_compras.service.CompraService -- Intento de procesar recepción para orden en estado: RECIBIDO
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.428 s -- in ferrefix.ms_compras.service.CompraServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 14, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  14.292 s
+[INFO] Finished at: 2026-06-22T20:09:20-04:00
+[INFO] ------------------------------------------------------------------------

@@ -1,162 +1,248 @@
-03:05:27 INFO  Starting MsInventorarioApplication using Java 21.0.9 with PID 14100 (C:\Users\ariel\Desktop\ms-ferreteria\ms_inventario\target\classes started by ariel in C:\Users\ariel\Desktop\ms-ferreteria\ms_inventario)
-03:05:27 INFO  The following 1 profile is active: "dev"
-03:05:29 INFO  Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-03:05:29 INFO  Finished Spring Data repository scanning in 85 ms. Found 3 JPA repository interfaces.
-03:05:30 INFO  BeanFactory id=b6b4cb32-27aa-35dc-a281-b10d24f3ef38
-03:05:30 INFO  Tomcat initialized with port 8081 (http)
-03:05:30 INFO  Starting service [Tomcat]
-03:05:30 INFO  Starting Servlet engine: [Apache Tomcat/11.0.21]
-03:05:30 INFO  Root WebApplicationContext: initialization completed in 3064 ms
-03:05:31 INFO  HHH008540: Processing PersistenceUnitInfo [name: default]
-03:05:31 INFO  HHH000001: Hibernate ORM core version 7.2.12.Final
-03:05:32 INFO  No LoadTimeWeaver setup: ignoring JPA class transformer
-03:05:32 INFO  HikariPool-1 - Starting...
-03:05:33 WARN  HHH000247: ErrorCode: 0, SQLState: 08S01
-03:05:33 WARN  Communications link failure
+21:08:56 INFO  Starting MsInventorarioApplication using Java 21.0.9 with PID 24476 (C:\Users\ariel\Desktop\ms-ferreteria\ms_inventario\target\classes started by ariel in C:\Users\ariel\Desktop\ms-ferreteria\ms_inventario)
+21:08:56 INFO  The following 1 profile is active: "dev"
+21:09:05 INFO  Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+21:09:05 INFO  Finished Spring Data repository scanning in 288 ms. Found 3 JPA repository interfaces.
+21:09:06 INFO  BeanFactory id=baa571a9-0268-30e2-9934-d3af58b39792
+21:09:08 INFO  Tomcat initialized with port 8081 (http)
+21:09:08 INFO  Starting service [Tomcat]
+21:09:08 INFO  Starting Servlet engine: [Apache Tomcat/11.0.21]
+21:09:08 INFO  Root WebApplicationContext: initialization completed in 11321 ms
+21:09:09 INFO  HHH008540: Processing PersistenceUnitInfo [name: default]
+21:09:09 INFO  HHH000001: Hibernate ORM core version 7.2.12.Final
+21:09:11 INFO  No LoadTimeWeaver setup: ignoring JPA class transformer
+21:09:11 INFO  HikariPool-1 - Starting...
+21:09:12 INFO  HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@33563147
+21:09:12 INFO  HikariPool-1 - Start completed.
+21:09:12 WARN  HHH000511: The 5.5.5 version for [org.hibernate.dialect.MySQLDialect] is no longer supported, hence certain features may not work properly.The minimum supported version is 8.0.0. Check the community dialects project for available legacy versions.
+21:09:12 INFO  HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/ferrefixinv?createDatabaseIfNotExist=true]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 5.5.5
+	Default catalog/schema: ferrefixinv/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+21:09:14 INFO  HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+21:09:14 INFO  Initialized JPA EntityManagerFactory for persistence unit 'default'
+21:09:15 INFO  Hibernate is in classpath; If applicable, HQL parser will be used.
+21:09:18 INFO  Reading from ferrefixinv.databasechangelog
+21:09:18 INFO  Database is up to date, no changesets to execute
+21:09:18 INFO  Reading from ferrefixinv.databasechangelog
+21:09:18 INFO  UPDATE SUMMARY
+21:09:18 INFO  Run:                          0
+21:09:18 INFO  Previously run:               6
+21:09:18 INFO  Filtered out:                 0
+21:09:18 INFO  -------------------------------
+21:09:18 INFO  Total change sets:            6
+21:09:18 INFO  Update summary generated
+21:09:18 INFO  Command execution complete
+21:09:18 WARN  spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+21:09:18 WARN  
 
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-03:05:33 WARN  HHH100046: Could not obtain connection to query JDBC database metadata
-org.hibernate.exception.JDBCConnectionException: Unable to obtain isolated JDBC connection [Communications link failure
+Using generated security password: 0d0b22e4-1e2b-4179-9871-3ddf02958703
 
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.] [n/a]
-	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:80)
-	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:34)
-	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:115)
-	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:101)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:51)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:366)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironment(JdbcEnvironmentInitiator.java:143)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:120)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:80)
-	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:133)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:260)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:235)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:212)
-	at org.hibernate.boot.model.relational.Database.<init>(Database.java:44)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:251)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:203)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:172)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1392)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.populateSessionFactoryBuilder(EntityManagerFactoryBuilderImpl.java:1472)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1454)
-	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
-	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
-	at ferrefix.ms_inventario.MsInventorarioApplication.main(MsInventorarioApplication.java:10)
-Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:165)
-	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:55)
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:840)
-	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:416)
-	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:237)
-	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:180)
-	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:144)
-	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:373)
-	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:210)
-	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:488)
-	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:576)
-	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:97)
-	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:111)
-	at org.hibernate.engine.jdbc.connections.internal.DataSourceConnectionProvider.getConnection(DataSourceConnectionProvider.java:137)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:508)
-	at org.hibernate.resource.transaction.backend.jdbc.internal.JdbcIsolationDelegate.delegateWork(JdbcIsolationDelegate.java:48)
-	... 37 common frames omitted
-Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
-
-The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:502)
-	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:486)
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:52)
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:95)
-	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:140)
-	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:156)
-	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:79)
-	at com.mysql.cj.NativeSession.connect(NativeSession.java:142)
-	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:964)
-	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:828)
-	... 50 common frames omitted
-Caused by: java.net.ConnectException: Connection refused: getsockopt
-	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
-	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:690)
-	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:592)
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
-	at java.base/java.net.Socket.connect(Socket.java:751)
-	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:144)
-	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:53)
-	... 53 common frames omitted
-03:05:33 ERROR Failed to initialize JPA EntityManagerFactory: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-03:05:33 WARN  Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-03:05:33 INFO  Stopping service [Tomcat]
-03:05:33 INFO  
-
-Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
-03:05:33 ERROR Application run failed
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/hibernate/autoconfigure/HibernateJpaConfiguration.class]: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1817)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:977)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:621)
-	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354)
-	at ferrefix.ms_inventario.MsInventorarioApplication.main(MsInventorarioApplication.java:10)
-Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] due to: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:273)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:235)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:212)
-	at org.hibernate.boot.model.relational.Database.<init>(Database.java:44)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.getDatabase(InFlightMetadataCollectorImpl.java:251)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:203)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:172)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1392)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.populateSessionFactoryBuilder(EntityManagerFactoryBuilderImpl.java:1472)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1454)
-	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813)
-	... 15 common frames omitted
-Caused by: org.hibernate.HibernateException: Unable to determine Dialect without JDBC metadata (please set 'jakarta.persistence.jdbc.url' for common cases or 'hibernate.dialect' when a custom Dialect implementation must be provided)
-	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:190)
-	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:86)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentWithDefaults(JdbcEnvironmentInitiator.java:200)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironmentUsingJdbcMetadata(JdbcEnvironmentInitiator.java:452)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.getJdbcEnvironment(JdbcEnvironmentInitiator.java:143)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:120)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:80)
-	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:133)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:260)
-	... 31 common frames omitted
+21:09:18 INFO  Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+21:09:19 INFO  Exposing 3 endpoints beneath base path '/actuator'
+21:09:19 INFO  Tomcat started on port 8081 (http) with context path '/'
+21:09:19 INFO  Started MsInventorarioApplication in 25.122 seconds (process running for 26.834)
+21:09:19 WARN  SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+21:09:19 WARN  SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+21:11:02 INFO  Initializing Spring DispatcherServlet 'dispatcherServlet'
+21:11:02 INFO  Initializing Servlet 'dispatcherServlet'
+21:11:02 INFO  Completed initialization in 2 ms
+21:11:02 INFO  GET /api/inventario/categorias - Listando todas las categorías
+21:11:02 INFO  Listando todas las categorías de productos
+21:11:02 INFO  Listado completado. Total: 15
+21:11:02 INFO  GET /api/inventario/categorias - 15 registros. Respondiendo 200 OK
+21:16:11 INFO  GET /api/inventario/categorias - Listando todas las categorías
+21:16:11 INFO  Listando todas las categorías de productos
+21:16:11 INFO  Listado completado. Total: 15
+21:16:11 INFO  GET /api/inventario/categorias - 15 registros. Respondiendo 200 OK
+21:16:11 INFO  GET /api/inventario/categorias/1 - Buscando categoría
+21:16:11 INFO  Buscando categoría por ID: 1
+21:16:11 INFO  Categoría ID 1 encontrada: 'Herramientas Eléctricas'
+21:16:11 INFO  GET /api/inventario/categorias/1 - Encontrada. Respondiendo 200 OK
+21:16:11 INFO  POST /api/inventario/categorias - Nombre: 'Equipos de Protección Personal'
+21:16:11 INFO  Iniciando creación de categoría: 'Equipos de Protección Personal'
+21:16:11 INFO  Categoría 'Equipos de Protección Personal' creada exitosamente con ID: 16
+21:16:11 INFO  POST /api/inventario/categorias - Categoría creada ID: 16. Respondiendo 201 CREATED
+21:16:11 INFO  PUT /api/inventario/categorias/15 - Actualizando categoría
+21:16:11 INFO  Iniciando actualización de categoría ID: 15
+21:16:11 INFO  Categoría ID 15 actualizada exitosamente a 'Iluminación LED y Eléctrica'
+21:16:12 INFO  PUT /api/inventario/categorias/15 - Actualizada. Respondiendo 200 OK
+21:16:12 INFO  DELETE /api/inventario/categorias/16 - Solicitud de eliminación
+21:16:12 INFO  Iniciando eliminación de categoría ID: 16
+21:16:12 INFO  Categoría ID 16 eliminada exitosamente
+21:16:12 INFO  DELETE /api/inventario/categorias/16 - Eliminada. Respondiendo 204 NO CONTENT
+21:16:12 WARN  400 Validation: {nombreCategoria=El nombre de la categoría del producto es obligatorio} | path: /api/inventario/categorias
+21:16:12 INFO  GET /api/inventario/unidades_medida - Listando todas las unidades
+21:16:12 INFO  Listando todas las unidades de medida
+21:16:12 INFO  Listado completado. Total: 10
+21:16:12 INFO  GET /api/inventario/unidades_medida - 10 registros. Respondiendo 200 OK
+21:16:12 INFO  GET /api/inventario/unidades_medida/1 - Buscando unidad
+21:16:12 INFO  Buscando unidad de medida por ID: 1
+21:16:12 INFO  Unidad ID 1 encontrada: 'Unidad'
+21:16:12 INFO  GET /api/inventario/unidades_medida/1 - Encontrada. Respondiendo 200 OK
+21:16:12 INFO  POST /api/inventario/unidades_medida - Nombre: 'Rollo (50m)'
+21:16:12 INFO  Iniciando creación de unidad de medida: 'Rollo (50m)'
+21:16:12 INFO  Unidad 'Rollo (50m)' creada exitosamente con ID: 11
+21:16:12 INFO  POST /api/inventario/unidades_medida - Unidad creada ID: 11. Respondiendo 201 CREATED
+21:16:12 INFO  PUT /api/inventario/unidades_medida/10 - Actualizando unidad
+21:16:12 INFO  Iniciando actualización de unidad de medida ID: 10
+21:16:12 INFO  Unidad ID 10 actualizada exitosamente a 'Pack (6 Unidades)'
+21:16:12 INFO  PUT /api/inventario/unidades_medida/10 - Actualizada. Respondiendo 200 OK
+21:16:12 INFO  DELETE /api/inventario/unidades_medida/11 - Solicitud de eliminación
+21:16:12 INFO  Iniciando eliminación de unidad de medida ID: 11
+21:16:12 INFO  Unidad de medida ID 11 eliminada exitosamente
+21:16:12 INFO  DELETE /api/inventario/unidades_medida/11 - Eliminada. Respondiendo 204 NO CONTENT
+21:16:12 WARN  400 Validation: {nombreUnidadMedida=El nombre de la unidad de medida no puede estar vacío} | path: /api/inventario/unidades_medida
+21:16:12 INFO  GET /api/inventario/productos - Listando todos los productos
+21:16:12 INFO  Listando todos los productos del inventario
+21:16:12 INFO  GET /api/inventario/productos - 30 registros. Respondiendo 200 OK
+21:16:12 INFO  GET /api/inventario/productos/1 - Buscando producto
+21:16:12 INFO  Buscando producto por ID: 1
+21:16:12 INFO  GET /api/inventario/productos/1 - Encontrado. Respondiendo 200 OK
+21:16:12 INFO  POST /api/inventario/productos - Nombre: 'Nivel de Burbuja Stanley 60cm' | código: 780123450099
+21:16:12 INFO  Iniciando creación de producto: 'Nivel de Burbuja Stanley 60cm' con código: 780123450099
+21:16:12 INFO  Producto 'Nivel de Burbuja Stanley 60cm' creado exitosamente con ID interno: 31
+21:16:12 INFO  POST /api/inventario/productos - Producto creado ID: 31. Respondiendo 201 CREATED
+21:16:12 INFO  PUT /api/inventario/productos/3 - Actualizando producto
+21:16:12 INFO  Actualizando producto con ID: 3. Nuevo nombre: 'Martillo Carpintero Stanley 20oz Pro'
+21:16:12 INFO  Producto ID 3 ('Martillo Carpintero Stanley 20oz Pro') actualizado correctamente
+21:16:12 INFO  PUT /api/inventario/productos/3 - Actualizado. Respondiendo 200 OK
+21:16:12 INFO  PATCH /api/inventario/productos/4/descontar-stock - Cantidad: 5
+21:16:12 INFO  Descontando 5 unidades del producto ID: 4
+21:16:12 INFO  Stock del producto ID 4 actualizado. Nuevo stock: 95
+21:16:12 INFO  PATCH /api/inventario/productos/4 - Stock descontado exitosamente
+21:16:12 INFO  DELETE /api/inventario/productos/31 - Solicitud de eliminación
+21:16:12 INFO  Iniciando eliminación de producto con ID: 31
+21:16:12 INFO  Producto con ID: 31 eliminado exitosamente
+21:16:12 INFO  DELETE /api/inventario/productos/31 - Eliminado. Respondiendo 204 NO CONTENT
+21:16:12 WARN  400 Validation: {stock=El stock del producto no puede ser negativo} | path: /api/inventario/productos
+21:16:12 WARN  400 Validation: {codigoBarras=El código de barras del producto no puede exceder los 50 caracteres} | path: /api/inventario/productos
+21:16:17 INFO  GET /api/inventario/productos/1 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 1
+21:16:17 INFO  GET /api/inventario/productos/1 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/23 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 23
+21:16:17 INFO  GET /api/inventario/productos/23 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/15 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 15
+21:16:17 INFO  GET /api/inventario/productos/15 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/5 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 5
+21:16:17 INFO  GET /api/inventario/productos/5 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/11 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 11
+21:16:17 INFO  GET /api/inventario/productos/11 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/16 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 16
+21:16:17 INFO  GET /api/inventario/productos/16 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/21 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 21
+21:16:17 INFO  GET /api/inventario/productos/21 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/17 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 17
+21:16:17 INFO  GET /api/inventario/productos/17 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/30 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 30
+21:16:17 INFO  GET /api/inventario/productos/30 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/2 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 2
+21:16:17 INFO  GET /api/inventario/productos/2 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/12 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 12
+21:16:17 INFO  GET /api/inventario/productos/12 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/23 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 23
+21:16:17 INFO  GET /api/inventario/productos/23 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/25 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 25
+21:16:17 INFO  GET /api/inventario/productos/25 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/18 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 18
+21:16:17 INFO  GET /api/inventario/productos/18 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/7 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 7
+21:16:17 INFO  GET /api/inventario/productos/7 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/4 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 4
+21:16:17 INFO  GET /api/inventario/productos/4 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/2 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 2
+21:16:17 INFO  GET /api/inventario/productos/2 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/3 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 3
+21:16:17 INFO  GET /api/inventario/productos/3 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/19 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 19
+21:16:17 INFO  GET /api/inventario/productos/19 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/21 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 21
+21:16:17 INFO  GET /api/inventario/productos/21 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/13 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 13
+21:16:17 INFO  GET /api/inventario/productos/13 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/23 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 23
+21:16:17 INFO  GET /api/inventario/productos/23 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/12 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 12
+21:16:17 INFO  GET /api/inventario/productos/12 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/14 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 14
+21:16:17 INFO  GET /api/inventario/productos/14 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/30 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 30
+21:16:17 INFO  GET /api/inventario/productos/30 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/1 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 1
+21:16:17 INFO  GET /api/inventario/productos/1 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/23 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 23
+21:16:17 INFO  GET /api/inventario/productos/23 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/16 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 16
+21:16:17 INFO  GET /api/inventario/productos/16 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/4 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 4
+21:16:17 INFO  GET /api/inventario/productos/4 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/13 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 13
+21:16:17 INFO  GET /api/inventario/productos/13 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/14 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 14
+21:16:17 INFO  GET /api/inventario/productos/14 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/15 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 15
+21:16:17 INFO  GET /api/inventario/productos/15 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/23 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 23
+21:16:17 INFO  GET /api/inventario/productos/23 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/30 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 30
+21:16:17 INFO  GET /api/inventario/productos/30 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/2 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 2
+21:16:17 INFO  GET /api/inventario/productos/2 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/12 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 12
+21:16:17 INFO  GET /api/inventario/productos/12 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/23 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 23
+21:16:17 INFO  GET /api/inventario/productos/23 - Encontrado. Respondiendo 200 OK
+21:16:17 INFO  GET /api/inventario/productos/1 - Buscando producto
+21:16:17 INFO  Buscando producto por ID: 1
+21:16:17 INFO  GET /api/inventario/productos/1 - Encontrado. Respondiendo 200 OK
+21:16:18 INFO  GET /api/inventario/productos/3 - Buscando producto
+21:16:18 INFO  Buscando producto por ID: 3
+21:16:18 INFO  GET /api/inventario/productos/3 - Encontrado. Respondiendo 200 OK
+21:16:18 INFO  GET /api/inventario/productos/13 - Buscando producto
+21:16:18 INFO  Buscando producto por ID: 13
+21:16:18 INFO  GET /api/inventario/productos/13 - Encontrado. Respondiendo 200 OK

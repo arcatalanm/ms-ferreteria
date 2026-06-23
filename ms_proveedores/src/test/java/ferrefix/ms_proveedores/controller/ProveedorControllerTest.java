@@ -26,18 +26,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * ┌──────────────────────────────────────────────────────────┐
- * │                 ProveedorControllerTest                  │
- * ├──────────────────────────────────────────────────────────┤
- * │  Mocks the MVC layer to test ProveedorController         │
- * │                                                          │
- * │  [MockMvc] ────► [ProveedorController]                    │
- * │                           │ (delegates)                  │
- * │                           ▼                              │
- * │              [ProveedorService] (Mock)                   │
- * └──────────────────────────────────────────────────────────┘
- */
 @ExtendWith(MockitoExtension.class)
 class ProveedorControllerTest {
 
@@ -82,43 +70,7 @@ class ProveedorControllerTest {
     @Test
     @DisplayName("Debería crear un proveedor")
     void deberiaCrear() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock & Request │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: POST /proveedores  │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 201 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE:
-         *  Request DTO:
-         *  └── ProveedorRequestDTO
-         *      ├── rutProveedor: "12.345.678-5" (String)
-         *      ├── nombreProveedor: "Proveedor Uno" (String)
-         *      ├── giroProveedor: "Ferretería" (String)
-         *      ├── direccionProveedor: 10 (Long)
-         *      ├── telefonoProveedor: "987654321" (String)
-         *      └── correoProveedor: "uno@proveedor.com" (String)
-         *
-         *  Response DTO (Expected):
-         *  └── ProveedorResponseDTO
-         *      ├── idProveedor: 1 (Integer)
-         *      ├── rutProveedor: "12.345.678-5" (String)
-         *      ├── nombreProveedor: "Proveedor Uno" (String)
-         *      ├── giroProveedor: "Ferretería" (String)
-         *      ├── telefonoProveedor: "987654321" (String)
-         *      └── correoProveedor: "uno@proveedor.com" (String)
-         */
 
-        // === ARRANGE ===
         ProveedorRequestDTO request = ProveedorRequestDTO.builder()
                 .rutProveedor("12.345.678-5")
                 .nombreProveedor("Proveedor Uno")
@@ -130,7 +82,6 @@ class ProveedorControllerTest {
 
         when(proveedorService.guardar(any(ProveedorRequestDTO.class))).thenReturn(response1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(post("/api/proveedores")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -144,33 +95,9 @@ class ProveedorControllerTest {
     @Test
     @DisplayName("Debería listar todos los proveedores")
     void deberiaListarTodos() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock service   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: GET /proveedores   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + LIST │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE (Expected):
-         *  └── Response (List wrapper)
-         *      └── content [Array]
-         *          ├── [0]: { idProveedor: 1, nombreProveedor: "Proveedor Uno", ... }
-         *          └── [1]: { idProveedor: 2, nombreProveedor: "Proveedor Dos", ... }
-         */
 
-        // === ARRANGE ===
         when(proveedorService.listarTodos()).thenReturn(List.of(response1, response2));
 
-        // === ACT & ASSERT ===
         mockMvc.perform(get("/api/proveedores"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)))
@@ -185,32 +112,9 @@ class ProveedorControllerTest {
     @Test
     @DisplayName("Debería obtener proveedor por ID")
     void deberiaObtenerPorId() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock service   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: GET /proveedores/1 │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE (Expected):
-         *  └── ProveedorResponseDTO
-         *      ├── idProveedor: 1
-         *      └── nombreProveedor: "Proveedor Uno"
-         */
 
-        // === ARRANGE ===
         when(proveedorService.buscarPorId(1)).thenReturn(response1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(get("/api/proveedores/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idProveedor", is(1)))
@@ -222,35 +126,7 @@ class ProveedorControllerTest {
     @Test
     @DisplayName("Debería actualizar un proveedor")
     void deberiaActualizar() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock & Request │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: PUT /proveedores/1 │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE:
-         *  Request DTO:
-         *  └── ProveedorRequestDTO
-         *      ├── rutProveedor: "12.345.678-5"
-         *      └── nombreProveedor: "Proveedor Modificado"
-         *
-         *  Response DTO (Expected):
-         *  └── ProveedorResponseDTO
-         *      ├── idProveedor: 1
-         *      └── nombreProveedor: "Proveedor Modificado"
-         */
 
-        // === ARRANGE ===
         ProveedorRequestDTO request = ProveedorRequestDTO.builder()
                 .rutProveedor("12.345.678-5")
                 .nombreProveedor("Proveedor Modificado")
@@ -271,7 +147,6 @@ class ProveedorControllerTest {
 
         when(proveedorService.actualizar(eq(1), any(ProveedorRequestDTO.class))).thenReturn(actualizada);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(put("/api/proveedores/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -285,27 +160,9 @@ class ProveedorControllerTest {
     @Test
     @DisplayName("Debería eliminar un proveedor")
     void deberiaEliminar() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌───────────────────────────┐
-         *  │ ARRANGE: Mock doNothing() │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ACT: DELETE /proveedores/1│
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ASSERT: HTTP 204 NoContent│
-         *  └───────────────────────────┘
-         */
 
-        // === ARRANGE ===
         doNothing().when(proveedorService).eliminar(1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(delete("/api/proveedores/1"))
                 .andExpect(status().isNoContent());
 

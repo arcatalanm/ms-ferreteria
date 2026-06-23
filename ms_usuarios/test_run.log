@@ -1,0 +1,200 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------------< ferrefix:ms_usuarios >------------------------
+[INFO] Building ms_usuarios 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ ms_usuarios ---
+[INFO] Copying 3 resources from src\main\resources to target\classes
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ ms_usuarios ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 34 source files with javac [debug parameters release 21] to target\classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ ms_usuarios ---
+[INFO] skip non existing resourceDirectory C:\Users\ariel\Desktop\ms-ferreteria\ms_usuarios\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ ms_usuarios ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 7 source files with javac [debug parameters release 21] to target\test-classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- surefire:3.5.5:test (default-test) @ ms_usuarios ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running ferrefix.ms_usuarios.controller.CargoControllerTest
+Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\ariel\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
+20:08:03.921 [main] INFO org.hibernate.validator.internal.util.Version -- HV000001: Hibernate Validator 9.0.1.Final
+20:08:04.475 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:04.477 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:04.482 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 2 ms
+20:08:04.619 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- GET /api/usuarios/cargos - Solicitud para listar todos los cargos
+20:08:04.922 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- GET /api/usuarios/cargos - Listado enviado con éxito. Respondiendo 200 OK
+20:08:05.217 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.217 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.217 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.235 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- GET /api/usuarios/cargos/1 - Solicitud para buscar cargo por ID
+20:08:05.251 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- GET /api/usuarios/cargos/1 - Cargo encontrado. Respondiendo 200 OK
+20:08:05.293 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.294 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.294 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.438 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- PUT /api/usuarios/cargos/1 - Solicitud para actualizar cargo
+20:08:05.443 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- PUT /api/usuarios/cargos/1 - Cargo actualizado. Respondiendo 200 OK
+20:08:05.476 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.477 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.477 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.480 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- DELETE /api/usuarios/cargos/1 - Solicitud para eliminar cargo
+20:08:05.480 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- DELETE /api/usuarios/cargos/1 - Cargo eliminado. Respondiendo 204 NO CONTENT
+20:08:05.499 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.501 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.501 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.508 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- POST /api/usuarios/cargos - Solicitud para crear cargo: 'Administrador'
+20:08:05.511 [main] INFO ferrefix.ms_usuarios.controller.CargoController -- POST /api/usuarios/cargos - Cargo creado exitosamente. Respondiendo 201 CREATED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.649 s -- in ferrefix.ms_usuarios.controller.CargoControllerTest
+[INFO] Running ferrefix.ms_usuarios.controller.ClienteControllerTest
+20:08:05.605 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.605 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.605 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.610 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- GET /api/usuarios/clientes - Listando todos los clientes
+20:08:05.625 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- GET /api/usuarios/clientes - 2 registros. Respondiendo 200 OK
+20:08:05.655 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.655 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.655 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.710 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- POST /api/usuarios/clientes - RUT: 12.345.678-5
+20:08:05.712 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- POST /api/usuarios/clientes - Cliente creado. Respondiendo 201 CREATED
+20:08:05.737 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.737 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.737 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.740 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- GET /api/usuarios/clientes/run/12.345.678-5 - Buscando cliente
+20:08:05.750 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- GET /api/usuarios/clientes/run/12.345.678-5 - Encontrado. Respondiendo 200 OK
+20:08:05.791 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.791 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.791 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.806 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- PUT /api/usuarios/clientes/run/12.345.678-5 - Actualizando cliente
+20:08:05.806 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- PUT /api/usuarios/clientes/run/12.345.678-5 - Actualizado. Respondiendo 200 OK
+20:08:05.832 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.832 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.832 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.842 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- DELETE /api/usuarios/clientes/run/12.345.678-5 - Solicitud de eliminación
+20:08:05.843 [main] INFO ferrefix.ms_usuarios.controller.ClienteController -- DELETE /api/usuarios/clientes/run/12.345.678-5 - Eliminado. Respondiendo 204 NO CONTENT
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.308 s -- in ferrefix.ms_usuarios.controller.ClienteControllerTest
+[INFO] Running ferrefix.ms_usuarios.controller.EmpleadoControllerTest
+20:08:05.905 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.907 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.907 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.911 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- GET /api/usuarios/empleados - Listando todos los empleados
+20:08:05.929 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- GET /api/usuarios/empleados - 2 registros. Respondiendo 200 OK
+20:08:05.953 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.953 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.954 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:05.957 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- GET /api/usuarios/empleados/run/12.345.678-5 - Buscando empleado
+20:08:05.966 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- GET /api/usuarios/empleados/run/12.345.678-5 - Encontrado. Respondiendo 200 OK
+20:08:05.997 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:05.997 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:05.997 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:06.022 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- PUT /api/usuarios/empleados/run/12.345.678-5 - Actualizando empleado
+20:08:06.022 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- PUT /api/usuarios/empleados/run/12.345.678-5 - Actualizado. Respondiendo 200 OK
+20:08:06.055 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:06.055 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:06.056 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 1 ms
+20:08:06.059 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- DELETE /api/usuarios/empleados/run/12.345.678-5 - Solicitud de baja lógica
+20:08:06.060 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- DELETE /api/usuarios/empleados/run/12.345.678-5 - Baja completada. Respondiendo 204 NO CONTENT
+20:08:06.075 [main] INFO org.springframework.mock.web.MockServletContext -- Initializing Spring TestDispatcherServlet ''
+20:08:06.075 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Initializing Servlet ''
+20:08:06.075 [main] INFO org.springframework.test.web.servlet.TestDispatcherServlet -- Completed initialization in 0 ms
+20:08:06.090 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- POST /api/usuarios/empleados - RUT: 12.345.678-5
+20:08:06.090 [main] INFO ferrefix.ms_usuarios.controller.EmpleadoController -- POST /api/usuarios/empleados - Empleado registrado. Respondiendo 201 CREATED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.250 s -- in ferrefix.ms_usuarios.controller.EmpleadoControllerTest
+[INFO] Running ferrefix.ms_usuarios.MsUsuariosApplicationTests
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.004 s -- in ferrefix.ms_usuarios.MsUsuariosApplicationTests
+[INFO] Running ferrefix.ms_usuarios.service.CargoServiceTest
+20:08:06.351 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Iniciando creación de cargo: 'Administrador'
+20:08:06.352 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Cargo creado exitosamente con ID: 1
+20:08:06.361 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Iniciando búsqueda de todos los cargos
+20:08:06.361 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Búsqueda completada. Total de cargos encontrados: 2
+20:08:06.367 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Buscando cargo con ID: 99
+20:08:06.368 [main] WARN ferrefix.ms_usuarios.service.CargoService -- Búsqueda fallida: No se encontró el cargo con ID: 99
+20:08:06.373 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Iniciando actualización de cargo con ID: 1
+20:08:06.375 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Cargo con ID 1 actualizado exitosamente
+20:08:06.379 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Iniciando creación de cargo: 'Administrador'
+20:08:06.379 [main] WARN ferrefix.ms_usuarios.service.CargoService -- Conflicto al crear: El cargo 'Administrador' ya existe
+20:08:06.382 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Iniciando eliminación de cargo con ID: 99
+20:08:06.382 [main] WARN ferrefix.ms_usuarios.service.CargoService -- Fallo al eliminar: No se encontró el cargo con ID: 99
+20:08:06.388 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Iniciando actualización de cargo con ID: 1
+20:08:06.389 [main] WARN ferrefix.ms_usuarios.service.CargoService -- Conflicto al actualizar: El nombre 'Vendedor' ya pertenece a otro cargo
+20:08:06.393 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Buscando cargo con ID: 1
+20:08:06.399 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Iniciando eliminación de cargo con ID: 1
+20:08:06.399 [main] INFO ferrefix.ms_usuarios.service.CargoService -- Cargo con ID 1 eliminado exitosamente
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.288 s -- in ferrefix.ms_usuarios.service.CargoServiceTest
+[INFO] Running ferrefix.ms_usuarios.service.ClienteServiceTest
+20:08:06.546 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando creación de cliente RUT: 12.345.678-5
+20:08:06.551 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Cliente RUN 12345678 creado exitosamente
+20:08:06.565 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando búsqueda de todos los clientes
+20:08:06.573 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando creación de cliente RUT: 12.345-K
+20:08:06.573 [main] WARN ferrefix.ms_usuarios.service.ClienteService -- RUT inválido recibido: 12.345-K
+20:08:06.582 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando creación de cliente RUT: 12.345.678-5
+20:08:06.582 [main] WARN ferrefix.ms_usuarios.service.ClienteService -- Conflicto: El email ana.silva@email.com ya pertenece a otro cliente
+20:08:06.586 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Buscando cliente por RUN: 99
+20:08:06.588 [main] WARN ferrefix.ms_usuarios.service.ClienteService -- Búsqueda fallida: No se encontró cliente con RUN 99
+20:08:06.593 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando actualización de cliente con RUN: 12345678
+20:08:06.594 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Cliente con RUN 12345678 actualizado exitosamente
+20:08:06.600 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando eliminación de cliente con RUN: 99
+20:08:06.600 [main] WARN ferrefix.ms_usuarios.service.ClienteService -- Fallo al eliminar: No se encontró cliente con RUN 99
+20:08:06.603 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando eliminación de cliente con RUN: 12345678
+20:08:06.603 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Cliente con RUN 12345678 eliminado exitosamente
+20:08:06.608 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando creación de cliente RUT: 12.345.678-5
+20:08:06.608 [main] WARN ferrefix.ms_usuarios.service.ClienteService -- Conflicto: el cliente RUN 12345678 ya existe
+20:08:06.610 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Buscando cliente por RUN: 12345678
+20:08:06.616 [main] INFO ferrefix.ms_usuarios.service.ClienteService -- Iniciando actualización de cliente con RUN: 12345678
+20:08:06.616 [main] WARN ferrefix.ms_usuarios.service.ClienteService -- RUT inválido al actualizar: 87.654.321-0
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.215 s -- in ferrefix.ms_usuarios.service.ClienteServiceTest
+[INFO] Running ferrefix.ms_usuarios.service.EmpleadoServiceTest
+20:08:06.720 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando baja lógica de empleado RUN: 12345678
+20:08:06.721 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Empleado RUN 12345678 desactivado exitosamente
+20:08:06.727 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Consultando la lista de todos los empleados
+20:08:06.732 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Consulta exitosa. Total empleados: 2
+20:08:06.736 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando creación de empleado RUT: 12.345-K
+20:08:06.736 [main] WARN ferrefix.ms_usuarios.service.EmpleadoService -- RUT inválido recibido: 12.345-K
+20:08:06.739 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando actualización de empleado RUN: 12345678
+20:08:06.744 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Empleado RUN 12345678 actualizado exitosamente
+20:08:06.749 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando creación de empleado RUT: 12.345.678-5
+20:08:06.749 [main] WARN ferrefix.ms_usuarios.service.EmpleadoService -- Conflicto: El email ana.silva@empresa.com ya pertenece a otro empleado
+20:08:06.756 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Buscando empleado por RUN: 99
+20:08:06.756 [main] WARN ferrefix.ms_usuarios.service.EmpleadoService -- Búsqueda fallida: Empleado RUN 99 no encontrado
+20:08:06.762 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando creación de empleado RUT: 12.345.678-5
+20:08:06.762 [main] WARN ferrefix.ms_usuarios.service.EmpleadoService -- Fallo al crear empleado: Cargo ID 99 no encontrado
+20:08:06.767 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando creación de empleado RUT: 12.345.678-5
+20:08:06.770 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Empleado RUN 12345678 creado exitosamente
+20:08:06.777 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando creación de empleado RUT: 12.345.678-5
+20:08:06.777 [main] WARN ferrefix.ms_usuarios.service.EmpleadoService -- Conflicto: el empleado RUN 12345678 ya existe
+20:08:06.782 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Buscando empleado por RUN: 12345678
+20:08:06.792 [main] INFO ferrefix.ms_usuarios.service.EmpleadoService -- Iniciando actualización de empleado RUN: 12345678
+20:08:06.792 [main] WARN ferrefix.ms_usuarios.service.EmpleadoService -- RUT inválido al actualizar: 87.654.321-0
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.169 s -- in ferrefix.ms_usuarios.service.EmpleadoServiceTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 47, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  15.332 s
+[INFO] Finished at: 2026-06-22T20:08:06-04:00
+[INFO] ------------------------------------------------------------------------

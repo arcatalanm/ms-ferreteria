@@ -26,18 +26,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * ┌──────────────────────────────────────────────────────────┐
- * │                 ProductoControllerTest                   │
- * ├──────────────────────────────────────────────────────────┤
- * │  Mocks the MVC layer to test ProductoController          │
- * │                                                          │
- * │  [MockMvc] ────► [ProductoController]                    │
- * │                           │ (delegates)                  │
- * │                           ▼                              │
- * │              [ProductoService] (Mock)                    │
- * └──────────────────────────────────────────────────────────┘
- */
 @ExtendWith(MockitoExtension.class)
 class ProductoControllerTest {
 
@@ -84,44 +72,7 @@ class ProductoControllerTest {
     @Test
     @DisplayName("Debería crear un producto")
     void deberiaCrear() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock & Request │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: POST /productos    │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 201 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE:
-         *  Request DTO:
-         *  └── ProductoRequestDTO
-         *      ├── categoria: 1 (Integer)
-         *      ├── unidadMedida: 1 (Integer)
-         *      ├── codigoBarras: "123456789" (String)
-         *      ├── nombre: "Martillo de Uña" (String)
-         *      ├── stock: 10 (Integer)
-         *      └── precioVenta: 5000 (Integer)
-         *
-         *  Response DTO (Expected):
-         *  └── ProductoResponseDTO
-         *      ├── id: 101 (Long)
-         *      ├── codigoBarras: "123456789" (String)
-         *      ├── nombre: "Martillo de Uña" (String)
-         *      ├── stock: 10 (Integer)
-         *      ├── precioVenta: 5000 (Integer)
-         *      ├── categoria: "Herramientas" (String)
-         *      └── unidadMedida: "Unidad" (String)
-         */
 
-        // === ARRANGE ===
         ProductoRequestDTO request = ProductoRequestDTO.builder()
                 .categoria(1)
                 .unidadMedida(1)
@@ -133,7 +84,6 @@ class ProductoControllerTest {
 
         when(productoService.crearProducto(any(ProductoRequestDTO.class))).thenReturn(p1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(post("/api/inventario/productos")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -148,33 +98,9 @@ class ProductoControllerTest {
     @Test
     @DisplayName("Debería listar todos los productos")
     void deberiaListarTodos() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock service   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: GET /productos     │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + LIST │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE (Expected):
-         *  └── Response (List wrapper)
-         *      └── content [Array]
-         *          ├── [0]: { id: 101, nombre: "Martillo de Uña", ... }
-         *          └── [1]: { id: 102, nombre: "Alicate Universal", ... }
-         */
 
-        // === ARRANGE ===
         when(productoService.buscarTodosProductos()).thenReturn(List.of(p1, p2));
 
-        // === ACT & ASSERT ===
         mockMvc.perform(get("/api/inventario/productos"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)))
@@ -189,33 +115,9 @@ class ProductoControllerTest {
     @Test
     @DisplayName("Debería obtener un producto por ID")
     void deberiaObtenerPorId() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock service   │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: GET /productos/101 │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE (Expected):
-         *  └── ProductoResponseDTO
-         *      ├── id: 101 (Long)
-         *      ├── nombre: "Martillo de Uña" (String)
-         *      └── codigoBarras: "123456789" (String)
-         */
 
-        // === ARRANGE ===
         when(productoService.buscarProductoPorId(101L)).thenReturn(p1);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(get("/api/inventario/productos/101"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(101)))
@@ -228,40 +130,7 @@ class ProductoControllerTest {
     @Test
     @DisplayName("Debería actualizar un producto")
     void deberiaActualizar() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Mock & Request │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: PUT /productos/101 │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: HTTP 200 + JSON │
-         *  └─────────────────────────┘
-         *
-         *  JSON STRUCTURE:
-         *  Request DTO:
-         *  └── ProductoRequestDTO
-         *      ├── categoria: 1
-         *      ├── unidadMedida: 1
-         *      ├── codigoBarras: "123456789"
-         *      ├── nombre: "Martillo de Uña Modificado"
-         *      ├── stock: 12
-         *      └── precioVenta: 5500
-         *
-         *  Response DTO (Expected):
-         *  └── ProductoResponseDTO
-         *      ├── id: 101
-         *      ├── nombre: "Martillo de Uña Modificado"
-         *      └── stock: 12
-         */
 
-        // === ARRANGE ===
         ProductoRequestDTO request = ProductoRequestDTO.builder()
                 .categoria(1)
                 .unidadMedida(1)
@@ -283,7 +152,6 @@ class ProductoControllerTest {
 
         when(productoService.actualizarProducto(eq(101L), any(ProductoRequestDTO.class))).thenReturn(actualizada);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(put("/api/inventario/productos/101")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -298,27 +166,9 @@ class ProductoControllerTest {
     @Test
     @DisplayName("Debería eliminar un producto")
     void deberiaEliminar() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌───────────────────────────┐
-         *  │ ARRANGE: Mock doNothing() │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ACT: DELETE /productos/101│
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ASSERT: HTTP 204 NoContent│
-         *  └───────────────────────────┘
-         */
 
-        // === ARRANGE ===
         doNothing().when(productoService).eliminarProducto(101L);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(delete("/api/inventario/productos/101"))
                 .andExpect(status().isNoContent());
 
@@ -328,28 +178,9 @@ class ProductoControllerTest {
     @Test
     @DisplayName("Debería descontar stock de un producto")
     void deberiaDescontarStock() throws Exception {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE: Mock doNothing()          │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT: PATCH /productos/101/descontar│
-         *  │      QueryParam: cantidad=5        │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ASSERT: HTTP 200 OK & verify       │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         doNothing().when(productoService).descontarStock(101L, 5);
 
-        // === ACT & ASSERT ===
         mockMvc.perform(patch("/api/inventario/productos/101/descontar-stock")
                         .param("cantidad", "5"))
                 .andExpect(status().isOk());

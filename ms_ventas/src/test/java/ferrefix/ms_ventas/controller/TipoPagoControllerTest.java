@@ -28,25 +28,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * TipoPagoControllerTest
- *
- * Visual Flowchart of the Integration/MockMvc Testing Architecture:
- *
- *   [Test Client] --------(HTTP Request)--------> [MockMvc Engine]
- *                                                        |
- *                                                        v
- *                                             [TipoPagoController]
- *                                                        |
- *                                          (Delegates to Mocked Service)
- *                                                        v
- *                                            [TipoPagoService (Mock)]
- *                                                        |
- *                                               (Returns Mock Entity)
- *                                                        v
- *   [Test Assertions] <--(Status & JSON Path)-- [MockMvc Response]
- *
- */
 @ExtendWith(MockitoExtension.class)
 class TipoPagoControllerTest {
 
@@ -63,9 +44,6 @@ class TipoPagoControllerTest {
     private TipoPagoResponseDTO response1;
     private TipoPagoResponseDTO response2;
 
-    // ==========================================
-    // SETUP & INITIALIZATION
-    // ==========================================
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(tipoPagoController)
@@ -83,33 +61,16 @@ class TipoPagoControllerTest {
                 .build();
     }
 
-    /**
-     * deberiaCrear:
-     * Verifies POST /api/ventas/tipos-pago registers a new payment type successfully.
-     *
-     * Input Payload Tree (JSON):
-     * ┌───────────────────────────────┐
-     * │ {                             │
-     * │   "nombreTipoPago": "Efectivo"│
-     * │ }                             │
-     * └───────────────────────────────┘
-     *
-     */
     @Test
     @DisplayName("Debería registrar un tipo de pago")
     void deberiaCrear() throws Exception {
-        // ==========================================
-        // 1. ARRANGE
-        // ==========================================
+
         TipoPagoRequestDTO request = TipoPagoRequestDTO.builder()
                 .nombreTipoPago("Efectivo")
                 .build();
 
         when(tipoPagoService.crear(any(TipoPagoRequestDTO.class))).thenReturn(response1);
 
-        // ==========================================
-        // 2. ACT & 3. ASSERT
-        // ==========================================
         mockMvc.perform(post("/api/ventas/tipos-pago")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -120,16 +81,10 @@ class TipoPagoControllerTest {
         verify(tipoPagoService, times(1)).crear(any(TipoPagoRequestDTO.class));
     }
 
-    /**
-     * deberiaFallarAlCrearSiNombreExiste:
-     * Verifies that naming conflicts return a 400 Bad Request exception handler response.
-     */
     @Test
     @DisplayName("Debería fallar al crear si el nombre ya existe (400 BadRequest)")
     void deberiaFallarAlCrearSiNombreExiste() throws Exception {
-        // ==========================================
-        // 1. ARRANGE
-        // ==========================================
+
         TipoPagoRequestDTO request = TipoPagoRequestDTO.builder()
                 .nombreTipoPago("Efectivo")
                 .build();
@@ -137,9 +92,6 @@ class TipoPagoControllerTest {
         when(tipoPagoService.crear(any(TipoPagoRequestDTO.class)))
                 .thenThrow(new BadRequestException("Ya existe un tipo de pago con el nombre: Efectivo"));
 
-        // ==========================================
-        // 2. ACT & 3. ASSERT
-        // ==========================================
         mockMvc.perform(post("/api/ventas/tipos-pago")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -147,21 +99,12 @@ class TipoPagoControllerTest {
                 .andExpect(jsonPath("$.message", is("Ya existe un tipo de pago con el nombre: Efectivo")));
     }
 
-    /**
-     * deberiaListarTodos:
-     * Verifies retrieving all payment types lists details correctly.
-     */
     @Test
     @DisplayName("Debería listar todos los tipos de pago")
     void deberiaListarTodos() throws Exception {
-        // ==========================================
-        // 1. ARRANGE
-        // ==========================================
+
         when(tipoPagoService.obtenerTodos()).thenReturn(List.of(response1, response2));
 
-        // ==========================================
-        // 2. ACT & 3. ASSERT
-        // ==========================================
         mockMvc.perform(get("/api/ventas/tipos-pago"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(2)))
@@ -173,21 +116,12 @@ class TipoPagoControllerTest {
         verify(tipoPagoService, times(1)).obtenerTodos();
     }
 
-    /**
-     * deberiaObtenerPorId:
-     * Verifies lookup by ID returns appropriate payment type object.
-     */
     @Test
     @DisplayName("Debería obtener un tipo de pago por ID")
     void deberiaObtenerPorId() throws Exception {
-        // ==========================================
-        // 1. ARRANGE
-        // ==========================================
+
         when(tipoPagoService.obtenerPorId(1)).thenReturn(response1);
 
-        // ==========================================
-        // 2. ACT & 3. ASSERT
-        // ==========================================
         mockMvc.perform(get("/api/ventas/tipos-pago/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idTipoPago", is(1)))
@@ -196,37 +130,22 @@ class TipoPagoControllerTest {
         verify(tipoPagoService, times(1)).obtenerPorId(1);
     }
 
-    /**
-     * deberiaRetornar404SiNoExiste:
-     * Verifies looking up an unregistered payment type yields 404 Not Found error status.
-     */
     @Test
     @DisplayName("Debería retornar 404 si el tipo de pago no existe")
     void deberiaRetornar404SiNoExiste() throws Exception {
-        // ==========================================
-        // 1. ARRANGE
-        // ==========================================
+
         when(tipoPagoService.obtenerPorId(99))
                 .thenThrow(new ResourceNotFoundException("Tipo de pago no encontrado con ID: 99"));
 
-        // ==========================================
-        // 2. ACT & 3. ASSERT
-        // ==========================================
         mockMvc.perform(get("/api/ventas/tipos-pago/99"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message", is("Tipo de pago no encontrado con ID: 99")));
     }
 
-    /**
-     * deberiaActualizar:
-     * Verifies PUT updates details of targeted payment type object.
-     */
     @Test
     @DisplayName("Debería actualizar un tipo de pago")
     void deberiaActualizar() throws Exception {
-        // ==========================================
-        // 1. ARRANGE
-        // ==========================================
+
         TipoPagoRequestDTO request = TipoPagoRequestDTO.builder()
                 .nombreTipoPago("Efectivo Modificado")
                 .build();
@@ -238,9 +157,6 @@ class TipoPagoControllerTest {
 
         when(tipoPagoService.actualizar(eq(1), any(TipoPagoRequestDTO.class))).thenReturn(actualizada);
 
-        // ==========================================
-        // 2. ACT & 3. ASSERT
-        // ==========================================
         mockMvc.perform(put("/api/ventas/tipos-pago/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -251,21 +167,12 @@ class TipoPagoControllerTest {
         verify(tipoPagoService, times(1)).actualizar(eq(1), any(TipoPagoRequestDTO.class));
     }
 
-    /**
-     * deberiaEliminar:
-     * Verifies DELETE request deletes payment type (204 No Content).
-     */
     @Test
     @DisplayName("Debería eliminar un tipo de pago")
     void deberiaEliminar() throws Exception {
-        // ==========================================
-        // 1. ARRANGE
-        // ==========================================
+
         doNothing().when(tipoPagoService).eliminar(1);
 
-        // ==========================================
-        // 2. ACT & 3. ASSERT
-        // ==========================================
         mockMvc.perform(delete("/api/ventas/tipos-pago/1"))
                 .andExpect(status().isNoContent());
 

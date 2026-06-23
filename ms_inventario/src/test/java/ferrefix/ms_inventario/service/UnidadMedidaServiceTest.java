@@ -23,20 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-/**
- * ┌──────────────────────────────────────────────────────────┐
- * │              UnidadMedidaServiceTest                     │
- * ├──────────────────────────────────────────────────────────┤
- * │  Tests UnidadMedidaService using Mockito.                │
- * │                                                          │
- * │              [UnidadMedidaService]                       │
- * │               /                  \                       │
- * │  (calls repository)         (uses mapper)                │
- * │             ▼                      ▼                     │
- * │   [UnidadMedidaRepository]   [UnidadMedidaMapper]        │
- * │            (Mock)                  (Spy)                 │
- * └──────────────────────────────────────────────────────────┘
- */
 @ExtendWith(MockitoExtension.class)
 class UnidadMedidaServiceTest {
 
@@ -68,27 +54,7 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería crear una nueva unidad de medida")
     void deberiaCrearUnidadMedida() {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE: Request DTO    │
-         *  │ Mock: exists=false      │
-         *  │ Mock: save=entity       │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ACT: crearUnidad()      │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT: DTO returned &  │
-         *  │ Verify Mock interactions│
-         *  └─────────────────────────┘
-         */
 
-        // === ARRANGE ===
         UnidadMedidaRequestDTO request = UnidadMedidaRequestDTO.builder()
                 .nombreUnidadMedida("Unidad")
                 .build();
@@ -96,10 +62,8 @@ class UnidadMedidaServiceTest {
         when(unidadMedidaRepository.existsByNombreUnidadMedida("Unidad")).thenReturn(false);
         when(unidadMedidaRepository.save(any(UnidadMedida.class))).thenReturn(unidadUnidad);
 
-        // === ACT ===
         UnidadMedidaResponseDTO result = unidadMedidaService.crearUnidadMedida(request);
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(1, result.getIdUnidadMedida());
         assertEquals("Unidad", result.getNombreUnidadMedida());
@@ -110,33 +74,13 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería lanzar BadRequestException al crear una unidad con nombre duplicado")
     void deberiaFallarAlCrearNombreDuplicado() {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────────┐
-         *  │ ARRANGE: Request DTO        │
-         *  │ Mock: exists=true           │
-         *  └──────────────┬──────────────┘
-         *                 │
-         *                 ▼
-         *  ┌─────────────────────────────┐
-         *  │ ACT & ASSERT:               │
-         *  │ assertThrows BadRequestExc  │
-         *  └──────────────┬──────────────┘
-         *                 │
-         *                 ▼
-         *  ┌─────────────────────────────┐
-         *  │ VERIFY: save() never called │
-         *  └─────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         UnidadMedidaRequestDTO request = UnidadMedidaRequestDTO.builder()
                 .nombreUnidadMedida("Unidad")
                 .build();
 
         when(unidadMedidaRepository.existsByNombreUnidadMedida("Unidad")).thenReturn(true);
 
-        // === ACT & ASSERT ===
         assertThrows(BadRequestException.class, () ->
                 unidadMedidaService.crearUnidadMedida(request)
         );
@@ -148,33 +92,11 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería listar todas las unidades de medida")
     void deberiaListarTodas() {
-        /*
-         *  FLOW CHART:
-         *  ┌─────────────────────────┐
-         *  │ ARRANGE:                │
-         *  │ Mock repository.findAll │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────────┐
-         *  │ ACT:                        │
-         *  │ buscarTodasUnidadesMedida() │
-         *  └────────────┬────────────┘
-         *               │
-         *               ▼
-         *  ┌─────────────────────────┐
-         *  │ ASSERT:                 │
-         *  │ List size and values    │
-         *  └─────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(unidadMedidaRepository.findAll()).thenReturn(List.of(unidadUnidad, unidadMetros));
 
-        // === ACT ===
         List<UnidadMedidaResponseDTO> result = unidadMedidaService.buscarTodasUnidadesMedida();
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals("Unidad", result.get(0).getNombreUnidadMedida());
@@ -185,33 +107,11 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería obtener una unidad de medida por ID")
     void deberiaObtenerPorId() {
-        /*
-         *  FLOW CHART:
-         *  ┌──────────────────────────┐
-         *  │ ARRANGE:                 │
-         *  │ Mock repository.findById │
-         *  └────────────┬─────────────┘
-         *               │
-         *               ▼
-         *  ┌───────────────────────────┐
-         *  │ ACT:                      │
-         *  │ buscarUnidadMedidaPorId(1)│
-         *  └────────────┬───────────┘
-         *               │
-         *               ▼
-         *  ┌──────────────────────────┐
-         *  │ ASSERT:                  │
-         *  │ Correct ID and name      │
-         *  └──────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(unidadMedidaRepository.findById(1)).thenReturn(Optional.of(unidadUnidad));
 
-        // === ACT ===
         UnidadMedidaResponseDTO result = unidadMedidaService.buscarUnidadMedidaPorId(1);
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(1, result.getIdUnidadMedida());
         assertEquals("Unidad", result.getNombreUnidadMedida());
@@ -221,24 +121,9 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería lanzar ResourceNotFoundException al buscar ID inexistente")
     void deberiaFallarAlObtenerInexistente() {
-        /*
-         *  FLOW CHART:
-         *  ┌──────────────────────────┐
-         *  │ ARRANGE:                 │
-         *  │ Mock findById -> Empty   │
-         *  └────────────┬─────────────┘
-         *               │
-         *               ▼
-         *  ┌──────────────────────────┐
-         *  │ ACT & ASSERT:            │
-         *  │ assertThrows NotFoundExc │
-         *  └──────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(unidadMedidaRepository.findById(99)).thenReturn(Optional.empty());
 
-        // === ACT & ASSERT ===
         assertThrows(ResourceNotFoundException.class, () ->
                 unidadMedidaService.buscarUnidadMedidaPorId(99)
         );
@@ -249,29 +134,7 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería actualizar una unidad de medida existente")
     void deberiaActualizarUnidadMedida() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock findById -> Found             │
-         *  │ Mock existsByNombre -> false       │
-         *  │ Mock save -> return saved entity   │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT:                               │
-         *  │ actualizarUnidadMedida()           │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ASSERT:                            │
-         *  │ Result matches updated name        │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         UnidadMedidaRequestDTO request = UnidadMedidaRequestDTO.builder()
                 .nombreUnidadMedida("Unidades")
                 .build();
@@ -280,10 +143,8 @@ class UnidadMedidaServiceTest {
         when(unidadMedidaRepository.existsByNombreUnidadMedida("Unidades")).thenReturn(false);
         when(unidadMedidaRepository.save(any(UnidadMedida.class))).thenAnswer(i -> i.getArgument(0));
 
-        // === ACT ===
         UnidadMedidaResponseDTO result = unidadMedidaService.actualizarUnidadMedida(1, request);
 
-        // === ASSERT ===
         assertNotNull(result);
         assertEquals(1, result.getIdUnidadMedida());
         assertEquals("Unidades", result.getNombreUnidadMedida());
@@ -295,27 +156,7 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería lanzar BadRequestException al actualizar con nombre ya ocupado por otra unidad")
     void deberiaFallarAlActualizarNombreOcupado() {
-        /*
-         *  FLOW CHART:
-         *  ┌────────────────────────────────────┐
-         *  │ ARRANGE:                           │
-         *  │ Mock findById -> Found             │
-         *  │ Mock existsByNombre -> true        │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ ACT & ASSERT:                      │
-         *  │ assertThrows BadRequestExc         │
-         *  └─────────────────┬──────────────────┘
-         *                    │
-         *                    ▼
-         *  ┌────────────────────────────────────┐
-         *  │ VERIFY: save() never called        │
-         *  └────────────────────────────────────┘
-         */
 
-        // === ARRANGE ===
         UnidadMedidaRequestDTO request = UnidadMedidaRequestDTO.builder()
                 .nombreUnidadMedida("Metros")
                 .build();
@@ -323,7 +164,6 @@ class UnidadMedidaServiceTest {
         when(unidadMedidaRepository.findById(1)).thenReturn(Optional.of(unidadUnidad));
         when(unidadMedidaRepository.existsByNombreUnidadMedida("Metros")).thenReturn(true);
 
-        // === ACT & ASSERT ===
         assertThrows(BadRequestException.class, () ->
                 unidadMedidaService.actualizarUnidadMedida(1, request)
         );
@@ -336,34 +176,12 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería eliminar una unidad de medida existente")
     void deberiaEliminarUnidadMedida() {
-        /*
-         *  FLOW CHART:
-         *  ┌───────────────────────────┐
-         *  │ ARRANGE:                  │
-         *  │ Mock existsById -> true   │
-         *  │ Mock deleteById -> void   │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ACT:                      │
-         *  │ eliminarUnidadMedida(1)   │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ASSERT: Verify delete call│
-         *  └───────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(unidadMedidaRepository.existsById(1)).thenReturn(true);
         doNothing().when(unidadMedidaRepository).deleteById(1);
 
-        // === ACT ===
         unidadMedidaService.eliminarUnidadMedida(1);
 
-        // === ASSERT ===
         verify(unidadMedidaRepository, times(1)).existsById(1);
         verify(unidadMedidaRepository, times(1)).deleteById(1);
     }
@@ -371,29 +189,9 @@ class UnidadMedidaServiceTest {
     @Test
     @DisplayName("Debería lanzar ResourceNotFoundException al eliminar unidad inexistente")
     void deberiaFallarAlEliminarInexistente() {
-        /*
-         *  FLOW CHART:
-         *  ┌───────────────────────────┐
-         *  │ ARRANGE:                  │
-         *  │ Mock existsById -> false  │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ ACT & ASSERT:             │
-         *  │ assertThrows NotFoundExc  │
-         *  └─────────────┬─────────────┘
-         *                │
-         *                ▼
-         *  ┌───────────────────────────┐
-         *  │ VERIFY: delete never runs │
-         *  └───────────────────────────┘
-         */
 
-        // === ARRANGE ===
         when(unidadMedidaRepository.existsById(99)).thenReturn(false);
 
-        // === ACT & ASSERT ===
         assertThrows(ResourceNotFoundException.class, () ->
                 unidadMedidaService.eliminarUnidadMedida(99)
         );
