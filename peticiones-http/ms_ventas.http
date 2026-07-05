@@ -316,3 +316,49 @@ Content-Type: application/json
 ### ─────────────────────────────────────────────────────────────
 GET {{baseUrl}}/api/ventas/9999/detalles
 Accept: application/json
+
+###
+
+# ══════════════════════════════════════════════════════════════
+#  BLOQUE 3 — BÚSQUEDA Y FILTRADO POR RANGO DE FECHAS
+# ══════════════════════════════════════════════════════════════
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-10] GET — Buscar ventas por rango de fechas y cliente
+###                Cliente: 12222222-2 (María González - ventas del seed)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/buscar?runCliente=12222222-2&fechaInicio=2024-01-01&fechaFin=2027-12-31
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-11] GET — Buscar ventas por rango de fechas (sin especificar cliente)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/buscar?fechaInicio=2024-01-01&fechaFin=2027-12-31
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-E5] ERROR 400 — Buscar sin ingresar fechas (parámetros obligatorios)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/buscar?runCliente=12222222-2
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-E6] ERROR 400 — Buscar con fecha de inicio posterior a la de fin
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/buscar?fechaInicio=2027-12-31&fechaFin=2024-01-01
+Accept: application/json
+
+###
+
+### ─────────────────────────────────────────────────────────────
+### [VTA-E7] ERROR 400 — Buscar con fecha inválida/inexistente (30 de Febrero)
+### ─────────────────────────────────────────────────────────────
+GET {{baseUrl}}/api/ventas/buscar?fechaInicio=2026-02-30&fechaFin=2026-07-05
+Accept: application/json
+

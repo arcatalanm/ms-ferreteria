@@ -2,7 +2,6 @@ package ferrefix.ms_marcas.controller;
 
 import ferrefix.ms_marcas.dto.MarcaRequestDTO;
 import ferrefix.ms_marcas.dto.MarcaResponseDTO;
-import ferrefix.ms_marcas.exception.ApiSuccessResponse;
 import ferrefix.ms_marcas.service.MarcaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -20,3 +20,37 @@
 ### ============================================================
 GET {{baseUrl}}/api/reportes/run/11111111-1
 Accept: application/pdf
+
+###
+
+### ============================================================
+### 2. Generar Reporte de Ventas en PDF por Rango de Fechas (y cliente opcional)
+### Retorna un archivo PDF conteniendo las ventas del rango indicado.
+### ============================================================
+GET {{baseUrl}}/api/reportes/buscar?runCliente=12222222-2&fechaInicio=2023-12-01&fechaFin=2027-12-31
+Accept: application/pdf
+
+###
+
+### ============================================================
+### 3. Generar Reporte de Ventas en PDF por Rango de Fechas (sin cliente)
+### ============================================================
+GET {{baseUrl}}/api/reportes/buscar?fechaInicio=2023-12-01&fechaFin=2023-12-31
+Accept: application/pdf
+
+###
+
+### ============================================================
+### 4. ERROR 404 — Generar reporte por rango sin fechas
+### ============================================================
+GET {{baseUrl}}/api/reportes/buscar?runCliente=12222222-2
+Accept: application/pdf
+
+###
+
+### ============================================================
+### 5. ERROR 404 — Generar reporte con fechaInicio > fechaFin
+### ============================================================
+GET {{baseUrl}}/api/reportes/buscar?fechaInicio=2027-12-31&fechaFin=2024-01-01
+Accept: application/pdf
+

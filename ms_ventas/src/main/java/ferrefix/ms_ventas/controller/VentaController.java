@@ -1,8 +1,9 @@
 package ferrefix.ms_ventas.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -105,6 +106,33 @@ public class VentaController {
 
         logger.info("GET /api/ventas/run/{} - {} ventas encontradas. Respondiendo 200 OK",
                 runCliente, ventas.size());
+        return ResponseEntity.ok(collection);
+    }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<CollectionModel<EntityModel<VentaResponseDTO>>> buscarVentas(
+            @RequestParam(required = false) String runCliente,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaFin,
+            HttpServletRequest request) {
+
+        logger.info("GET /api/ventas/buscar - Filtros recibidos: RUN: {}, Inicio: {}, Fin: {}", runCliente, fechaInicio, fechaFin);
+        List<VentaResponseDTO> ventas = ventaService.buscarVentasConFiltros(runCliente, fechaInicio, fechaFin);
+        
+        List<EntityModel<VentaResponseDTO>> models = ventas.stream()
+                .map(v -> EntityModel.of(v,
+                        linkTo(methodOn(VentaController.class).obtenerVentaPorId(v.getIdVenta(), null)).withSelfRel(),
+                        linkTo(methodOn(VentaController.class).listarDetalles(v.getIdVenta(), null)).withRel("detalles")
+                ))
+                .toList();
+
+        CollectionModel<EntityModel<VentaResponseDTO>> collection = CollectionModel.of(
+                models,
+                linkTo(methodOn(VentaController.class).buscarVentas(runCliente, fechaInicio, fechaFin, null)).withSelfRel(),
+                linkTo(methodOn(VentaController.class).listarVentas(null)).withRel("ventas")
+        );
+
+        logger.info("GET /api/ventas/buscar - {} ventas filtradas encontradas. Respondiendo 200 OK", ventas.size());
         return ResponseEntity.ok(collection);
     }
 

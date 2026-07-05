@@ -1,6 +1,5 @@
 package ferrefix.ms_usuarios.service;
 
-import feign.FeignException;
 import ferrefix.ms_usuarios.client.DireccionClient;
 import ferrefix.ms_usuarios.dto.ClienteRequestDTO;
 import ferrefix.ms_usuarios.dto.ClienteResponseDTO;

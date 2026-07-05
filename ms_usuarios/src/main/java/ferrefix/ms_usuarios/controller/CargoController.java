@@ -1,6 +1,5 @@
 package ferrefix.ms_usuarios.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import ferrefix.ms_usuarios.mapper.CargoMapper;

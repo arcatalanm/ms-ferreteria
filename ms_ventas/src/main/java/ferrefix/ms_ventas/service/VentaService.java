@@ -1,5 +1,8 @@
 package ferrefix.ms_ventas.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,6 +127,31 @@ public class VentaService {
         logger.info("Ventas encontradas con el run: {}", runCliente);
         return ventas.stream()
                 .map(venta -> mapVentaToDTO(venta, "Haciendo transformación de la entidad a DTO"))
+                .toList();
+    }
+
+    /* Buscar Ventas por rango de fechas y opcionalmente por runCliente. */
+    public List<VentaResponseDTO> buscarVentasConFiltros(String runCliente, LocalDate fechaInicio, LocalDate fechaFin) {
+        if (fechaInicio == null || fechaFin == null) {
+            logger.warn("Fallo al filtrar: fechas vacías");
+            throw new BadRequestException("Las fechas de inicio y fin son obligatorias para realizar la búsqueda.");
+        }
+
+        if (fechaInicio.isAfter(fechaFin)) {
+            logger.warn("Fallo al filtrar: fechaInicio {} es posterior a fechaFin {}", fechaInicio, fechaFin);
+            throw new BadRequestException("La fecha de inicio no puede ser posterior a la fecha de fin.");
+        }
+
+        Integer run = (runCliente != null && !runCliente.isBlank()) ? parseRun(runCliente, "cliente") : null;
+
+        LocalDateTime inicioDateTime = fechaInicio.atStartOfDay();
+        LocalDateTime finDateTime = fechaFin.atTime(LocalTime.MAX);
+
+        logger.info("Buscando ventas con filtros - RUN: {}, Inicio: {}, Fin: {}", run, inicioDateTime, finDateTime);
+        List<Venta> ventas = ventaRepository.findByFilters(run, inicioDateTime, finDateTime);
+
+        return ventas.stream()
+                .map(venta -> mapVentaToDTO(venta, "Venta filtrada"))
                 .toList();
     }
 
