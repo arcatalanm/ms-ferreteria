@@ -1,11 +1,7 @@
 # Ferrefix - Plataforma de Microservicios para Ferreterías
 
 Ferrefix es un ecosistema distribuido y escalable diseñado bajo una arquitectura de microservicios para la gestión integral de ferreterías. El sistema implementa patrones modernos como **API Gateway**, **Database-per-Service** (aislamiento de datos), **seguridad integrada** y **carga dinámica de datos** para entornos de desarrollo.
-
-<p align="center">
-  <img src="./logoferrefix.png" alt="Ferrefix Logo" width="200px">
-</p>
-
+  
 ---
 
 ## 📦 Catálogo de Servicios
@@ -31,9 +27,21 @@ Ferrefix es un ecosistema distribuido y escalable diseñado bajo una arquitectur
 
 * **Backend:** Java 21+, Spring Boot 3.x && 4.x, Spring Cloud Gateway, JPA / Hibernate.
 * **Base de Datos:** MySQL 8.0.
-* **Pruebas y Datos:** JUnit 5, DataFaker (generación programática de datos de prueba).
-* **Documentación de APIs:** OpenAPI 3 / Swagger (Springdoc OpenAPI UI).
+* **Pruebas y Datos:** JUnit 5, Mockito, DataFaker (generación programática de datos de prueba).
+* **Documentación de APIs:** OpenAPI / Swagger (Springdoc OpenAPI UI).
 * **Contenedores y Orquestación:** Docker y Docker Compose.
+
+---
+
+## 🔐 Seguridad Implementada
+
+* **Seguridad en API-Gateway**: el api-gateway valida centralizadamente los token JTW. Las rutas /auth/**
+  y Swagger son públicas, pero el resto requiere el token de acceso.
+* **Permisividad Local**: Esta declarado un permitAll() en su configuración local permitiendo que se puedan
+  hacer pruebas rápidas de los endpoints en los puertos directos del microservicio en cuestión, en simples palabras
+  no necesitaríamos un token.
+* **Token Relay**: Funciona implementando un RequestInterceptor en los Feign Client extrayendo el token de la petición
+  entrante y propagándolo a la petición saliente. El fin de esto es evitar un error 401 Unauthorized.
 
 ---
 
@@ -51,14 +59,15 @@ Asegúrate de tener instalado en tu máquina local:
 
 Tienes dos alternativas para levantar el entorno:
 
-### Opción A: Ejecución Local en Desarrollo 
+### Opción A: Ejecución Local
 
-1. **Limpiar todo:** Ejecuta `1-Clean-All.bat` para eliminar compilaciones previas.
-2. **Levantar localmente:** Ejecuta `3-Run-Locally.bat`. Levantará de forma ordenada los 11 microservicios en segundo plano, esperará 30 segundos a que estén listos, y finalmente iniciará el API Gateway.
-3. **Detener servicios:** Si deseas finalizar la ejecución, abre y corre `4-Stop-Locally.bat` (o finaliza los procesos Java de tu sistema).
+1. **Limpieza:** Ejecuta `1-Clean-All.bat` para eliminar compilaciones previas y targets.
+2. **Construcción de Snapshots** `2-Build-JARs.bat` para la empaquetación con maven.
+3. **Levantar localmente:** Ejecuta `3-Run-Locally.bat`. Levantará de forma ordenada los 10 microservicios en segundo plano, esperará 30 segundos a que estén listos, y finalmente iniciará el API Gateway.
+4. **Detener servicios:** Si deseas finalizar la ejecución, abre y corre `4-Stop-Locally.bat` (o finaliza los procesos Java de tu sistema).
 
-### Opción B: Orquestación Completa con Docker
-Si prefieres aislar todo el entorno, incluido el motor de bases de datos:
+### Opción B: Ejecución con Docker
+Si prefieres aislar todo el entorno, incluido el motor de bases de datos evitando dolores de cabeza con XAMPP:
 
 1. Ejecuta `2-Build-JARs.bat` para empaquetar todos los servicios.
 ```bash
