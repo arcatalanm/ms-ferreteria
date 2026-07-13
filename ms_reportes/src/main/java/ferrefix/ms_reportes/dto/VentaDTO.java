@@ -23,6 +23,8 @@ public class VentaDTO {
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime fechaVenta;
     private Integer totalVenta;
+    private Integer neto;
+    private Integer iva;
     private String nombreTipoPago;
     private List<DetalleVentaDTO> detalles;
 }

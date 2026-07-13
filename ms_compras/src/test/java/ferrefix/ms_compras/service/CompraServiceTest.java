@@ -103,7 +103,11 @@ class CompraServiceTest {
         assertNotNull(result);
         assertEquals(2, result.size());
         assertEquals(10, result.get(0).getIdProveedor());
+        assertEquals(42017, result.get(0).getNeto());
+        assertEquals(7983, result.get(0).getIva());
         assertEquals(20, result.get(1).getIdProveedor());
+        assertEquals(25210, result.get(1).getNeto());
+        assertEquals(4790, result.get(1).getIva());
         verify(compraRepository, times(1)).findAll();
     }
 
@@ -118,6 +122,8 @@ class CompraServiceTest {
         assertNotNull(result);
         assertEquals(1L, result.getIdCompra());
         assertEquals("SOLICITADO", result.getEstado());
+        assertEquals(42017, result.getNeto());
+        assertEquals(7983, result.getIva());
         verify(compraRepository, times(1)).findById(1L);
     }
 
@@ -154,6 +160,8 @@ class CompraServiceTest {
         assertNotNull(result);
         assertEquals(1L, result.getIdCompra());
         assertEquals(50000, result.getTotalCompra());
+        assertEquals(42017, result.getNeto());
+        assertEquals(7983, result.getIva());
         verify(proveedorClient, times(1)).existeProveedor(10);
         verify(compraRepository, times(1)).save(any(Compra.class));
     }
@@ -224,6 +232,8 @@ class CompraServiceTest {
 
         assertNotNull(result);
         assertEquals("RECIBIDO", result.getEstado());
+        assertEquals(42017, result.getNeto());
+        assertEquals(7983, result.getIva());
         verify(compraRepository, times(1)).findById(1L);
         verify(compraRepository, times(1)).save(any(Compra.class));
         verify(inventarioClient, times(1)).incrementarStock(any(StockIncrementDTO.class));

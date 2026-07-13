@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import ferrefix.ms_usuarios.assembler.EmpleadoAssembler;
 import ferrefix.ms_usuarios.dto.EmpleadoRequestDTO;
 import ferrefix.ms_usuarios.dto.EmpleadoResponseDTO;
 import ferrefix.ms_usuarios.exception.BadRequestException;
@@ -29,6 +30,7 @@ public class EmpleadoController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmpleadoController.class);
     private final EmpleadoService empleadoService;
+    private final EmpleadoAssembler empleadoAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<EmpleadoResponseDTO>> crearEmpleado(
@@ -36,11 +38,7 @@ public class EmpleadoController {
 
         logger.info("POST /api/usuarios/empleados - RUT: {}", dto.getRutEmpleado());
         EmpleadoResponseDTO creado = empleadoService.crearEmpleado(dto);
-        
-        EntityModel<EmpleadoResponseDTO> model = EntityModel.of(creado,
-                linkTo(methodOn(EmpleadoController.class).obtenerEmpleadoPorRun(creado.getRunEmpleadoCompleto(), null)).withSelfRel(),
-                linkTo(methodOn(EmpleadoController.class).listarEmpleados(null)).withRel("empleados")
-        );
+        EntityModel<EmpleadoResponseDTO> model = empleadoAssembler.toModel(creado);
 
         logger.info("POST /api/usuarios/empleados - Empleado registrado. Respondiendo 201 CREATED");
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
@@ -50,18 +48,8 @@ public class EmpleadoController {
     public ResponseEntity<CollectionModel<EntityModel<EmpleadoResponseDTO>>> listarEmpleados(HttpServletRequest request) {
         logger.info("GET /api/usuarios/empleados - Listando todos los empleados");
         List<EmpleadoResponseDTO> empleados = empleadoService.buscarTodosEmpleados();
-        
-        List<EntityModel<EmpleadoResponseDTO>> models = empleados.stream()
-                .map(e -> EntityModel.of(e,
-                        linkTo(methodOn(EmpleadoController.class).obtenerEmpleadoPorRun(e.getRunEmpleadoCompleto(), null)).withSelfRel(),
-                        linkTo(methodOn(EmpleadoController.class).listarEmpleados(null)).withRel("empleados")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<EmpleadoResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(EmpleadoController.class).listarEmpleados(null)).withSelfRel()
-        );
+        CollectionModel<EntityModel<EmpleadoResponseDTO>> collection = empleadoAssembler.toCollectionModel(empleados)
+                .add(linkTo(methodOn(EmpleadoController.class).listarEmpleados(null)).withSelfRel());
 
         logger.info("GET /api/usuarios/empleados - {} registros. Respondiendo 200 OK", empleados.size());
         return ResponseEntity.ok(collection);
@@ -78,13 +66,7 @@ public class EmpleadoController {
 
         logger.info("GET /api/usuarios/empleados/run/{} - Buscando empleado", runEmpleado);
         EmpleadoResponseDTO response = empleadoService.buscarEmpleadoPorRun(run);
-        
-        EntityModel<EmpleadoResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(EmpleadoController.class).obtenerEmpleadoPorRun(runEmpleado, null)).withSelfRel(),
-                linkTo(methodOn(EmpleadoController.class).listarEmpleados(null)).withRel("empleados"),
-                linkTo(methodOn(EmpleadoController.class).actualizarEmpleado(runEmpleado, null, null)).withRel("actualizar"),
-                linkTo(methodOn(EmpleadoController.class).eliminarEmpleado(runEmpleado, null)).withRel("eliminar")
-        );
+        EntityModel<EmpleadoResponseDTO> model = empleadoAssembler.toModel(response);
 
         logger.info("GET /api/usuarios/empleados/run/{} - Encontrado. Respondiendo 200 OK", runEmpleado);
         return ResponseEntity.ok(model);
@@ -102,11 +84,7 @@ public class EmpleadoController {
 
         logger.info("PUT /api/usuarios/empleados/run/{} - Actualizando empleado", runEmpleado);
         EmpleadoResponseDTO actualizado = empleadoService.actualizarEmpleado(run, dto);
-        
-        EntityModel<EmpleadoResponseDTO> model = EntityModel.of(actualizado,
-                linkTo(methodOn(EmpleadoController.class).obtenerEmpleadoPorRun(actualizado.getRunEmpleadoCompleto(), null)).withSelfRel(),
-                linkTo(methodOn(EmpleadoController.class).listarEmpleados(null)).withRel("empleados")
-        );
+        EntityModel<EmpleadoResponseDTO> model = empleadoAssembler.toModel(actualizado);
 
         logger.info("PUT /api/usuarios/empleados/run/{} - Actualizado. Respondiendo 200 OK", runEmpleado);
         return ResponseEntity.ok(model);

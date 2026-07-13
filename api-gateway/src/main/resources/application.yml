@@ -7,6 +7,29 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     operationsSorter: alpha
+    urls:
+      - name: Autenticación (ms-auth)
+        url: /auth/v3/api-docs
+      - name: Usuarios (ms-usuarios)
+        url: /api/usuarios/v3/api-docs
+      - name: Inventario (ms-inventario)
+        url: /api/inventario/v3/api-docs
+      - name: Ventas (ms-ventas)
+        url: /api/ventas/v3/api-docs
+      - name: Proveedores (ms-proveedores)
+        url: /api/proveedores/v3/api-docs
+      - name: Direcciones (ms-direcciones)
+        url: /api/direcciones/v3/api-docs
+      - name: Marcas (ms-marcas)
+        url: /api/marcas/v3/api-docs
+      - name: Arriendos (ms-arriendo)
+        url: /api/arriendos/v3/api-docs
+      - name: Compras (ms-compras)
+        url: /api/compras/v3/api-docs
+      - name: Sugerencias (ms-sugerencia)
+        url: /api/sugerencias/v3/api-docs
+      - name: Reportes (ms-reportes)
+        url: /api/reportes/v3/api-docs
 
 spring:
   main:

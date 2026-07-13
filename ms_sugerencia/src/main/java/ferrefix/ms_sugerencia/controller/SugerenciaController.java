@@ -1,5 +1,6 @@
 package ferrefix.ms_sugerencia.controller;
 
+import ferrefix.ms_sugerencia.assembler.SugerenciaAssembler;
 import ferrefix.ms_sugerencia.dto.SugerenciaRequestDTO;
 import ferrefix.ms_sugerencia.dto.SugerenciaResponseDTO;
 import ferrefix.ms_sugerencia.service.SugerenciaService;
@@ -24,23 +25,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class SugerenciaController {
 
     private final SugerenciaService sugerenciaService;
+    private final SugerenciaAssembler sugerenciaAssembler;
 
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<SugerenciaResponseDTO>>> listarTodas() {
         log.info("Petición recibida: GET /api/sugerencias");
         List<SugerenciaResponseDTO> sugerencias = sugerenciaService.listarTodas();
-
-        List<EntityModel<SugerenciaResponseDTO>> models = sugerencias.stream()
-                .map(s -> EntityModel.of(s,
-                        linkTo(methodOn(SugerenciaController.class).listarTodas()).withSelfRel(),
-                        linkTo(methodOn(SugerenciaController.class).eliminar(s.getIdSugerencia())).withRel("eliminar")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<SugerenciaResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(SugerenciaController.class).listarTodas()).withSelfRel()
-        );
+        CollectionModel<EntityModel<SugerenciaResponseDTO>> collection = sugerenciaAssembler.toCollectionModel(sugerencias)
+                .add(linkTo(methodOn(SugerenciaController.class).listarTodas()).withSelfRel());
 
         return ResponseEntity.ok(collection);
     }
@@ -49,11 +41,7 @@ public class SugerenciaController {
     public ResponseEntity<EntityModel<SugerenciaResponseDTO>> crear(@Valid @RequestBody SugerenciaRequestDTO dto) {
         log.info("Petición recibida: POST /api/sugerencias");
         SugerenciaResponseDTO response = sugerenciaService.crear(dto);
-
-        EntityModel<SugerenciaResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(SugerenciaController.class).listarTodas()).withRel("sugerencias"),
-                linkTo(methodOn(SugerenciaController.class).eliminar(response.getIdSugerencia())).withRel("eliminar")
-        );
+        EntityModel<SugerenciaResponseDTO> model = sugerenciaAssembler.toModel(response);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }

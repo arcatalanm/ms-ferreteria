@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +39,12 @@ class VentaControllerTest {
 
     @Mock
     private VentaService ventaService;
+
+    @Spy
+    private ferrefix.ms_ventas.assembler.VentaAssembler ventaAssembler;
+
+    @Spy
+    private ferrefix.ms_ventas.assembler.DetalleVentaAssembler detalleVentaAssembler;
 
     @InjectMocks
     private VentaController ventaController;
@@ -67,6 +74,8 @@ class VentaControllerTest {
                 .runEmpleado("87654321")
                 .fechaVenta(LocalDateTime.of(2026, 6, 20, 10, 30, 0))
                 .totalVenta(20000)
+                .neto(16807)
+                .iva(3193)
                 .nombreTipoPago("Efectivo")
                 .detalles(List.of(detalleResponse))
                 .build();
@@ -95,6 +104,8 @@ class VentaControllerTest {
                 .andExpect(jsonPath("$.idVenta", is(1)))
                 .andExpect(jsonPath("$.runCliente", is("12345678")))
                 .andExpect(jsonPath("$.totalVenta", is(20000)))
+                .andExpect(jsonPath("$.neto", is(16807)))
+                .andExpect(jsonPath("$.iva", is(3193)))
                 .andExpect(jsonPath("$.detalles", hasSize(1)))
                 .andExpect(jsonPath("$.detalles[0].nombreProducto", is("Martillo")));
 

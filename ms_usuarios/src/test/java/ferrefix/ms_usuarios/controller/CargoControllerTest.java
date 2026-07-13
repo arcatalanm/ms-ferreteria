@@ -40,6 +40,9 @@ class CargoControllerTest {
     @Spy
     private CargoMapper cargoMapper = new CargoMapper();
 
+    @Spy
+    private ferrefix.ms_usuarios.assembler.CargoAssembler cargoAssembler;
+
     @InjectMocks
     private CargoController cargoController;
 

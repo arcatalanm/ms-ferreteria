@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import ferrefix.ms_direcciones.assembler.DireccionAssembler;
 import ferrefix.ms_direcciones.dto.DireccionRequestDTO;
 import ferrefix.ms_direcciones.dto.DireccionResponseDTO;
 import ferrefix.ms_direcciones.service.DireccionService;
@@ -26,16 +27,13 @@ public class DireccionController {
 
     private static final Logger logger = LoggerFactory.getLogger(DireccionController.class);
     private final DireccionService direccionService;
+    private final DireccionAssembler direccionAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<DireccionResponseDTO>> crearDireccion(@Valid @RequestBody DireccionRequestDTO dto) {
         logger.info("POST /api/direcciones - Solicitud recibida para crear dirección");
         DireccionResponseDTO response = direccionService.crearDireccion(dto);
-
-        EntityModel<DireccionResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(DireccionController.class).obtenerDireccionPorId(response.getIdDireccion())).withSelfRel(),
-                linkTo(methodOn(DireccionController.class).listarDirecciones()).withRel("direcciones")
-        );
+        EntityModel<DireccionResponseDTO> model = direccionAssembler.toModel(response);
 
         logger.info("POST /api/direcciones - Dirección creada. Respondiendo 201 CREATED");
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
@@ -45,17 +43,8 @@ public class DireccionController {
     public ResponseEntity<CollectionModel<EntityModel<DireccionResponseDTO>>> listarDirecciones() {
         logger.info("GET /api/direcciones - Solicitud recibida para listar todas las direcciones");
         List<DireccionResponseDTO> direcciones = direccionService.buscarTodas();
-
-        List<EntityModel<DireccionResponseDTO>> models = direcciones.stream()
-                .map(d -> EntityModel.of(d,
-                        linkTo(methodOn(DireccionController.class).obtenerDireccionPorId(d.getIdDireccion())).withSelfRel()
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<DireccionResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(DireccionController.class).listarDirecciones()).withSelfRel()
-        );
+        CollectionModel<EntityModel<DireccionResponseDTO>> collection = direccionAssembler.toCollectionModel(direcciones)
+                .add(linkTo(methodOn(DireccionController.class).listarDirecciones()).withSelfRel());
 
         logger.info("GET /api/direcciones - Respondiendo 200 OK with {} registros", direcciones.size());
         return ResponseEntity.ok(collection);
@@ -65,13 +54,7 @@ public class DireccionController {
     public ResponseEntity<EntityModel<DireccionResponseDTO>> obtenerDireccionPorId(@PathVariable Long idDireccion) {
         logger.info("GET /api/direcciones/{} - Solicitud recibida para buscar dirección", idDireccion);
         DireccionResponseDTO response = direccionService.buscarPorId(idDireccion);
-
-        EntityModel<DireccionResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(DireccionController.class).obtenerDireccionPorId(idDireccion)).withSelfRel(),
-                linkTo(methodOn(DireccionController.class).listarDirecciones()).withRel("direcciones"),
-                linkTo(methodOn(DireccionController.class).actualizarDireccion(idDireccion, null)).withRel("actualizar"),
-                linkTo(methodOn(DireccionController.class).eliminarDireccion(idDireccion)).withRel("eliminar")
-        );
+        EntityModel<DireccionResponseDTO> model = direccionAssembler.toModel(response);
 
         logger.info("GET /api/direcciones/{} - Dirección encontrada. Respondiendo 200 OK", idDireccion);
         return ResponseEntity.ok(model);
@@ -82,11 +65,7 @@ public class DireccionController {
                                                                     @Valid @RequestBody DireccionRequestDTO dto) {
         logger.info("PUT /api/direcciones/{} - Solicitud recibida para actualizar dirección", idDireccion);
         DireccionResponseDTO response = direccionService.actualizarDireccion(idDireccion, dto);
-
-        EntityModel<DireccionResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(DireccionController.class).obtenerDireccionPorId(idDireccion)).withSelfRel(),
-                linkTo(methodOn(DireccionController.class).listarDirecciones()).withRel("direcciones")
-        );
+        EntityModel<DireccionResponseDTO> model = direccionAssembler.toModel(response);
 
         logger.info("PUT /api/direcciones/{} - Dirección actualizada. Respondiendo 200 OK", idDireccion);
         return ResponseEntity.ok(model);

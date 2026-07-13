@@ -1,5 +1,6 @@
 package ferrefix.ms_compras.controller;
 
+import ferrefix.ms_compras.assembler.CompraAssembler;
 import ferrefix.ms_compras.dto.CompraRequestDTO;
 import ferrefix.ms_compras.dto.CompraResponseDTO;
 import ferrefix.ms_compras.service.CompraService;
@@ -24,23 +25,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class CompraController {
 
     private final CompraService compraService;
+    private final CompraAssembler compraAssembler;
 
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<CompraResponseDTO>>> listarTodas() {
         log.info("Petición recibida: GET /api/compras");
         List<CompraResponseDTO> compras = compraService.listarTodas();
-
-        List<EntityModel<CompraResponseDTO>> models = compras.stream()
-                .map(c -> EntityModel.of(c,
-                        linkTo(methodOn(CompraController.class).obtenerPorId(c.getIdCompra())).withSelfRel(),
-                        linkTo(methodOn(CompraController.class).listarTodas()).withRel("compras")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<CompraResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(CompraController.class).listarTodas()).withSelfRel()
-        );
+        CollectionModel<EntityModel<CompraResponseDTO>> collection = compraAssembler.toCollectionModel(compras)
+                .add(linkTo(methodOn(CompraController.class).listarTodas()).withSelfRel());
 
         return ResponseEntity.ok(collection);
     }
@@ -49,11 +41,7 @@ public class CompraController {
     public ResponseEntity<EntityModel<CompraResponseDTO>> obtenerPorId(@PathVariable Long id) {
         log.info("Petición recibida: GET /api/compras/{}", id);
         CompraResponseDTO compra = compraService.obtenerPorId(id);
-
-        EntityModel<CompraResponseDTO> model = EntityModel.of(compra,
-                linkTo(methodOn(CompraController.class).obtenerPorId(id)).withSelfRel(),
-                linkTo(methodOn(CompraController.class).listarTodas()).withRel("compras")
-        );
+        EntityModel<CompraResponseDTO> model = compraAssembler.toModel(compra);
 
         return ResponseEntity.ok(model);
     }
@@ -62,11 +50,7 @@ public class CompraController {
     public ResponseEntity<EntityModel<CompraResponseDTO>> crearOrden(@Valid @RequestBody CompraRequestDTO request) {
         log.info("Petición recibida: POST /api/compras");
         CompraResponseDTO response = compraService.crearOrdenCompra(request);
-
-        EntityModel<CompraResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(CompraController.class).obtenerPorId(response.getIdCompra())).withSelfRel(),
-                linkTo(methodOn(CompraController.class).listarTodas()).withRel("compras")
-        );
+        EntityModel<CompraResponseDTO> model = compraAssembler.toModel(response);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }
@@ -75,11 +59,7 @@ public class CompraController {
     public ResponseEntity<EntityModel<CompraResponseDTO>> recibirMercancia(@PathVariable Long id) {
         log.info("Petición recibida: PUT /api/compras/{}/recibir", id);
         CompraResponseDTO response = compraService.procesarRecepcionMercancia(id);
-
-        EntityModel<CompraResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(CompraController.class).obtenerPorId(id)).withSelfRel(),
-                linkTo(methodOn(CompraController.class).listarTodas()).withRel("compras")
-        );
+        EntityModel<CompraResponseDTO> model = compraAssembler.toModel(response);
 
         return ResponseEntity.ok(model);
     }

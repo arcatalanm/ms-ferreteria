@@ -30,6 +30,10 @@ public class VentaResponseDTO {
 
     private Integer totalVenta;
 
+    private Integer neto;
+
+    private Integer iva;
+
     private String nombreTipoPago; // Agregado para mostrar nombre del tipo de pago
 
     private List<DetalleVentaResponseDTO> detalles; // Lista de detalles de la venta - Va a tener el resumen de compra (despliege de boleta o factura)

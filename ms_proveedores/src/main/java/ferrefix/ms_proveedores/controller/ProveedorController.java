@@ -1,6 +1,6 @@
 package ferrefix.ms_proveedores.controller;
 
-
+import ferrefix.ms_proveedores.assembler.ProveedorAssembler;
 import ferrefix.ms_proveedores.dto.ProveedorRequestDTO;
 import ferrefix.ms_proveedores.dto.ProveedorResponseDTO;
 import ferrefix.ms_proveedores.service.ProveedorService;
@@ -27,6 +27,7 @@ public class ProveedorController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProveedorController.class);
     private final ProveedorService proveedorService;
+    private final ProveedorAssembler proveedorAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<ProveedorResponseDTO>> crearProveedor(
@@ -37,11 +38,7 @@ public class ProveedorController {
         logger.info("POST /api/proveedores - Proveedor creado. ID: {}. Respondiendo 201 CREATED",
                 creado.getIdProveedor());
 
-        EntityModel<ProveedorResponseDTO> model = EntityModel.of(creado,
-                linkTo(methodOn(ProveedorController.class).obtenerProveedor(creado.getIdProveedor(), null)).withSelfRel(),
-                linkTo(methodOn(ProveedorController.class).listarProveedores(null)).withRel("proveedores")
-        );
-
+        EntityModel<ProveedorResponseDTO> model = proveedorAssembler.toModel(creado);
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }
 
@@ -49,18 +46,8 @@ public class ProveedorController {
     public ResponseEntity<CollectionModel<EntityModel<ProveedorResponseDTO>>> listarProveedores(HttpServletRequest request) {
         logger.info("GET /api/proveedores - Listando todos los proveedores");
         List<ProveedorResponseDTO> lista = proveedorService.listarTodos();
-
-        List<EntityModel<ProveedorResponseDTO>> models = lista.stream()
-                .map(p -> EntityModel.of(p,
-                        linkTo(methodOn(ProveedorController.class).obtenerProveedor(p.getIdProveedor(), null)).withSelfRel(),
-                        linkTo(methodOn(ProveedorController.class).listarProveedores(null)).withRel("proveedores")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<ProveedorResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(ProveedorController.class).listarProveedores(null)).withSelfRel()
-        );
+        CollectionModel<EntityModel<ProveedorResponseDTO>> collection = proveedorAssembler.toCollectionModel(lista)
+                .add(linkTo(methodOn(ProveedorController.class).listarProveedores(null)).withSelfRel());
 
         logger.info("GET /api/proveedores - {} registros. Respondiendo 200 OK", lista.size());
         return ResponseEntity.ok(collection);
@@ -70,13 +57,7 @@ public class ProveedorController {
     public ResponseEntity<EntityModel<ProveedorResponseDTO>> obtenerProveedor(@PathVariable Integer id, HttpServletRequest request) {
         logger.info("GET /api/proveedores/{} - Buscando proveedor", id);
         ProveedorResponseDTO response = proveedorService.buscarPorId(id);
-
-        EntityModel<ProveedorResponseDTO> model = EntityModel.of(response,
-                linkTo(methodOn(ProveedorController.class).obtenerProveedor(id, null)).withSelfRel(),
-                linkTo(methodOn(ProveedorController.class).listarProveedores(null)).withRel("proveedores"),
-                linkTo(methodOn(ProveedorController.class).actualizarProveedor(id, null, null)).withRel("actualizar"),
-                linkTo(methodOn(ProveedorController.class).eliminarProveedor(id, null)).withRel("eliminar")
-        );
+        EntityModel<ProveedorResponseDTO> model = proveedorAssembler.toModel(response);
 
         logger.info("GET /api/proveedores/{} - Encontrado. Respondiendo 200 OK", id);
         return ResponseEntity.ok(model);
@@ -89,11 +70,7 @@ public class ProveedorController {
 
         logger.info("PUT /api/proveedores/{} - Actualizando proveedor", id);
         ProveedorResponseDTO actualizado = proveedorService.actualizar(id, dto);
-
-        EntityModel<ProveedorResponseDTO> model = EntityModel.of(actualizado,
-                linkTo(methodOn(ProveedorController.class).obtenerProveedor(id, null)).withSelfRel(),
-                linkTo(methodOn(ProveedorController.class).listarProveedores(null)).withRel("proveedores")
-        );
+        EntityModel<ProveedorResponseDTO> model = proveedorAssembler.toModel(actualizado);
 
         logger.info("PUT /api/proveedores/{} - Actualizado. Respondiendo 200 OK", id);
         return ResponseEntity.ok(model);

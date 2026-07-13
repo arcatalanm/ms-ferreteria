@@ -68,12 +68,18 @@ public class VentaMapper {
     }
 
     public VentaResponseDTO toVentaResponseDTO(Venta venta, List<DetalleVentaResponseDTO> detallesDTO) {
+        int total = venta.getTotalVenta() != null ? venta.getTotalVenta() : 0;
+        int neto = (int) Math.round(total / 1.19);
+        int iva = total - neto;
+
         return VentaResponseDTO.builder()
                 .idVenta(venta.getIdVenta())
                 .runEmpleado(venta.getRunEmpleado() != null ? String.valueOf(venta.getRunEmpleado()) : null)
                 .runCliente(venta.getRunCliente() != null ? String.valueOf(venta.getRunCliente()) : null)
                 .fechaVenta(venta.getFechaVenta())
-                .totalVenta(venta.getTotalVenta())
+                .totalVenta(total)
+                .neto(neto)
+                .iva(iva)
                 .nombreTipoPago(venta.getTipoPago().getNombreTipoPago())
                 .detalles(detallesDTO)
                 .build();

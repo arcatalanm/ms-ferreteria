@@ -126,6 +126,8 @@ class VentaServiceTest {
         assertEquals(1, result.getDetalles().size());
         assertEquals("Martillo", result.getDetalles().get(0).getNombreProducto());
         assertEquals(20000, result.getTotalVenta());
+        assertEquals(16807, result.getNeto());
+        assertEquals(3193, result.getIva());
 
         verify(tipoPagoRepository, times(1)).findById(1);
         verify(usuariosClient, times(1)).obtenerClientePorRun("12.345.678-5");

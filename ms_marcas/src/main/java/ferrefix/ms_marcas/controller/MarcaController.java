@@ -1,5 +1,6 @@
 package ferrefix.ms_marcas.controller;
 
+import ferrefix.ms_marcas.assembler.MarcaAssembler;
 import ferrefix.ms_marcas.dto.MarcaRequestDTO;
 import ferrefix.ms_marcas.dto.MarcaResponseDTO;
 import ferrefix.ms_marcas.service.MarcaService;
@@ -22,22 +23,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class MarcaController {
 
     private final MarcaService marcaService;
+    private final MarcaAssembler marcaAssembler;
 
     @GetMapping
     public ResponseEntity<CollectionModel<EntityModel<MarcaResponseDTO>>> listarTodas() {
         List<MarcaResponseDTO> marcas = marcaService.listarTodas();
-
-        List<EntityModel<MarcaResponseDTO>> models = marcas.stream()
-                .map(m -> EntityModel.of(m,
-                        linkTo(methodOn(MarcaController.class).obtenerPorId(m.getIdMarca())).withSelfRel(),
-                        linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<MarcaResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(MarcaController.class).listarTodas()).withSelfRel()
-        );
+        CollectionModel<EntityModel<MarcaResponseDTO>> collection = marcaAssembler.toCollectionModel(marcas)
+                .add(linkTo(methodOn(MarcaController.class).listarTodas()).withSelfRel());
 
         return ResponseEntity.ok(collection);
     }
@@ -45,13 +37,7 @@ public class MarcaController {
     @GetMapping("/{id}")
     public ResponseEntity<EntityModel<MarcaResponseDTO>> obtenerPorId(@PathVariable Integer id) {
         MarcaResponseDTO marca = marcaService.obtenerPorId(id);
-
-        EntityModel<MarcaResponseDTO> model = EntityModel.of(marca,
-                linkTo(methodOn(MarcaController.class).obtenerPorId(id)).withSelfRel(),
-                linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas"),
-                linkTo(methodOn(MarcaController.class).actualizar(id, null)).withRel("actualizar"),
-                linkTo(methodOn(MarcaController.class).eliminar(id)).withRel("eliminar")
-        );
+        EntityModel<MarcaResponseDTO> model = marcaAssembler.toModel(marca);
 
         return ResponseEntity.ok(model);
     }
@@ -59,11 +45,7 @@ public class MarcaController {
     @PostMapping
     public ResponseEntity<EntityModel<MarcaResponseDTO>> crear(@Valid @RequestBody MarcaRequestDTO dto) {
         MarcaResponseDTO creada = marcaService.crear(dto);
-
-        EntityModel<MarcaResponseDTO> model = EntityModel.of(creada,
-                linkTo(methodOn(MarcaController.class).obtenerPorId(creada.getIdMarca())).withSelfRel(),
-                linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas")
-        );
+        EntityModel<MarcaResponseDTO> model = marcaAssembler.toModel(creada);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
     }
@@ -72,11 +54,7 @@ public class MarcaController {
     public ResponseEntity<EntityModel<MarcaResponseDTO>> actualizar(
             @PathVariable Integer id, @Valid @RequestBody MarcaRequestDTO dto) {
         MarcaResponseDTO actualizada = marcaService.actualizar(id, dto);
-
-        EntityModel<MarcaResponseDTO> model = EntityModel.of(actualizada,
-                linkTo(methodOn(MarcaController.class).obtenerPorId(id)).withSelfRel(),
-                linkTo(methodOn(MarcaController.class).listarTodas()).withRel("marcas")
-        );
+        EntityModel<MarcaResponseDTO> model = marcaAssembler.toModel(actualizada);
 
         return ResponseEntity.ok(model);
     }

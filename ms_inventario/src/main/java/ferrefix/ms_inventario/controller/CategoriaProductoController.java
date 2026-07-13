@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import ferrefix.ms_inventario.assembler.CategoriaProductoAssembler;
 import ferrefix.ms_inventario.dto.CategoriaProductoRequestDTO;
 import ferrefix.ms_inventario.dto.CategoriaProductoResponseDTO;
 import ferrefix.ms_inventario.service.CategoriaProductoService;
@@ -27,6 +28,7 @@ public class CategoriaProductoController {
 
     private static final Logger logger = LoggerFactory.getLogger(CategoriaProductoController.class);
     private final CategoriaProductoService categoriaProductoService;
+    private final CategoriaProductoAssembler categoriaProductoAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<CategoriaProductoResponseDTO>> crearCategoriaProducto(
@@ -34,11 +36,7 @@ public class CategoriaProductoController {
 
         logger.info("POST /api/inventario/categorias - Nombre: '{}'", dto.getNombreCategoria());
         CategoriaProductoResponseDTO creada = categoriaProductoService.crearCategoriaProducto(dto);
-
-        EntityModel<CategoriaProductoResponseDTO> model = EntityModel.of(creada,
-                linkTo(methodOn(CategoriaProductoController.class).buscarCategoriaPorId(creada.getIdCategoria())).withSelfRel(),
-                linkTo(methodOn(CategoriaProductoController.class).buscarTodasCategorias()).withRel("categorias")
-        );
+        EntityModel<CategoriaProductoResponseDTO> model = categoriaProductoAssembler.toModel(creada);
 
         logger.info("POST /api/inventario/categorias - Categoría creada ID: {}. Respondiendo 201 CREATED", creada.getIdCategoria());
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
@@ -48,18 +46,8 @@ public class CategoriaProductoController {
     public ResponseEntity<CollectionModel<EntityModel<CategoriaProductoResponseDTO>>> buscarTodasCategorias() {
         logger.info("GET /api/inventario/categorias - Listando todas las categorías");
         List<CategoriaProductoResponseDTO> lista = categoriaProductoService.buscarTodasCategorias();
-
-        List<EntityModel<CategoriaProductoResponseDTO>> models = lista.stream()
-                .map(c -> EntityModel.of(c,
-                        linkTo(methodOn(CategoriaProductoController.class).buscarCategoriaPorId(c.getIdCategoria())).withSelfRel(),
-                        linkTo(methodOn(CategoriaProductoController.class).buscarTodasCategorias()).withRel("categorias")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<CategoriaProductoResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(CategoriaProductoController.class).buscarTodasCategorias()).withSelfRel()
-        );
+        CollectionModel<EntityModel<CategoriaProductoResponseDTO>> collection = categoriaProductoAssembler.toCollectionModel(lista)
+                .add(linkTo(methodOn(CategoriaProductoController.class).buscarTodasCategorias()).withSelfRel());
 
         logger.info("GET /api/inventario/categorias - {} registros. Respondiendo 200 OK", lista.size());
         return ResponseEntity.ok(collection);
@@ -69,13 +57,7 @@ public class CategoriaProductoController {
     public ResponseEntity<EntityModel<CategoriaProductoResponseDTO>> buscarCategoriaPorId(@PathVariable Integer id) {
         logger.info("GET /api/inventario/categorias/{} - Buscando categoría", id);
         CategoriaProductoResponseDTO categoria = categoriaProductoService.buscarCategoriaPorId(id);
-
-        EntityModel<CategoriaProductoResponseDTO> model = EntityModel.of(categoria,
-                linkTo(methodOn(CategoriaProductoController.class).buscarCategoriaPorId(id)).withSelfRel(),
-                linkTo(methodOn(CategoriaProductoController.class).buscarTodasCategorias()).withRel("categorias"),
-                linkTo(methodOn(CategoriaProductoController.class).actualizarCategoriaProducto(id, null)).withRel("actualizar"),
-                linkTo(methodOn(CategoriaProductoController.class).eliminarCategoriaProducto(id, null)).withRel("eliminar")
-        );
+        EntityModel<CategoriaProductoResponseDTO> model = categoriaProductoAssembler.toModel(categoria);
 
         logger.info("GET /api/inventario/categorias/{} - Encontrada. Respondiendo 200 OK", id);
         return ResponseEntity.ok(model);
@@ -88,11 +70,7 @@ public class CategoriaProductoController {
 
         logger.info("PUT /api/inventario/categorias/{} - Actualizando categoría", id);
         CategoriaProductoResponseDTO actualizada = categoriaProductoService.actualizarCategoriaProducto(id, dto);
-
-        EntityModel<CategoriaProductoResponseDTO> model = EntityModel.of(actualizada,
-                linkTo(methodOn(CategoriaProductoController.class).buscarCategoriaPorId(id)).withSelfRel(),
-                linkTo(methodOn(CategoriaProductoController.class).buscarTodasCategorias()).withRel("categorias")
-        );
+        EntityModel<CategoriaProductoResponseDTO> model = categoriaProductoAssembler.toModel(actualizada);
 
         logger.info("PUT /api/inventario/categorias/{} - Actualizada. Respondiendo 200 OK", id);
         return ResponseEntity.ok(model);

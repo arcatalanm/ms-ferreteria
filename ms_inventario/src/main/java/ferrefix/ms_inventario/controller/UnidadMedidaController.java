@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import ferrefix.ms_inventario.assembler.UnidadMedidaAssembler;
 import ferrefix.ms_inventario.dto.UnidadMedidaRequestDTO;
 import ferrefix.ms_inventario.dto.UnidadMedidaResponseDTO;
 import ferrefix.ms_inventario.service.UnidadMedidaService;
@@ -28,6 +29,7 @@ public class UnidadMedidaController {
 
     private static final Logger logger = LoggerFactory.getLogger(UnidadMedidaController.class);
     private final UnidadMedidaService unidadMedidaService;
+    private final UnidadMedidaAssembler unidadMedidaAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<UnidadMedidaResponseDTO>> crearUnidadMedida(
@@ -35,11 +37,7 @@ public class UnidadMedidaController {
 
         logger.info("POST /api/inventario/unidades_medida - Nombre: '{}'", dto.getNombreUnidadMedida());
         UnidadMedidaResponseDTO creada = unidadMedidaService.crearUnidadMedida(dto);
-
-        EntityModel<UnidadMedidaResponseDTO> model = EntityModel.of(creada,
-                linkTo(methodOn(UnidadMedidaController.class).buscarUnidadMedidaPorId(creada.getIdUnidadMedida())).withSelfRel(),
-                linkTo(methodOn(UnidadMedidaController.class).buscarTodasUnidadesMedida()).withRel("unidades_medida")
-        );
+        EntityModel<UnidadMedidaResponseDTO> model = unidadMedidaAssembler.toModel(creada);
 
         logger.info("POST /api/inventario/unidades_medida - Unidad creada ID: {}. Respondiendo 201 CREATED", creada.getIdUnidadMedida());
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
@@ -49,18 +47,8 @@ public class UnidadMedidaController {
     public ResponseEntity<CollectionModel<EntityModel<UnidadMedidaResponseDTO>>> buscarTodasUnidadesMedida() {
         logger.info("GET /api/inventario/unidades_medida - Listando todas las unidades");
         List<UnidadMedidaResponseDTO> lista = unidadMedidaService.buscarTodasUnidadesMedida();
-
-        List<EntityModel<UnidadMedidaResponseDTO>> models = lista.stream()
-                .map(u -> EntityModel.of(u,
-                        linkTo(methodOn(UnidadMedidaController.class).buscarUnidadMedidaPorId(u.getIdUnidadMedida())).withSelfRel(),
-                        linkTo(methodOn(UnidadMedidaController.class).buscarTodasUnidadesMedida()).withRel("unidades_medida")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<UnidadMedidaResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(UnidadMedidaController.class).buscarTodasUnidadesMedida()).withSelfRel()
-        );
+        CollectionModel<EntityModel<UnidadMedidaResponseDTO>> collection = unidadMedidaAssembler.toCollectionModel(lista)
+                .add(linkTo(methodOn(UnidadMedidaController.class).buscarTodasUnidadesMedida()).withSelfRel());
 
         logger.info("GET /api/inventario/unidades_medida - {} registros. Respondiendo 200 OK", lista.size());
         return ResponseEntity.ok(collection);
@@ -70,13 +58,7 @@ public class UnidadMedidaController {
     public ResponseEntity<EntityModel<UnidadMedidaResponseDTO>> buscarUnidadMedidaPorId(@PathVariable Integer id) {
         logger.info("GET /api/inventario/unidades_medida/{} - Buscando unidad", id);
         UnidadMedidaResponseDTO unidad = unidadMedidaService.buscarUnidadMedidaPorId(id);
-
-        EntityModel<UnidadMedidaResponseDTO> model = EntityModel.of(unidad,
-                linkTo(methodOn(UnidadMedidaController.class).buscarUnidadMedidaPorId(id)).withSelfRel(),
-                linkTo(methodOn(UnidadMedidaController.class).buscarTodasUnidadesMedida()).withRel("unidades_medida"),
-                linkTo(methodOn(UnidadMedidaController.class).actualizarUnidadMedida(id, null)).withRel("actualizar"),
-                linkTo(methodOn(UnidadMedidaController.class).eliminarUnidadMedida(id, null)).withRel("eliminar")
-        );
+        EntityModel<UnidadMedidaResponseDTO> model = unidadMedidaAssembler.toModel(unidad);
 
         logger.info("GET /api/inventario/unidades_medida/{} - Encontrada. Respondiendo 200 OK", id);
         return ResponseEntity.ok(model);
@@ -89,11 +71,7 @@ public class UnidadMedidaController {
 
         logger.info("PUT /api/inventario/unidades_medida/{} - Actualizando unidad", id);
         UnidadMedidaResponseDTO actualizada = unidadMedidaService.actualizarUnidadMedida(id, dto);
-
-        EntityModel<UnidadMedidaResponseDTO> model = EntityModel.of(actualizada,
-                linkTo(methodOn(UnidadMedidaController.class).buscarUnidadMedidaPorId(id)).withSelfRel(),
-                linkTo(methodOn(UnidadMedidaController.class).buscarTodasUnidadesMedida()).withRel("unidades_medida")
-        );
+        EntityModel<UnidadMedidaResponseDTO> model = unidadMedidaAssembler.toModel(actualizada);
 
         logger.info("PUT /api/inventario/unidades_medida/{} - Actualizada. Respondiendo 200 OK", id);
         return ResponseEntity.ok(model);

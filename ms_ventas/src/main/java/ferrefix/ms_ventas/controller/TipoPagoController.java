@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import ferrefix.ms_ventas.assembler.TipoPagoAssembler;
 import ferrefix.ms_ventas.dto.TipoPagoRequestDTO;
 import ferrefix.ms_ventas.dto.TipoPagoResponseDTO;
 import ferrefix.ms_ventas.service.TipoPagoService;
@@ -27,16 +28,13 @@ public class TipoPagoController {
 
     private static final Logger logger = LoggerFactory.getLogger(TipoPagoController.class);
     private final TipoPagoService tipoPagoService;
+    private final TipoPagoAssembler tipoPagoAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<TipoPagoResponseDTO>> crear(@Valid @RequestBody TipoPagoRequestDTO dto, HttpServletRequest request) {
         logger.info("POST /api/ventas/tipos-pago - Nombre: '{}'", dto.getNombreTipoPago());
         TipoPagoResponseDTO creado = tipoPagoService.crear(dto);
-        
-        EntityModel<TipoPagoResponseDTO> model = EntityModel.of(creado,
-                linkTo(methodOn(TipoPagoController.class).obtenerPorId(creado.getIdTipoPago(), request)).withSelfRel(),
-                linkTo(methodOn(TipoPagoController.class).obtenerTodos(request)).withRel("tipos-pago")
-        );
+        EntityModel<TipoPagoResponseDTO> model = tipoPagoAssembler.toModel(creado);
 
         logger.info("POST /api/ventas/tipos-pago - Creado ID: {}. Respondiendo 201 CREATED", creado.getIdTipoPago());
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
@@ -46,18 +44,8 @@ public class TipoPagoController {
     public ResponseEntity<CollectionModel<EntityModel<TipoPagoResponseDTO>>> obtenerTodos(HttpServletRequest request) {
         logger.info("GET /api/ventas/tipos-pago - Listando tipos de pago");
         List<TipoPagoResponseDTO> lista = tipoPagoService.obtenerTodos();
-        
-        List<EntityModel<TipoPagoResponseDTO>> models = lista.stream()
-                .map(t -> EntityModel.of(t,
-                        linkTo(methodOn(TipoPagoController.class).obtenerPorId(t.getIdTipoPago(), request)).withSelfRel(),
-                        linkTo(methodOn(TipoPagoController.class).obtenerTodos(request)).withRel("tipos-pago")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<TipoPagoResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(TipoPagoController.class).obtenerTodos(request)).withSelfRel()
-        );
+        CollectionModel<EntityModel<TipoPagoResponseDTO>> collection = tipoPagoAssembler.toCollectionModel(lista)
+                .add(linkTo(methodOn(TipoPagoController.class).obtenerTodos(null)).withSelfRel());
 
         logger.info("GET /api/ventas/tipos-pago - {} registros. Respondiendo 200 OK", lista.size());
         return ResponseEntity.ok(collection);
@@ -67,13 +55,7 @@ public class TipoPagoController {
     public ResponseEntity<EntityModel<TipoPagoResponseDTO>> obtenerPorId(@PathVariable Integer idTipoPago, HttpServletRequest request) {
         logger.info("GET /api/ventas/tipos-pago/{} - Buscando tipo de pago", idTipoPago);
         TipoPagoResponseDTO tipoPago = tipoPagoService.obtenerPorId(idTipoPago);
-        
-        EntityModel<TipoPagoResponseDTO> model = EntityModel.of(tipoPago,
-                linkTo(methodOn(TipoPagoController.class).obtenerPorId(idTipoPago, request)).withSelfRel(),
-                linkTo(methodOn(TipoPagoController.class).obtenerTodos(request)).withRel("tipos-pago"),
-                linkTo(methodOn(TipoPagoController.class).actualizar(idTipoPago, null, request)).withRel("actualizar"),
-                linkTo(methodOn(TipoPagoController.class).eliminar(idTipoPago)).withRel("eliminar")
-        );
+        EntityModel<TipoPagoResponseDTO> model = tipoPagoAssembler.toModel(tipoPago);
 
         logger.info("GET /api/ventas/tipos-pago/{} - Encontrado. Respondiendo 200 OK", idTipoPago);
         return ResponseEntity.ok(model);
@@ -86,11 +68,7 @@ public class TipoPagoController {
 
         logger.info("PUT /api/ventas/tipos-pago/{} - Actualizando tipo de pago", idTipoPago);
         TipoPagoResponseDTO actualizado = tipoPagoService.actualizar(idTipoPago, dto);
-        
-        EntityModel<TipoPagoResponseDTO> model = EntityModel.of(actualizado,
-                linkTo(methodOn(TipoPagoController.class).obtenerPorId(idTipoPago, request)).withSelfRel(),
-                linkTo(methodOn(TipoPagoController.class).obtenerTodos(request)).withRel("tipos-pago")
-        );
+        EntityModel<TipoPagoResponseDTO> model = tipoPagoAssembler.toModel(actualizado);
 
         logger.info("PUT /api/ventas/tipos-pago/{} - Actualizado. Respondiendo 200 OK", idTipoPago);
         return ResponseEntity.ok(model);

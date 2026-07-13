@@ -27,7 +27,7 @@ public class SecurityConfig {
                 // Ruta publica
                 .pathMatchers("/auth/**").permitAll()
                 // Documentación Swagger
-                .pathMatchers("/swagger-ui/**", "/v3/api-docs/**", "/webjars/**").permitAll()
+                .pathMatchers("/swagger-ui/**", "/v3/api-docs/**", "/webjars/**", "/api/*/v3/api-docs").permitAll()
                 // else JWT válido
                 .anyExchange().authenticated()
             )

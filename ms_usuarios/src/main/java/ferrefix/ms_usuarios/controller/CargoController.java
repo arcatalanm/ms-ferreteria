@@ -2,6 +2,7 @@ package ferrefix.ms_usuarios.controller;
 
 import java.util.List;
 
+import ferrefix.ms_usuarios.assembler.CargoAssembler;
 import ferrefix.ms_usuarios.mapper.CargoMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -37,17 +38,14 @@ public class CargoController {
     private static final Logger logger = LoggerFactory.getLogger(CargoController.class);
     private final CargoService cargoService;
     private final CargoMapper cargoMapper;
+    private final CargoAssembler cargoAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<CargoResponseDTO>> crearCargo(@Valid @RequestBody CargoRequestDTO dto, HttpServletRequest request) {
         logger.info("POST /api/usuarios/cargos - Solicitud para crear cargo: '{}'", dto.getNombreCargo());
         Cargo cargoCreado = cargoService.crearCargo(dto);
         CargoResponseDTO responseDTO = cargoMapper.toResponseDTO(cargoCreado);
-
-        EntityModel<CargoResponseDTO> model = EntityModel.of(responseDTO,
-                linkTo(methodOn(CargoController.class).obtenerCargoPorId(responseDTO.getIdCargo(), null)).withSelfRel(),
-                linkTo(methodOn(CargoController.class).listarCargos(null)).withRel("cargos")
-        );
+        EntityModel<CargoResponseDTO> model = cargoAssembler.toModel(responseDTO);
 
         logger.info("POST /api/usuarios/cargos - Cargo creado exitosamente. Respondiendo 201 CREATED");
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
@@ -57,18 +55,8 @@ public class CargoController {
     public ResponseEntity<CollectionModel<EntityModel<CargoResponseDTO>>> listarCargos(HttpServletRequest request) {
         logger.info("GET /api/usuarios/cargos - Solicitud para listar todos los cargos");
         List<CargoResponseDTO> cargos = cargoService.buscarTodos();
-
-        List<EntityModel<CargoResponseDTO>> models = cargos.stream()
-                .map(c -> EntityModel.of(c,
-                        linkTo(methodOn(CargoController.class).obtenerCargoPorId(c.getIdCargo(), null)).withSelfRel(),
-                        linkTo(methodOn(CargoController.class).listarCargos(null)).withRel("cargos")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<CargoResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(CargoController.class).listarCargos(null)).withSelfRel()
-        );
+        CollectionModel<EntityModel<CargoResponseDTO>> collection = cargoAssembler.toCollectionModel(cargos)
+                .add(linkTo(methodOn(CargoController.class).listarCargos(null)).withSelfRel());
 
         logger.info("GET /api/usuarios/cargos - Listado enviado con éxito. Respondiendo 200 OK");
         return ResponseEntity.ok(collection);
@@ -78,13 +66,7 @@ public class CargoController {
     public ResponseEntity<EntityModel<CargoResponseDTO>> obtenerCargoPorId(@PathVariable Integer idCargo, HttpServletRequest request) {
         logger.info("GET /api/usuarios/cargos/{} - Solicitud para buscar cargo por ID", idCargo);
         CargoResponseDTO cargo = cargoService.buscarCargoPorId(idCargo);
-
-        EntityModel<CargoResponseDTO> model = EntityModel.of(cargo,
-                linkTo(methodOn(CargoController.class).obtenerCargoPorId(idCargo, null)).withSelfRel(),
-                linkTo(methodOn(CargoController.class).listarCargos(null)).withRel("cargos"),
-                linkTo(methodOn(CargoController.class).actualizarCargo(idCargo, null, null)).withRel("actualizar"),
-                linkTo(methodOn(CargoController.class).eliminarCargo(idCargo)).withRel("eliminar")
-        );
+        EntityModel<CargoResponseDTO> model = cargoAssembler.toModel(cargo);
 
         logger.info("GET /api/usuarios/cargos/{} - Cargo encontrado. Respondiendo 200 OK", idCargo);
         return ResponseEntity.ok(model);
@@ -95,11 +77,7 @@ public class CargoController {
         logger.info("PUT /api/usuarios/cargos/{} - Solicitud para actualizar cargo", idCargo);
         Cargo cargoActualizado = cargoService.actualizarCargo(idCargo, dto);
         CargoResponseDTO responseDTO = cargoMapper.toResponseDTO(cargoActualizado);
-
-        EntityModel<CargoResponseDTO> model = EntityModel.of(responseDTO,
-                linkTo(methodOn(CargoController.class).obtenerCargoPorId(idCargo, null)).withSelfRel(),
-                linkTo(methodOn(CargoController.class).listarCargos(null)).withRel("cargos")
-        );
+        EntityModel<CargoResponseDTO> model = cargoAssembler.toModel(responseDTO);
 
         logger.info("PUT /api/usuarios/cargos/{} - Cargo actualizado. Respondiendo 200 OK", idCargo);
         return ResponseEntity.ok(model);

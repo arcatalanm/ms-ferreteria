@@ -51,11 +51,17 @@ public class CompraMapper {
                         .build())
                 .collect(Collectors.toList());
 
+        int total = entity.getTotalCompra() != null ? entity.getTotalCompra() : 0;
+        int neto = (int) Math.round(total / 1.19);
+        int iva = total - neto;
+
         return CompraResponseDTO.builder()
                 .idCompra(entity.getIdCompra())
                 .idProveedor(entity.getIdProveedor())
                 .fechaCompra(entity.getFechaCompra())
-                .totalCompra(entity.getTotalCompra())
+                .totalCompra(total)
+                .neto(neto)
+                .iva(iva)
                 .estado(entity.getEstado())
                 .detalles(detallesDTO)
                 .build();

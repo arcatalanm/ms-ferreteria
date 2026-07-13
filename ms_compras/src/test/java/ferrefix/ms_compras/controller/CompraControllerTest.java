@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,6 +38,9 @@ class CompraControllerTest {
     @Mock
     private CompraService compraService;
 
+    @Spy
+    private ferrefix.ms_compras.assembler.CompraAssembler compraAssembler;
+
     @InjectMocks
     private CompraController compraController;
 
@@ -57,6 +61,8 @@ class CompraControllerTest {
                 .idProveedor(10)
                 .fechaCompra(LocalDateTime.now())
                 .totalCompra(50000)
+                .neto(42017)
+                .iva(7983)
                 .estado("SOLICITADO")
                 .detalles(List.of(
                         DetalleCompraResponseDTO.builder()
@@ -73,6 +79,8 @@ class CompraControllerTest {
                 .idProveedor(20)
                 .fechaCompra(LocalDateTime.now())
                 .totalCompra(30000)
+                .neto(25210)
+                .iva(4790)
                 .estado("RECIBIDO")
                 .detalles(List.of(
                         DetalleCompraResponseDTO.builder()
@@ -96,8 +104,12 @@ class CompraControllerTest {
                 .andExpect(jsonPath("$.content", hasSize(2)))
                 .andExpect(jsonPath("$.content[0].idCompra", is(1)))
                 .andExpect(jsonPath("$.content[0].estado", is("SOLICITADO")))
+                .andExpect(jsonPath("$.content[0].neto", is(42017)))
+                .andExpect(jsonPath("$.content[0].iva", is(7983)))
                 .andExpect(jsonPath("$.content[1].idCompra", is(2)))
-                .andExpect(jsonPath("$.content[1].estado", is("RECIBIDO")));
+                .andExpect(jsonPath("$.content[1].estado", is("RECIBIDO")))
+                .andExpect(jsonPath("$.content[1].neto", is(25210)))
+                .andExpect(jsonPath("$.content[1].iva", is(4790)));
 
         verify(compraService, times(1)).listarTodas();
     }
@@ -112,7 +124,9 @@ class CompraControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idCompra", is(1)))
                 .andExpect(jsonPath("$.estado", is("SOLICITADO")))
-                .andExpect(jsonPath("$.totalCompra", is(50000)));
+                .andExpect(jsonPath("$.totalCompra", is(50000)))
+                .andExpect(jsonPath("$.neto", is(42017)))
+                .andExpect(jsonPath("$.iva", is(7983)));
 
         verify(compraService, times(1)).obtenerPorId(1L);
     }
@@ -139,7 +153,9 @@ class CompraControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.idCompra", is(1)))
-                .andExpect(jsonPath("$.estado", is("SOLICITADO")));
+                .andExpect(jsonPath("$.estado", is("SOLICITADO")))
+                .andExpect(jsonPath("$.neto", is(42017)))
+                .andExpect(jsonPath("$.iva", is(7983)));
 
         verify(compraService, times(1)).crearOrdenCompra(any(CompraRequestDTO.class));
     }
@@ -148,11 +164,13 @@ class CompraControllerTest {
     @DisplayName("Debería recibir mercancía (procesar recepción)")
     void deberiaRecibirMercancia() throws Exception {
 
-        CompraResponseDTO recibida = CompraResponseDTO.builder()
+        compra1 = CompraResponseDTO.builder()
                 .idCompra(1L)
                 .idProveedor(10)
                 .fechaCompra(LocalDateTime.now())
                 .totalCompra(50000)
+                .neto(42017)
+                .iva(7983)
                 .estado("RECIBIDO")
                 .detalles(List.of(
                         DetalleCompraResponseDTO.builder()
@@ -164,12 +182,14 @@ class CompraControllerTest {
                 ))
                 .build();
 
-        when(compraService.procesarRecepcionMercancia(1L)).thenReturn(recibida);
+        when(compraService.procesarRecepcionMercancia(1L)).thenReturn(compra1);
 
         mockMvc.perform(put("/api/compras/1/recibir"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.idCompra", is(1)))
-                .andExpect(jsonPath("$.estado", is("RECIBIDO")));
+                .andExpect(jsonPath("$.estado", is("RECIBIDO")))
+                .andExpect(jsonPath("$.neto", is(42017)))
+                .andExpect(jsonPath("$.iva", is(7983)));
 
         verify(compraService, times(1)).procesarRecepcionMercancia(1L);
     }

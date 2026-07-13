@@ -214,16 +214,48 @@ public class ReporteService {
             document.add(table);
 
             // Bloque de Totales alineado a la derecha debajo de la tabla
-            PdfPTable totalTable = new PdfPTable(1);
+            int totalVal = venta.getTotalVenta() != null ? venta.getTotalVenta() : 0;
+            int netoVal = venta.getNeto() != null ? venta.getNeto() : (int) Math.round(totalVal / 1.19);
+            int ivaVal = venta.getIva() != null ? venta.getIva() : (totalVal - netoVal);
+
+            PdfPTable totalTable = new PdfPTable(2);
             totalTable.setWidthPercentage(100);
+            totalTable.setWidths(new float[]{80f, 20f});
             
-            PdfPCell totalCell = new PdfPCell(new Phrase("TOTAL VENTA: $" + String.format("%,d", venta.getTotalVenta()), fontTotal));
-            totalCell.setBorder(Rectangle.NO_BORDER);
-            totalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            totalCell.setPaddingTop(6);
-            totalCell.setPaddingBottom(10);
-            
-            totalTable.addCell(totalCell);
+            PdfPCell cellNetoLabel = new PdfPCell(new Phrase("NETO:", fontTableBody));
+            cellNetoLabel.setBorder(Rectangle.NO_BORDER);
+            cellNetoLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalTable.addCell(cellNetoLabel);
+
+            PdfPCell cellNetoValue = new PdfPCell(new Phrase("$" + String.format("%,d", netoVal), fontTableBody));
+            cellNetoValue.setBorder(Rectangle.NO_BORDER);
+            cellNetoValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalTable.addCell(cellNetoValue);
+
+            PdfPCell cellIvaLabel = new PdfPCell(new Phrase("IVA (19%):", fontTableBody));
+            cellIvaLabel.setBorder(Rectangle.NO_BORDER);
+            cellIvaLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalTable.addCell(cellIvaLabel);
+
+            PdfPCell cellIvaValue = new PdfPCell(new Phrase("$" + String.format("%,d", ivaVal), fontTableBody));
+            cellIvaValue.setBorder(Rectangle.NO_BORDER);
+            cellIvaValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalTable.addCell(cellIvaValue);
+
+            PdfPCell cellTotalLabel = new PdfPCell(new Phrase("TOTAL VENTA:", fontTotal));
+            cellTotalLabel.setBorder(Rectangle.NO_BORDER);
+            cellTotalLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cellTotalLabel.setPaddingTop(4);
+            cellTotalLabel.setPaddingBottom(10);
+            totalTable.addCell(cellTotalLabel);
+
+            PdfPCell cellTotalValue = new PdfPCell(new Phrase("$" + String.format("%,d", totalVal), fontTotal));
+            cellTotalValue.setBorder(Rectangle.NO_BORDER);
+            cellTotalValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cellTotalValue.setPaddingTop(4);
+            cellTotalValue.setPaddingBottom(10);
+            totalTable.addCell(cellTotalValue);
+
             document.add(totalTable);
 
             // Línea sutil de separación entre ventas
@@ -232,6 +264,97 @@ public class ReporteService {
             itemSeparator.setSpacingAfter(10);
             document.add(itemSeparator);
         }
+
+        // 5. Bloque de Totales Acumulados del Reporte (Resumen de Impuestos)
+        int granTotalNeto = 0;
+        int granTotalIva = 0;
+        int granTotalVenta = 0;
+
+        for (VentaDTO venta : ventas) {
+            int totalVal = venta.getTotalVenta() != null ? venta.getTotalVenta() : 0;
+            int netoVal = venta.getNeto() != null ? venta.getNeto() : (int) Math.round(totalVal / 1.19);
+            int ivaVal = venta.getIva() != null ? venta.getIva() : (totalVal - netoVal);
+
+            granTotalNeto += netoVal;
+            granTotalIva += ivaVal;
+            granTotalVenta += totalVal;
+        }
+
+        // Título del bloque de resumen
+        Paragraph resumenHeader = new Paragraph("RESUMEN DE TOTALES DEL REPORTE (DESGLOSE DE IVA 19%)", fontSeccion);
+        resumenHeader.setSpacingBefore(15);
+        resumenHeader.setSpacingAfter(8);
+        document.add(resumenHeader);
+
+        PdfPTable resumenTable = new PdfPTable(2);
+        resumenTable.setWidthPercentage(100);
+        resumenTable.setWidths(new float[]{80f, 20f});
+
+        // Cantidad de Comprobantes
+        PdfPCell cellCantLabel = new PdfPCell(new Phrase("Total Comprobantes:", fontTableBody));
+        cellCantLabel.setBorder(Rectangle.BOX);
+        cellCantLabel.setBorderColor(COLOR_LINEAS);
+        cellCantLabel.setBackgroundColor(COLOR_FONDO_HEADER);
+        cellCantLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellCantLabel.setPadding(6);
+        resumenTable.addCell(cellCantLabel);
+
+        PdfPCell cellCantValue = new PdfPCell(new Phrase(String.valueOf(ventas.size()), fontTableBody));
+        cellCantValue.setBorder(Rectangle.BOX);
+        cellCantValue.setBorderColor(COLOR_LINEAS);
+        cellCantValue.setBackgroundColor(COLOR_FONDO_HEADER);
+        cellCantValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellCantValue.setPadding(6);
+        resumenTable.addCell(cellCantValue);
+
+        // MONTO NETO TOTAL
+        PdfPCell cellNetoAcumLabel = new PdfPCell(new Phrase("MONTO NETO TOTAL:", fontTableBody));
+        cellNetoAcumLabel.setBorder(Rectangle.BOX);
+        cellNetoAcumLabel.setBorderColor(COLOR_LINEAS);
+        cellNetoAcumLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellNetoAcumLabel.setPadding(6);
+        resumenTable.addCell(cellNetoAcumLabel);
+
+        PdfPCell cellNetoAcumValue = new PdfPCell(new Phrase("$" + String.format("%,d", granTotalNeto), fontTableBody));
+        cellNetoAcumValue.setBorder(Rectangle.BOX);
+        cellNetoAcumValue.setBorderColor(COLOR_LINEAS);
+        cellNetoAcumValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellNetoAcumValue.setPadding(6);
+        resumenTable.addCell(cellNetoAcumValue);
+
+        // IVA TOTAL (19%)
+        PdfPCell cellIvaAcumLabel = new PdfPCell(new Phrase("IVA TOTAL (19%):", fontTableBody));
+        cellIvaAcumLabel.setBorder(Rectangle.BOX);
+        cellIvaAcumLabel.setBorderColor(COLOR_LINEAS);
+        cellIvaAcumLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellIvaAcumLabel.setPadding(6);
+        resumenTable.addCell(cellIvaAcumLabel);
+
+        PdfPCell cellIvaAcumValue = new PdfPCell(new Phrase("$" + String.format("%,d", granTotalIva), fontTableBody));
+        cellIvaAcumValue.setBorder(Rectangle.BOX);
+        cellIvaAcumValue.setBorderColor(COLOR_LINEAS);
+        cellIvaAcumValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellIvaAcumValue.setPadding(6);
+        resumenTable.addCell(cellIvaAcumValue);
+
+        // TOTAL RECAUDADO
+        PdfPCell cellGranTotalLabel = new PdfPCell(new Phrase("TOTAL RECAUDADO:", fontTotal));
+        cellGranTotalLabel.setBorder(Rectangle.BOX);
+        cellGranTotalLabel.setBorderColor(COLOR_LINEAS);
+        cellGranTotalLabel.setBackgroundColor(COLOR_FONDO_HEADER);
+        cellGranTotalLabel.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellGranTotalLabel.setPadding(8);
+        resumenTable.addCell(cellGranTotalLabel);
+
+        PdfPCell cellGranTotalValue = new PdfPCell(new Phrase("$" + String.format("%,d", granTotalVenta), fontTotal));
+        cellGranTotalValue.setBorder(Rectangle.BOX);
+        cellGranTotalValue.setBorderColor(COLOR_LINEAS);
+        cellGranTotalValue.setBackgroundColor(COLOR_FONDO_HEADER);
+        cellGranTotalValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        cellGranTotalValue.setPadding(8);
+        resumenTable.addCell(cellGranTotalValue);
+
+        document.add(resumenTable);
 
         document.close();
         log.info("Documento PDF escrito con éxito en los flujos de salida.");

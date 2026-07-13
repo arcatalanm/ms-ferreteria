@@ -14,6 +14,8 @@ public class CompraResponseDTO {
     private Integer idProveedor;
     private LocalDateTime fechaCompra;
     private Integer totalCompra;
+    private Integer neto;
+    private Integer iva;
     private String estado;
     private List<DetalleCompraResponseDTO> detalles;
 }

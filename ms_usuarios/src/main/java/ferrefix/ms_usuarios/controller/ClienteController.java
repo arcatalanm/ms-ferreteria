@@ -1,6 +1,5 @@
 package ferrefix.ms_usuarios.controller;
 
-
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import ferrefix.ms_usuarios.assembler.ClienteAssembler;
 import ferrefix.ms_usuarios.dto.ClienteRequestDTO;
 import ferrefix.ms_usuarios.dto.ClienteResponseDTO;
 import ferrefix.ms_usuarios.exception.BadRequestException;
@@ -30,6 +30,7 @@ public class ClienteController {
 
     private static final Logger logger = LoggerFactory.getLogger(ClienteController.class);
     private final ClienteService clienteService;
+    private final ClienteAssembler clienteAssembler;
 
     @PostMapping
     public ResponseEntity<EntityModel<ClienteResponseDTO>> registrarCliente(
@@ -37,11 +38,7 @@ public class ClienteController {
 
         logger.info("POST /api/usuarios/clientes - RUT: {}", dto.getRunCliente());
         ClienteResponseDTO creado = clienteService.crearCliente(dto);
-        
-        EntityModel<ClienteResponseDTO> model = EntityModel.of(creado,
-                linkTo(methodOn(ClienteController.class).obtenerPorRun(creado.getRunClienteCompleto(), null)).withSelfRel(),
-                linkTo(methodOn(ClienteController.class).listarClientes(null)).withRel("clientes")
-        );
+        EntityModel<ClienteResponseDTO> model = clienteAssembler.toModel(creado);
 
         logger.info("POST /api/usuarios/clientes - Cliente creado. Respondiendo 201 CREATED");
         return ResponseEntity.status(HttpStatus.CREATED).body(model);
@@ -51,18 +48,8 @@ public class ClienteController {
     public ResponseEntity<CollectionModel<EntityModel<ClienteResponseDTO>>> listarClientes(HttpServletRequest request) {
         logger.info("GET /api/usuarios/clientes - Listando todos los clientes");
         List<ClienteResponseDTO> lista = clienteService.buscarTodosClientes();
-        
-        List<EntityModel<ClienteResponseDTO>> models = lista.stream()
-                .map(c -> EntityModel.of(c,
-                        linkTo(methodOn(ClienteController.class).obtenerPorRun(c.getRunClienteCompleto(), null)).withSelfRel(),
-                        linkTo(methodOn(ClienteController.class).listarClientes(null)).withRel("clientes")
-                ))
-                .toList();
-
-        CollectionModel<EntityModel<ClienteResponseDTO>> collection = CollectionModel.of(
-                models,
-                linkTo(methodOn(ClienteController.class).listarClientes(null)).withSelfRel()
-        );
+        CollectionModel<EntityModel<ClienteResponseDTO>> collection = clienteAssembler.toCollectionModel(lista)
+                .add(linkTo(methodOn(ClienteController.class).listarClientes(null)).withSelfRel());
 
         logger.info("GET /api/usuarios/clientes - {} registros. Respondiendo 200 OK", lista.size());
         return ResponseEntity.ok(collection);
@@ -77,13 +64,7 @@ public class ClienteController {
         Integer run = RutUtil.extraerRun(runCliente);
         logger.info("GET /api/usuarios/clientes/run/{} - Buscando cliente", runCliente);
         ClienteResponseDTO dto = clienteService.buscarClientePorRun(run);
-        
-        EntityModel<ClienteResponseDTO> model = EntityModel.of(dto,
-                linkTo(methodOn(ClienteController.class).obtenerPorRun(runCliente, null)).withSelfRel(),
-                linkTo(methodOn(ClienteController.class).listarClientes(null)).withRel("clientes"),
-                linkTo(methodOn(ClienteController.class).actualizarCliente(runCliente, null, null)).withRel("actualizar"),
-                linkTo(methodOn(ClienteController.class).eliminarCliente(runCliente, null)).withRel("eliminar")
-        );
+        EntityModel<ClienteResponseDTO> model = clienteAssembler.toModel(dto);
 
         logger.info("GET /api/usuarios/clientes/run/{} - Encontrado. Respondiendo 200 OK", runCliente);
         return ResponseEntity.ok(model);
@@ -101,11 +82,7 @@ public class ClienteController {
 
         logger.info("PUT /api/usuarios/clientes/run/{} - Actualizando cliente", runCliente);
         ClienteResponseDTO actualizado = clienteService.actualizarCliente(run, dto);
-        
-        EntityModel<ClienteResponseDTO> model = EntityModel.of(actualizado,
-                linkTo(methodOn(ClienteController.class).obtenerPorRun(actualizado.getRunClienteCompleto(), null)).withSelfRel(),
-                linkTo(methodOn(ClienteController.class).listarClientes(null)).withRel("clientes")
-        );
+        EntityModel<ClienteResponseDTO> model = clienteAssembler.toModel(actualizado);
 
         logger.info("PUT /api/usuarios/clientes/run/{} - Actualizado. Respondiendo 200 OK", runCliente);
         return ResponseEntity.ok(model);
